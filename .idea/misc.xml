@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/drawable/gradient.xml" value="0.1715" />
         <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/font/exo_2.xml" value="0.16971796140524492" />
         <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/font/sfpro.xml" value="0.2833333333333333" />
-        <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/activity_log_in.xml" value="0.25416666666666665" />
+        <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/activity_forgot_password.xml" value="0.25416666666666665" />
+        <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/activity_log_in.xml" value="0.264" />
       </map>
     </option>
   </component>
