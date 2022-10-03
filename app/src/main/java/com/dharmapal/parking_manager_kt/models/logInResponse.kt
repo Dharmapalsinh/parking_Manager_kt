@@ -13,3 +13,10 @@ data class logInResponse(
     @SerializedName("status")
     val status: String?
 )
+
+data class LogInReq(
+    @SerializedName("mobile")
+    val mobile:String?="1234567890",
+    @SerializedName("pass")
+    val pass:String?="1234567890"
+)

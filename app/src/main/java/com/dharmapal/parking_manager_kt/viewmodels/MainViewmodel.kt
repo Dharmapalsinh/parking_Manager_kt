@@ -1,16 +1,12 @@
 package com.dharmapal.parking_manager_kt.viewmodels
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Repo
+import com.dharmapal.parking_manager_kt.models.LogInReq
 import com.dharmapal.parking_manager_kt.models.logInResponse
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +17,7 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
     val logindata=MutableLiveData<logInResponse>()
 
     fun logIn(number:String,pass:String){
-        val response=repository.logIn(number,pass)
+        val response=repository.logIn(LogInReq(number,pass))
         response.enqueue(object :Callback<logInResponse>{
             override fun onResponse(call: Call<logInResponse>, response: Response<logInResponse>) {
                 Log.d("tagged",response.body().toString())

@@ -85,15 +85,15 @@ class LogInActivity : AppCompatActivity() {
         })
 
         binding.login.setOnClickListener {
-            if (number.text.toString() == "") {
-                toast(this, "Please Enter Number First!!!")
-            } else if (number.text.toString().length < 10) {
-                toast(this, "Please Enter Correct Number!!!")
-            } else if (password.text.toString() == "") {
-                toast(this, "Please Enter Password First!!!")
-            } else {
+//            if (number.text.toString() == "") {
+//                toast(this, "Please Enter Number First!!!")
+//            } else if (number.text.toString().length < 10) {
+//                toast(this, "Please Enter Correct Number!!!")
+//            } else if (password.text.toString() == "") {
+//                toast(this, "Please Enter Password First!!!")
+//            } else {
                 Login(number.text.toString(), password.text.toString())
-            }
+//            }
         }
     }
 
@@ -104,6 +104,7 @@ class LogInActivity : AppCompatActivity() {
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
 
+        Log.d("tagged",password)
         viewmodel.logIn(number,password)
         showMe.dismiss()
         viewmodel.logindata.observe(this){
