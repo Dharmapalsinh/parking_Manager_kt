@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Repo
+import com.dharmapal.parking_manager_kt.models.ForgotPassword_Req
+import com.dharmapal.parking_manager_kt.models.ForgotPassword_Response
 import com.dharmapal.parking_manager_kt.models.LogInReq
 import com.dharmapal.parking_manager_kt.models.logInResponse
 import retrofit2.Call
@@ -25,6 +27,22 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
             }
             override fun onFailure(call: Call<logInResponse>, t: Throwable) {
                 errorMessage.postValue(t.message)
+            }
+        })
+    }
+
+    fun forgotPassword(forgotpasswordReq: ForgotPassword_Req){
+        val response=repository.forgot_Password(forgotpasswordReq)
+        response.enqueue(object :Callback<ForgotPassword_Response>{
+            override fun onResponse(
+                call: Call<ForgotPassword_Response>,
+                response: Response<ForgotPassword_Response>
+            ) {
+                Log.d("fpass",response.body()!!.msg.toString())
+            }
+
+            override fun onFailure(call: Call<ForgotPassword_Response>, t: Throwable) {
+                Log.d("fpass",t.message.toString())
             }
         })
     }

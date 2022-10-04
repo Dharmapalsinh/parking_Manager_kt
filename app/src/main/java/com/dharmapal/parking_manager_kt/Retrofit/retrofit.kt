@@ -16,7 +16,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
-class RetrofitClientCopy(private val serverUrl: String = "https://manage.spotiz.app/") {
+class RetrofitClientCopy(private val serverUrl: String = "https://manage.spotiz.app/api/") {
 
     private val okHttpBuilder: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
@@ -33,7 +33,7 @@ class RetrofitClientCopy(private val serverUrl: String = "https://manage.spotiz.
             .build()
     }
 
-    val spotizInstance: RetrofitService by lazy { retrofit.create(RetrofitService::class.java) }
+    val spotizInstance: api by lazy { retrofit.create(api::class.java) }
 }
 
 class RetrofitInterceptor: Interceptor {
@@ -41,7 +41,7 @@ class RetrofitInterceptor: Interceptor {
         try {
             val request = chain.request().newBuilder()
                 .addHeader("Accept", "application/json")
-                .addHeader("apiKey", "pass your api key")
+                .addHeader("apiKey", "d29985af97d29a80e40cd81016d939af")
                 .build()
             return chain.proceed(request)
         } catch (e: Exception) {

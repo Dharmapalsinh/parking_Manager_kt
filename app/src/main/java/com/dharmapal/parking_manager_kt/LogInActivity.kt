@@ -12,7 +12,7 @@ import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.dharmapal.parking_manager_kt.Retrofit.RetrofitService
+import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.Utills.Config
 import com.dharmapal.parking_manager_kt.databinding.ActivityLogInBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
@@ -22,14 +22,14 @@ import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
 class LogInActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLogInBinding
     private lateinit var viewmodel: MainViewmodel
-    private val retrofitService = RetrofitService.getInstance()
+//    private val retrofitService = RetrofitClientCopy().spotizInstance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityLogInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModelFactory= MainViewmodelFactory(Repo(retrofitService))
+        val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
         viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
 
         val number=binding.number
