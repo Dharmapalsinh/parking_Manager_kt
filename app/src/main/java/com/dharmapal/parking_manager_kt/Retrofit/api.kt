@@ -1,9 +1,6 @@
 package com.dharmapal.parking_manager_kt.Retrofit
 
-import com.dharmapal.parking_manager_kt.models.ForgotPassword_Req
-import com.dharmapal.parking_manager_kt.models.ForgotPassword_Response
-import com.dharmapal.parking_manager_kt.models.LogInReq
-import com.dharmapal.parking_manager_kt.models.logInResponse
+import com.dharmapal.parking_manager_kt.models.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -18,4 +15,8 @@ interface api {
     fun forgotPassword(
         @Body forgotpasswordReq: ForgotPassword_Req?
     ) : Call<ForgotPassword_Response>
+
+    @GET("dashboard")
+    fun submit(
+    ) : Call<DashboardResponse>
 }

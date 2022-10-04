@@ -2,13 +2,13 @@ package com.dharmapal.parking_manager_kt.Utills;
 
 public class Config {
 
-    public static final String login="http://sagarfoundation.org.in/parking/api/login";
-    public static final String price="http://sagarfoundation.org.in/parking/api/parking_cost";
-    public static final String slot="http://sagarfoundation.org.in/parking/api/get_slots";
-    public static final String save="http://sagarfoundation.org.in/parking/api/save";
-    public static final String dash="http://sagarfoundation.org.in/parking/api/dashboard";
-    public static final String fpass="http://sagarfoundation.org.in/parking/api/forget_password";
-    public static final String scan="http://sagarfoundation.org.in/parking/api/scan";
-    public static final String checkouts="http://sagarfoundation.org.in/parking/api/chekout";
-    public static final String missing="http://sagarfoundation.org.in/parking/api/missing";
+    public static final String login="https://manage.spotiz.app/api/login";
+    public static final String price="https://manage.spotiz.app/api/parking_cost";
+    public static final String slot="https://manage.spotiz.app/api/get_slots";
+    public static final String save="https://manage.spotiz.app/api/save";
+    public static final String dash="https://manage.spotiz.app/api/dashboard";
+    public static final String fpass="https://manage.spotiz.app/api/forget_password";
+    public static final String scan="https://manage.spotiz.app/api/scan";
+    public static final String checkouts="https://manage.spotiz.app/api/chekout";
+    public static final String missing="https://manage.spotiz.app/api/missing";
 }

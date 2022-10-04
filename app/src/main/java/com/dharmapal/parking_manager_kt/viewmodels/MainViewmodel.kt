@@ -1,10 +1,12 @@
 package com.dharmapal.parking_manager_kt.viewmodels
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Repo
+import com.dharmapal.parking_manager_kt.models.DashboardResponse
 import com.dharmapal.parking_manager_kt.models.ForgotPassword_Req
 import com.dharmapal.parking_manager_kt.models.ForgotPassword_Response
 import com.dharmapal.parking_manager_kt.models.LogInReq
@@ -17,9 +19,10 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
 
     val errorMessage = MutableLiveData<String>()
     val logindata=MutableLiveData<logInResponse>()
+    val DashboardData=MutableLiveData<DashboardResponse>()
 
     fun logIn(number:String,pass:String){
-        val response=repository.logIn(LogInReq(number,pass))
+        val response=repository.logIn(number,pass)
         response.enqueue(object :Callback<logInResponse>{
             override fun onResponse(call: Call<logInResponse>, response: Response<logInResponse>) {
                 Log.d("tagged",response.body().toString())
@@ -31,6 +34,20 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
         })
     }
 
+    fun submit(){
+        val response=repository.submit()
+        response.enqueue(object :Callback<DashboardResponse>{
+            override fun onResponse(call: Call<DashboardResponse>, response: Response<DashboardResponse>) {
+                Log.d("dashboard",response.body().toString())
+                DashboardData.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<DashboardResponse>, t: Throwable) {
+                errorMessage.postValue(t.message)
+            }
+
+        })
+    }
     fun forgotPassword(forgotpasswordReq: ForgotPassword_Req){
         val response=repository.forgot_Password(forgotpasswordReq)
         response.enqueue(object :Callback<ForgotPassword_Response>{

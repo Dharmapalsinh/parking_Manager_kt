@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
-import com.dharmapal.parking_manager_kt.Utills.Config
 import com.dharmapal.parking_manager_kt.databinding.ActivityLogInBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
@@ -93,6 +92,11 @@ class LogInActivity : AppCompatActivity() {
 //                toast(this, "Please Enter Password First!!!")
 //            } else {
                 Login(number.text.toString(), password.text.toString())
+
+                val i = Intent(this, HomeActivity::class.java)
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY)
+
+                startActivity(i)
 //            }
         }
     }
