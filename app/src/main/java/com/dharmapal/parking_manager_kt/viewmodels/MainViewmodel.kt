@@ -43,6 +43,7 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
             }
 
             override fun onFailure(call: Call<DashboardResponse>, t: Throwable) {
+                Log.d("dashboard",t.message.toString())
                 errorMessage.postValue(t.message)
             }
 

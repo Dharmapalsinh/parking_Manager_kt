@@ -4,13 +4,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothGattService
 import android.bluetooth.BluetoothManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.dharmapal.parking_manager_kt.databinding.ActivityDeviceListBinding
@@ -31,13 +32,18 @@ class DeviceListActivity : AppCompatActivity() {
     // Return Intent extra
     var EXTRA_DEVICE_ADDRESS = "device_address"
 
-    // Member fields
-//    var mService: BluetoothGattService? = null
     private var mPairedDevicesArrayAdapter: ArrayAdapter<String>? = null
     private var mNewDevicesArrayAdapter: ArrayAdapter<String>? = null
 
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val bluetoothManager: BluetoothManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getSystemService(BluetoothManager::class.java)
+        } else {
+            TODO("VERSION.SDK_INT < M")
+        }
+        val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.adapter
 
         binding= ActivityDeviceListBinding.inflate(layoutInflater)
         // Setup the window
@@ -49,7 +55,7 @@ class DeviceListActivity : AppCompatActivity() {
         setResult(RESULT_CANCELED)
 
         binding.buttonScan.setOnClickListener {
-            doDiscovery()
+            doDiscovery(bluetoothAdapter!!)
             it.setVisibility(View.GONE)
         }
 
@@ -88,26 +94,12 @@ class DeviceListActivity : AppCompatActivity() {
         filter = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
         this.registerReceiver(mReceiver, filter)
 
-        val mService = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
 
         // Get a set of currently paired devices
 
         // Get a set of currently paired devices
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        val pairedDevices: Set<BluetoothDevice> = mService.adapter.bondedDevices
+
+        val pairedDevices: Set<BluetoothDevice> = bluetoothAdapter!!.bondedDevices
 
         // If there are paired devices, add each one to the ArrayAdapter
 
@@ -141,7 +133,8 @@ class DeviceListActivity : AppCompatActivity() {
     /**
      * Start device discover with the BluetoothAdapter
      */
-    private fun doDiscovery() {
+    @SuppressLint("MissingPermission")
+    private fun doDiscovery(bluetoothAdapter: BluetoothAdapter) {
 
         // Indicate scanning in the title
         setProgressBarIndeterminateVisibility(true)
@@ -150,13 +143,31 @@ class DeviceListActivity : AppCompatActivity() {
         // Turn on sub-title for new devices
         binding.titleNewDevices.setVisibility(View.VISIBLE)
 
-//        // If we're already discovering, stop it
-//        if (mService.isDiscovering()) {
-//            mService.cancelDiscovery()
-//        }
-//
-//        // Request discover from BluetoothAdapter
-//        mService.startDiscovery()
+        val mypairedDevices = bluetoothAdapter.bondedDevices
+        val list : ArrayList<BluetoothDevice> = ArrayList()
+
+        if (mypairedDevices.isNotEmpty())
+        {
+            for ( device:BluetoothDevice in mypairedDevices)
+                list.add(device)
+
+            //list.add(device.name() + "\n" + device.address())
+
+            Log.i("Device", "This is messeage ${list.toString()}")
+
+        }
+        else {
+            Toast.makeText(applicationContext, " NO PAIRED DEVICES FOUND", Toast.LENGTH_LONG).show()
+
+        }
+
+        // If we're already discovering, stop it
+        if (bluetoothAdapter.isDiscovering) {
+            bluetoothAdapter.cancelDiscovery()
+        }
+
+        // Request discover from BluetoothAdapter
+        bluetoothAdapter.startDiscovery()
     }
 
 
