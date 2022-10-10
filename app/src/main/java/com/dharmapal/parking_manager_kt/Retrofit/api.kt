@@ -25,6 +25,11 @@ interface api {
         @Body SaveReq: SaveParameters?
     ): Call<SaveResponse>
 
+    @POST("get_slots")
+    fun slot(
+        @Body SlotReq: SlotParameters?
+    ): Call<SlotResponse>
+
     @POST("parking_cost")
     fun price():Call<Price_Response>
 }

@@ -15,6 +15,7 @@ import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.models.SaveParameters
+import com.dharmapal.parking_manager_kt.models.SlotParameters
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
 import kotlin.math.roundToInt

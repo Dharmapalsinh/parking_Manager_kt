@@ -17,6 +17,7 @@ import android.util.Log
 import android.util.SparseArray
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,7 @@ import com.dharmapal.parking_manager_kt.adapters.PriceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityMainBinding
 import com.dharmapal.parking_manager_kt.models.PriceModel
 import com.dharmapal.parking_manager_kt.models.SaveParameters
+import com.dharmapal.parking_manager_kt.models.SlotParameters
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
 import com.google.android.gms.vision.CameraSource
@@ -120,6 +122,17 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.adapter=pAdapter
 
 //        binding.recyclerView.addOnItemTouchListener
+        binding.recyclerView!!.addOnItemTouchListener(RecyclerTouchListener(applicationContext, recyclerView,
+                object : RecyclerTouchListener.ClickListener {
+                    override fun onClick(view: View?, position: Int) {
+                        val model = price[position]
+                        pid = model.id.toString()
+                        GetSlot(pid)
+                    }
+
+                    override fun onLongClick(view: View?, position: Int) {}
+                })
+        )
 
         binding.prepaidcard.setOnClickListener {
             cardtype = "2"
@@ -149,7 +162,7 @@ class MainActivity : AppCompatActivity() {
 
         val textRecognizer: TextRecognizer = TextRecognizer.Builder(applicationContext).build()
 
-        if (!textRecognizer.isOperational()) {
+        if (!textRecognizer.isOperational) {
             Log.w("MainActivity", "Detector dependencies are not yet available.")
         } else {
             cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
@@ -276,6 +289,8 @@ class MainActivity : AppCompatActivity() {
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
 
+        //TODO:call api save
+
         Lists()
         viewmodel.save(SaveParameters("5555","TWO","111","2","T","0"))
         viewmodel.saveData.observe(this){
@@ -339,15 +354,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         showMe.dismiss()
+
+        //TODO:call api price
+
     }
-        fun GetData(
-        pids: String,
-        slotss: String,
-        slotsids: String,
-        cardtypess: String,
-        codes: String,
-        vno: String
-    ) {
+
+    fun GetData(pids: String, slotss: String, slotsids: String, cardtypess: String, codes: String, vno: String) {
+
         val showMe = ProgressDialog(this@MainActivity)
         showMe.setMessage("Please wait")
         showMe.setCancelable(false)
@@ -361,6 +374,23 @@ class MainActivity : AppCompatActivity() {
             }
 
             showMe.dismiss()
+    }
+
+    fun GetSlot(pid: String) {
+        val showMe = ProgressDialog(this@MainActivity, AlertDialog.THEME_HOLO_LIGHT)
+        showMe.setMessage("Please wait")
+        showMe.setCancelable(true)
+        showMe.setCanceledOnTouchOutside(false)
+        showMe.show()
+
+        //TODO:call api sloat
+
+        viewmodel.slot(SlotParameters(pid))
+        viewmodel.slotData.observe(this){
+            Log.d("slot",it.toString())
+
+            binding.slotNo!!.text = it.slot
+        }
     }
 
     private fun requestPermission() {
@@ -377,3 +407,5 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+

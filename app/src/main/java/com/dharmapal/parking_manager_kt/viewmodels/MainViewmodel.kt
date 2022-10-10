@@ -21,6 +21,7 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
     val loginData=MutableLiveData<logInResponse>()
     val dashboardData=MutableLiveData<Dash_Response>()
     val saveData=MutableLiveData<SaveResponse>()
+    val slotData=MutableLiveData<SlotResponse>()
     val priceData=MutableLiveData<Price_Response>()
 
     fun logIn(number:String,pass:String){
@@ -92,6 +93,22 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
             }
 
             override fun onFailure(call: Call<SaveResponse>, t: Throwable) {
+                Log.d("save",t.message.toString())
+                errorMessage.postValue(t.message)
+            }
+
+        })
+    }
+
+    fun slot(slotParameters: SlotParameters){
+        val response=repository.slot(slotParameters)
+        response.enqueue(object :Callback<SlotResponse>{
+            override fun onResponse(call: Call<SlotResponse>, response: Response<SlotResponse>) {
+                Log.d("save",response.body().toString())
+                slotData.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<SlotResponse>, t: Throwable) {
                 Log.d("save",t.message.toString())
                 errorMessage.postValue(t.message)
             }
