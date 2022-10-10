@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="4dp"
+    android:layout_marginLeft="1dp"
+    android:background="@drawable/bordercard"
+    android:clickable="true"
+    android:id="@+id/bg"
+    android:foreground="@drawable/ripple_effect"
+    android:paddingLeft="10.5dp"
+    android:paddingTop="7dp"
+    android:layout_marginBottom="2sp"
+    android:paddingRight="10.5dp"
+    android:paddingBottom="7dp">
+
+    <ImageView
+        android:id="@+id/check"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_checked" />
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/sfpro"
+            android:includeFontPadding="false"
+            android:text="20"
+            android:maxLength="4"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/vehicleType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/amount"
+            android:fontFamily="@font/sfpro"
+            android:includeFontPadding="false"
+            android:text="Two Wheeler"
+            android:maxLength="15"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+</RelativeLayout>

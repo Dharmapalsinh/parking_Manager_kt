@@ -33,7 +33,7 @@ class HomeActivity : AppCompatActivity() {
 
 
         binding.print.setOnClickListener(View.OnClickListener {
-            val i = Intent(this, MainActivity::class.java)
+            val i = Intent(this, DeviceListActivity::class.java)
             startActivity(i)
         })
 
@@ -74,16 +74,16 @@ class HomeActivity : AppCompatActivity() {
         viewmodel.DashboardData.observe(this){
             Log.d("dashboard",it.toString())
 
-            val ints = ("" + it.occ_per).toFloat().roundToInt().toInt()
+            val ints = ("" + it.occPer).toFloat().roundToInt().toInt()
 
             binding.availabel.text = it.available.toString()
-            binding.prepaidusers.text = it.prepaid_user.toString()
-            binding.vippasses.text = it.vip_user.toString()
-            binding.missingpasses.text = it.missing_pass.toString()
-            binding.todayscollection.text = it.total_col
+            binding.prepaidusers.text = it.prepaidUser.toString()
+            binding.vippasses.text = it.vipUser.toString()
+            binding.missingpasses.text = it.missingPass.toString()
+            binding.todayscollection.text = it.totalCol
             binding.occupied.text = it.occupied.toString()
             binding.circularProgressBar.progress = ints
-            binding.progress.text = it.occ_per.toString() + "%"
+            binding.progress.text = it.occPer.toString() + "%"
 
         }
         viewmodel.errorMessage.observe(this){

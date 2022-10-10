@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:background="@drawable/bottomsheet"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/pr"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/exo_2"
+        android:includeFontPadding="false"
+        android:text="Scan Prepiad Card"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:layout_marginLeft="20dp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <View
+        android:id="@+id/v"
+        android:background="#aba8a8"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/pr"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+
+    <EditText
+        android:id="@+id/smartcode"
+        android:visibility="gone"
+        android:textColor="#000"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_below="@+id/v"
+        android:id="@+id/animation_view"
+        android:layout_width="200dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/card" />
+
+</RelativeLayout>

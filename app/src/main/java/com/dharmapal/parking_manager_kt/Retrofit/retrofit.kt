@@ -28,7 +28,7 @@ class RetrofitClientCopy(private val serverUrl: String = "https://manage.spotiz.
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(serverUrl)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().serializeSpecialFloatingPointValues().setLenient().create()))
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().serializeNulls().serializeSpecialFloatingPointValues().setLenient().create()))
             .client(okHttpBuilder)
             .build()
     }

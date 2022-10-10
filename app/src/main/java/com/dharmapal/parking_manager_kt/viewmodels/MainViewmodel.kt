@@ -6,10 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Repo
-import com.dharmapal.parking_manager_kt.models.DashboardResponse
+import com.dharmapal.parking_manager_kt.models.Dash_Response
 import com.dharmapal.parking_manager_kt.models.ForgotPassword_Req
 import com.dharmapal.parking_manager_kt.models.ForgotPassword_Response
-import com.dharmapal.parking_manager_kt.models.LogInReq
 import com.dharmapal.parking_manager_kt.models.logInResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,7 +18,7 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
 
     val errorMessage = MutableLiveData<String>()
     val logindata=MutableLiveData<logInResponse>()
-    val DashboardData=MutableLiveData<DashboardResponse>()
+    val DashboardData=MutableLiveData<Dash_Response>()
 
     fun logIn(number:String,pass:String){
         val response=repository.logIn(number,pass)
@@ -36,19 +35,18 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
 
     fun submit(){
         val response=repository.submit()
-        response.enqueue(object :Callback<DashboardResponse>{
-            override fun onResponse(call: Call<DashboardResponse>, response: Response<DashboardResponse>) {
-                Log.d("dashboard",response.body().toString())
+        response.enqueue(object : Callback<Dash_Response>{
+            override fun onResponse(call: Call<Dash_Response>, response: Response<Dash_Response>) {
+                Log.d("dashboardv",response.body().toString())
                 DashboardData.postValue(response.body())
             }
 
-            override fun onFailure(call: Call<DashboardResponse>, t: Throwable) {
-                Log.d("dashboard",t.message.toString())
-                errorMessage.postValue(t.message)
+            override fun onFailure(call: Call<Dash_Response>, t: Throwable) {
+                errorMessage.postValue(t.message.toString())
             }
-
         })
     }
+
     fun forgotPassword(forgotpasswordReq: ForgotPassword_Req){
         val response=repository.forgot_Password(forgotpasswordReq)
         response.enqueue(object :Callback<ForgotPassword_Response>{
