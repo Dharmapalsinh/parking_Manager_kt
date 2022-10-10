@@ -34,17 +34,13 @@ class HomeActivity : AppCompatActivity() {
 
 
         binding.print.setOnClickListener(View.OnClickListener {
-            val i = Intent(this, DeviceListActivity::class.java)
+            val i = Intent(this, MainActivity::class.java)
             startActivity(i)
         })
 
         binding.checkout.setOnClickListener(View.OnClickListener {
-           /* val i = Intent(this, QrCodeActivity::class.java)
-            startActivity(i)*/
-            viewmodel.save(SaveParameters("","","","","",""))
-            viewmodel.saveData.observe(this){
-                Log.d("save",it.toString())
-            }
+            val i = Intent(this, QrCodeActivity::class.java)
+            startActivity(i)
 
         })
 

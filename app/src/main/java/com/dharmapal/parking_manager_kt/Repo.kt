@@ -12,4 +12,6 @@ class Repo constructor(private val retrofitService: RetrofitClientCopy)  {
     fun forgot_Password(forgotpasswordReq: ForgotPassword_Req)=retrofitService.instance.forgotPassword(forgotpasswordReq)
 
     fun save(saveParameters: SaveParameters)=retrofitService.instance.save(saveParameters)
+
+    fun price()=retrofitService.instance.price()
 }

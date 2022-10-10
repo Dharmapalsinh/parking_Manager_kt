@@ -24,4 +24,7 @@ interface api {
     fun save (
         @Body SaveReq: SaveParameters?
     ): Call<SaveResponse>
+
+    @POST("parking_cost")
+    fun price():Call<Price_Response>
 }

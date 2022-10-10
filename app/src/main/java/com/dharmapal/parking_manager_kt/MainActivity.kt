@@ -22,13 +22,17 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.adapters.PriceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityMainBinding
 import com.dharmapal.parking_manager_kt.models.PriceModel
+import com.dharmapal.parking_manager_kt.models.SaveParameters
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.text.TextBlock
@@ -65,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 //    var stringRequest1:StringRequest? = null
 //    var mRequestQueue: RequestQueue? = null
 //    var mRequestQueue1:RequestQueue? = null
-    private val price: List<PriceModel> = ArrayList<PriceModel>()
+    private val price: ArrayList<PriceModel> = ArrayList()
     val TAG = "STag"
     var pid = ""
     var slots:kotlin.String? = null
@@ -88,6 +92,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
+        viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -167,7 +174,7 @@ class MainActivity : AppCompatActivity() {
                             )
                             return
                         }
-                        cameraSource.start(surfaceView!!.holder)
+                        cameraSource.start(binding.surfaceView.holder)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -196,17 +203,17 @@ class MainActivity : AppCompatActivity() {
             override fun receiveDetections(detections: Detector.Detections<TextBlock?>) {
                 val items: SparseArray<TextBlock?>? = detections.getDetectedItems()
                 if (items!!.size() != 0) {
-                    textView!!.post {
+                    binding.cameraTxt.post {
                         val stringBuilder = StringBuilder()
                         for (i in 0 until items.size()) {
                             val item: TextBlock = items.valueAt(i)!!
                             stringBuilder.append(item.getValue())
                             stringBuilder.append("\n")
                         }
-                        textView.text = stringBuilder.toString()
-                        temp = textView.text.toString().trim { it <= ' ' }
+                        binding.cameraTxt.text = stringBuilder.toString()
+                        temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
                         playOnOffSound()
-                        vnumber!!.setText(stringBuilder.toString().trim { it <= ' ' })
+                        binding.vnumber.setText(stringBuilder.toString().trim { it <= ' ' })
                         cameraSource.stop()
                     }
                 }
@@ -215,8 +222,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.capture.setOnClickListener {
             try {
-                cameraSource.start(surfaceView!!.holder)
-                vnumber!!.text.clear()
+                cameraSource.start(binding.surfaceView.holder)
+                binding.vnumber.text.clear()
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -225,14 +232,15 @@ class MainActivity : AppCompatActivity() {
         binding.printPass.setOnClickListener {
 
 
-            // Submit();
-            if (vnumber!!.text.toString() == "") {
-                Toast.makeText(this@MainActivity, "Please Scan Vehicle or Enter Vehicle Number!!!",Toast.LENGTH_SHORT).show()
-            } else if (pid == "") {
-                Toast.makeText(this@MainActivity, "Please Select Vehicle Type!!!",Toast.LENGTH_SHORT).show()
-            } else {
-                checkinprint()
-            }
+            checkinprint()
+//            // Submit();
+//            if (vnumber!!.text.toString() == "") {
+//                Toast.makeText(this@MainActivity, "Please Scan Vehicle or Enter Vehicle Number!!!",Toast.LENGTH_SHORT).show()
+//            } else if (pid == "") {
+//                Toast.makeText(this@MainActivity, "Please Select Vehicle Type!!!",Toast.LENGTH_SHORT).show()
+//            } else {
+//                checkinprint()
+//            }
         }
 
         Lists()
@@ -244,6 +252,21 @@ class MainActivity : AppCompatActivity() {
         objMediaPlayer!!.start()
     }
 
+    private fun NetworkDialog(){
+        val  dialogs: android.app.Dialog = android.app.Dialog(this@MainActivity )
+        dialogs.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+        dialogs.setContentView(R.layout.networkdialog)
+        dialogs.setCanceledOnTouchOutside(false)
+        val done: android.widget.Button = dialogs.findViewById<android.view.View>(R.id.done) as android.widget.Button
+        done.setOnClickListener(object : android.view.View.OnClickListener{
+            override fun onClick(view: android.view.View){
+                dialogs.dismiss()
+                Lists()
+                checkinprint()
+            }
+        })
+        dialogs.show()
+    }
     fun checkinprint()
     {
 
@@ -252,6 +275,14 @@ class MainActivity : AppCompatActivity() {
         showMe.setCancelable(false)
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
+
+        Lists()
+        viewmodel.save(SaveParameters("5555","TWO","111","2","T","0"))
+        viewmodel.saveData.observe(this){
+            Log.d("save",it.toString())
+        }
+
+        showMe.dismiss()
     }
 
         fun BottomSheet(
@@ -296,6 +327,18 @@ class MainActivity : AppCompatActivity() {
         showMe.setCancelable(true)
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
+
+        viewmodel.price()
+        viewmodel.priceData.observe(this){ priceResponse ->
+            priceResponse.twoWheeler!!.forEach {
+                price.add(PriceModel(id = it.id, amount = it.price,type = it.vehicleType))
+
+            }
+            pAdapter=PriceAdapter(applicationContext,price)
+            binding.recyclerView.adapter=pAdapter
+        }
+
+        showMe.dismiss()
     }
         fun GetData(
         pids: String,
@@ -311,7 +354,13 @@ class MainActivity : AppCompatActivity() {
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
 
-        //TODO:call api save
+            Lists()
+            viewmodel.save(SaveParameters(vno,pids,slotss,slotsids,cardtypess,codes))
+            viewmodel.saveData.observe(this){
+                Log.d("save",it.toString())
+            }
+
+            showMe.dismiss()
     }
 
     private fun requestPermission() {

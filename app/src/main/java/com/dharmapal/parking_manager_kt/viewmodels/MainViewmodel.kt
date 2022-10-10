@@ -21,6 +21,7 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
     val loginData=MutableLiveData<logInResponse>()
     val dashboardData=MutableLiveData<Dash_Response>()
     val saveData=MutableLiveData<SaveResponse>()
+    val priceData=MutableLiveData<Price_Response>()
 
     fun logIn(number:String,pass:String){
         val response=repository.logIn(number,pass)
@@ -66,6 +67,22 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
         })
     }
 
+    fun price(){
+        val response=repository.price()
+        response.enqueue(object : Callback<Price_Response>{
+            override fun onResponse(
+                call: Call<Price_Response>,
+                response: Response<Price_Response>
+            ) {
+                priceData.postValue(response.body())
+                Log.d("priceee",response.body().toString())
+            }
+
+            override fun onFailure(call: Call<Price_Response>, t: Throwable) {
+                Log.d("priceee",t.message.toString())
+            }
+        })
+    }
     fun save(saveParameters: SaveParameters){
         val response=repository.save(saveParameters)
         response.enqueue(object :Callback<SaveResponse>{
