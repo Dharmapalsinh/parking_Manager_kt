@@ -59,7 +59,6 @@ class DeviceListActivity : AppCompatActivity() {
             it.setVisibility(View.GONE)
         }
 
-
         // Initialize array adapters. One for already paired devices and
         // one for newly discovered devices
 

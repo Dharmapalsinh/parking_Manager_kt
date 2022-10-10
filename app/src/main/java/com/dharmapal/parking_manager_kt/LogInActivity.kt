@@ -111,7 +111,7 @@ class LogInActivity : AppCompatActivity() {
         Log.d("tagged",password)
         viewmodel.logIn(number,password)
         showMe.dismiss()
-        viewmodel.logindata.observe(this){
+        viewmodel.loginData.observe(this){
             Log.d("tagged",it.id.toString())
         }
         viewmodel.errorMessage.observe(this){

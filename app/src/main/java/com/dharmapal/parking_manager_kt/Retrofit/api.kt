@@ -1,16 +1,13 @@
 package com.dharmapal.parking_manager_kt.Retrofit
 
-import com.dharmapal.parking_manager_kt.models.Dash_Response
-import com.dharmapal.parking_manager_kt.models.ForgotPassword_Req
-import com.dharmapal.parking_manager_kt.models.ForgotPassword_Response
-import com.dharmapal.parking_manager_kt.models.logInResponse
+import com.dharmapal.parking_manager_kt.models.*
 import retrofit2.Call
 import retrofit2.http.*
 
 interface api {
     @POST("login")
     fun logIn(
-        @Query("mobile") mobile:String="1234567890" ,
+        @Query("mobile") mobile:String="1234567890",
         @Query("pass") pass:String="1234567890"
     ) : Call<logInResponse>
 
@@ -22,4 +19,9 @@ interface api {
     @GET("dashboard")
     fun submit(
     ) : Call<Dash_Response>
+
+    @POST("save")
+    fun save (
+        @Body SaveReq: SaveParameters?
+    ): Call<SaveResponse>
 }

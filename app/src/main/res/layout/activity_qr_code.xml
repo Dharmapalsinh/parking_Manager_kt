@@ -9,7 +9,22 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+      <!--  <com.budiyev.android.codescanner.CodeScannerView
+            android:id="@+id/scanner_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:autoFocusButtonColor="@android:color/white"
+            app:autoFocusButtonVisible="true"
+            app:flashButtonColor="@android:color/white"
+            app:flashButtonVisible="true"
+            app:frameAspectRatioHeight="1"
+            app:frameAspectRatioWidth="1"
+            app:frameColor="@android:color/white"
+            app:frameCornersRadius="0dp"
+            app:frameCornersSize="50dp"
+            app:frameSize="0.75"
+            app:frameThickness="3dp"
+            app:maskColor="#77000000" />-->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -73,10 +88,10 @@
                 android:id="@+id/checkout"
                 android:layout_width="205sp"
                 android:layout_height="190sp"
+                android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="30sp"
                 android:layout_marginRight="30sp"
-                android:layout_centerInParent="true"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="5sp"
@@ -110,9 +125,9 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginRight="20dp"
-                android:inputType="number"
                 android:background="@drawable/border12"
                 android:hint="Enter Your Pass Number"
+                android:inputType="number"
                 android:paddingLeft="5dp"
                 android:visibility="gone" />
 

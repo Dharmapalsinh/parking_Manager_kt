@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
+import com.dharmapal.parking_manager_kt.models.SaveParameters
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
 import kotlin.math.roundToInt
@@ -38,11 +39,16 @@ class HomeActivity : AppCompatActivity() {
         })
 
         binding.checkout.setOnClickListener(View.OnClickListener {
-            val i = Intent(this, QrCodeActivity::class.java)
-            startActivity(i)
+           /* val i = Intent(this, QrCodeActivity::class.java)
+            startActivity(i)*/
+            viewmodel.save(SaveParameters("","","","","",""))
+            viewmodel.saveData.observe(this){
+                Log.d("save",it.toString())
+            }
+
         })
 
-       binding.logout.setOnClickListener(View.OnClickListener {
+        binding.logout.setOnClickListener(View.OnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setMessage("Are you sure you want to Logout")
             builder.setPositiveButton(
@@ -71,7 +77,7 @@ class HomeActivity : AppCompatActivity() {
 
         viewmodel.submit()
         showMe.dismiss()
-        viewmodel.DashboardData.observe(this){
+        viewmodel.dashboardData.observe(this){
             Log.d("dashboard",it.toString())
 
             val ints = ("" + it.occPer).toFloat().roundToInt().toInt()

@@ -6,6 +6,7 @@
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/drawable-v24/border12.xml" value="0.149" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/drawable-v24/borderprint.xml" value="0.149" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/drawable-v24/bordervehicle.xml" value="0.149" />
+        <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/drawable-v24/ic_camera_shutter.xml" value="0.149" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/drawable-v24/ic_car.xml" value="0.149" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/drawable-v24/ic_photo_camera.xml" value="0.149" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/drawable-v24/ripple_effect.xml" value="0.149" />
@@ -13,23 +14,21 @@
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/drawable/gradd.xml" value="0.149" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/drawable/ic_logouts.xml" value="0.149" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/drawable/noconnection.xml" value="0.149" />
+        <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/layout/activity_check_out.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/layout/activity_device_list.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/layout/activity_home.xml" value="0.16" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/layout/activity_log_in.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/layout/activity_qr_code.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/layout/device_name.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/layout/networkdialog.xml" value="0.2734375" />
+        <entry key="..\:/Users/Parth Patel/AndroidStudioProjects/parking_Manager_kt/app/src/main/res/layout/pricecard.xml" value="0.27447916666666666" />
         <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/drawable/gradient.xml" value="0.1715" />
         <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/font/exo_2.xml" value="0.16971796140524492" />
         <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/font/sfpro.xml" value="0.2833333333333333" />
         <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/activity_device_list.xml" value="0.16799999999999998" />
         <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/activity_forgot_password.xml" value="0.25416666666666665" />
         <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/activity_log_in.xml" value="0.264" />
-        <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
-        <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/activity_qr_code.xml" value="0.13229166666666667" />
-        <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/bottomsheet.xml" value="0.25416666666666665" />
         <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/networkdialog.xml" value="0.25416666666666665" />
-        <entry key="..\:/Workspace_Gatetouch/parking_Manager_kt/app/src/main/res/layout/pricecard.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
