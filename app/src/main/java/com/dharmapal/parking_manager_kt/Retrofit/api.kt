@@ -20,14 +20,19 @@ interface api {
     fun submit(
     ) : Call<Dash_Response>
 
-    @POST("save")
+    @GET("save")
     fun save (
-        @Body SaveReq: SaveParameters?
+        @Query("vehicle_no")vehicle_no:String,
+        @Query("vehicle_type")vehicle_type:String,
+        @Query("slot_number")slot_number:String,
+        @Query("slot_id")slot_id:String,
+        @Query("type")type:String,
+        @Query("smart_code")smart_code:String
     ): Call<SaveResponse>
 
-    @POST("get_slots")
+    @GET("get_slots")
     fun slot(
-        @Body SlotReq: SlotParameters?
+        @Query("vehicle_type") vehicle_type:String
     ): Call<SlotResponse>
 
     @POST("parking_cost")

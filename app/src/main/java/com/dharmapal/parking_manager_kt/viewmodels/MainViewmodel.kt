@@ -100,7 +100,7 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
         })
     }
 
-    fun slot(slotParameters: SlotParameters){
+    fun slot(slotParameters: String){
         val response=repository.slot(slotParameters)
         response.enqueue(object :Callback<SlotResponse>{
             override fun onResponse(call: Call<SlotResponse>, response: Response<SlotResponse>) {

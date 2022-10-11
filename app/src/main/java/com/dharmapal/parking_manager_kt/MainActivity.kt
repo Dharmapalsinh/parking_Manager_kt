@@ -3,6 +3,7 @@ package com.dharmapal.parking_manager_kt
 import android.Manifest.permission
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -15,10 +16,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.util.SparseArray
-import android.view.SurfaceHolder
-import android.view.SurfaceView
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -32,7 +30,6 @@ import com.dharmapal.parking_manager_kt.adapters.PriceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityMainBinding
 import com.dharmapal.parking_manager_kt.models.PriceModel
 import com.dharmapal.parking_manager_kt.models.SaveParameters
-import com.dharmapal.parking_manager_kt.models.SlotParameters
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
 import com.google.android.gms.vision.CameraSource
@@ -60,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     val RequestCameraPermissionID = 1001
     private val capture: ImageView? = null
     var codes: String? = null
-    var temp:kotlin.String? = null
+    var temp: String? = null
     private var bottomSheetDialog: BottomSheetDialog? = null
     var recyclerView: RecyclerView? = null
     var pAdapter: PriceAdapter? = null
@@ -74,11 +71,11 @@ class MainActivity : AppCompatActivity() {
     private val price: ArrayList<PriceModel> = ArrayList()
     val TAG = "STag"
     var pid = ""
-    var slots:kotlin.String? = null
-    var slotid:kotlin.String? = null
-    var pno:kotlin.String? = null
-    var cardtype:kotlin.String? = "3"
-    var code:kotlin.String? = null
+    var slots: String? = null
+    var slotid: String? = null
+    var pno: String? = null
+    var cardtype: String? = "3"
+    var code: String? = null
     var showingFirst = true
     private val PERMISSION_REQUEST_CODE = 200
     private val REQUEST_CONNECT_DEVICE = 1
@@ -86,7 +83,7 @@ class MainActivity : AppCompatActivity() {
     var con_dev: BluetoothDevice? = null
     var mBluetoothAdapter: BluetoothAdapter? = null
     var vtypes: String? = null
-    var types:kotlin.String? = null
+    var types: String? = null
 
 
     @SuppressLint("MissingPermission")
@@ -118,44 +115,37 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager=
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        pAdapter= PriceAdapter(applicationContext,price)
+        pAdapter= PriceAdapter(applicationContext,price){
+            val model = it
+            pid = model.id.toString()
+            GetSlot(pid)
+        }
         binding.recyclerView.adapter=pAdapter
 
 //        binding.recyclerView.addOnItemTouchListener
-        binding.recyclerView!!.addOnItemTouchListener(RecyclerTouchListener(applicationContext, recyclerView,
-                object : RecyclerTouchListener.ClickListener {
-                    override fun onClick(view: View?, position: Int) {
-                        val model = price[position]
-                        pid = model.id.toString()
-                        GetSlot(pid)
-                    }
-
-                    override fun onLongClick(view: View?, position: Int) {}
-                })
-        )
 
         binding.prepaidcard.setOnClickListener {
             cardtype = "2"
 
-            if (vnumber!!.text.toString() == "") {
+            if (binding.vnumber.text.toString() == "") {
                 Toast.makeText(this@MainActivity, "Please Scan Vehicle or Enter Vehicle Number!!!",Toast.LENGTH_SHORT).show()
             } else if (pid == "") {
                 Toast.makeText(this@MainActivity, "Please Select Vehicle Type!!!",Toast.LENGTH_SHORT).show()
             } else {
-                BottomSheet(pid, slots, slotid, pno, cardtype, vnumber!!.text.toString())
+                BottomSheet(pid, slots, slotid, pno, cardtype,binding.vnumber.text.toString())
             }
 
-            prepaid!!.background =
+            binding.prepaidcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.selectedbordercategory)
-            vip!!.background =
+            binding.vipcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
         }
 
         binding.vipcard.setOnClickListener {
             cardtype = "1"
-            vip!!.background =
+            binding.vipcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.selectedbordercategory)
-            prepaid!!.background =
+            binding.prepaidcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
 
         }
@@ -167,7 +157,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .setRequestedPreviewSize(640, 480)
+                .setRequestedPreviewSize(400, 480)
                 .setAutoFocusEnabled(true)
                 .setRequestedFps(2.0f)
                 .build()
@@ -218,16 +208,29 @@ class MainActivity : AppCompatActivity() {
                 if (items!!.size() != 0) {
                     binding.cameraTxt.post {
                         val stringBuilder = StringBuilder()
-                        for (i in 0 until items.size()) {
-                            val item: TextBlock = items.valueAt(i)!!
-                            stringBuilder.append(item.getValue())
-                            stringBuilder.append("\n")
+
+                        val numPlate:Regex =
+                            "^[A-Z]{1,2}\\s?[0-9]{1,2}\\s?[A-Z]{1,2}\\s?[0-9]{4}\$".toRegex()
+
+
+                            for (i in 0 until items.size()) {
+                                val item: TextBlock = items.valueAt(i)!!
+                                stringBuilder.append(item.getValue())
+                                stringBuilder.append("\n")
+                            }
+
+                        Log.d("stringgg",stringBuilder.toString())
+                        if (stringBuilder.toString().contains(numPlate)){
+
+                            binding.cameraTxt.text = stringBuilder.toString()
+                            temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
+                            playOnOffSound()
+                            binding.vnumber.setText(stringBuilder.toString().trim { it <= ' ' })
+                            cameraSource.stop()
                         }
-                        binding.cameraTxt.text = stringBuilder.toString()
-                        temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
-                        playOnOffSound()
-                        binding.vnumber.setText(stringBuilder.toString().trim { it <= ' ' })
-                        cameraSource.stop()
+                        else{
+//                            Toast.makeText(applicationContext,"try again",Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
@@ -245,15 +248,15 @@ class MainActivity : AppCompatActivity() {
         binding.printPass.setOnClickListener {
 
 
-            checkinprint()
+//            checkinprint()
 //            // Submit();
-//            if (vnumber!!.text.toString() == "") {
-//                Toast.makeText(this@MainActivity, "Please Scan Vehicle or Enter Vehicle Number!!!",Toast.LENGTH_SHORT).show()
-//            } else if (pid == "") {
-//                Toast.makeText(this@MainActivity, "Please Select Vehicle Type!!!",Toast.LENGTH_SHORT).show()
-//            } else {
-//                checkinprint()
-//            }
+            if (binding.vnumber.text.toString() == "") {
+                Toast.makeText(this@MainActivity, "Please Scan Vehicle or Enter Vehicle Number!!!",Toast.LENGTH_SHORT).show()
+            } else if (pid == "") {
+                Toast.makeText(this@MainActivity, "Please Select Vehicle Type!!!",Toast.LENGTH_SHORT).show()
+            } else {
+                checkinprint()
+            }
         }
 
         Lists()
@@ -280,6 +283,20 @@ class MainActivity : AppCompatActivity() {
         })
         dialogs.show()
     }
+
+    private fun NetworkDialogs(id: String) {
+        val dialogs = Dialog(this@MainActivity)
+        dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogs.setContentView(R.layout.networkdialog)
+        dialogs.setCanceledOnTouchOutside(false)
+        val done = dialogs.findViewById<View>(R.id.done) as Button
+        done.setOnClickListener {
+            dialogs.dismiss()
+            GetSlot(id)
+        }
+        dialogs.show()
+    }
+
     fun checkinprint()
     {
 
@@ -292,7 +309,7 @@ class MainActivity : AppCompatActivity() {
         //TODO:call api save
 
         Lists()
-        viewmodel.save(SaveParameters("5555","TWO","111","2","T","0"))
+        viewmodel.save(SaveParameters(binding.vnumber.text.toString(),pid,slots!!,slotid!!,cardtype!!,"0"))
         viewmodel.saveData.observe(this){
             Log.d("save",it.toString())
         }
@@ -345,11 +362,17 @@ class MainActivity : AppCompatActivity() {
 
         viewmodel.price()
         viewmodel.priceData.observe(this){ priceResponse ->
+            if (price.isEmpty()){
             priceResponse.twoWheeler!!.forEach {
                 price.add(PriceModel(id = it.id, amount = it.price,type = it.vehicleType))
 
             }
-            pAdapter=PriceAdapter(applicationContext,price)
+            }
+            pAdapter=PriceAdapter(applicationContext,price){
+                val model = it
+                pid = model.id.toString()
+                GetSlot(pid)
+            }
             binding.recyclerView.adapter=pAdapter
         }
 
@@ -383,14 +406,16 @@ class MainActivity : AppCompatActivity() {
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
 
-        //TODO:call api sloat
 
-        viewmodel.slot(SlotParameters(pid))
+        viewmodel.slot((pid))
         viewmodel.slotData.observe(this){
-            Log.d("slot",it.toString())
-
+            Log.d("slot",it.toString()+pid)
+            slots=it.slot
+            slotid=it.slot_id
             binding.slotNo!!.text = it.slot
         }
+
+        showMe.dismiss()
     }
 
     private fun requestPermission() {

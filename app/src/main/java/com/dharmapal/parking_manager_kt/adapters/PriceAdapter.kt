@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dharmapal.parking_manager_kt.R
 import com.dharmapal.parking_manager_kt.models.PriceModel
 
-class PriceAdapter(private val context: Context, private val list: List<PriceModel>) :
+class PriceAdapter(private val context: Context, private val list: List<PriceModel>,val onclick:(PriceModel)->Unit) :
     RecyclerView.Adapter<PriceAdapter.ViewHolder>() {
     var lastPosition = 0
     var row_index = -1
@@ -52,6 +52,7 @@ class PriceAdapter(private val context: Context, private val list: List<PriceMod
         } else {
             holder.check.visibility = View.GONE
         }
+        holder.itemView.setOnClickListener { onclick(model) }
     }
 
     override fun getItemCount(): Int {

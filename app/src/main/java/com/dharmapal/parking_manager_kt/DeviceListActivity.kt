@@ -59,8 +59,6 @@ class DeviceListActivity : AppCompatActivity() {
             it.setVisibility(View.GONE)
         }
 
-        // Initialize array adapters. One for already paired devices and
-        // one for newly discovered devices
 
         // Initialize array adapters. One for already paired devices and
         // one for newly discovered devices
@@ -68,39 +66,29 @@ class DeviceListActivity : AppCompatActivity() {
         mNewDevicesArrayAdapter = ArrayAdapter(this, R.layout.device_name)
 
         // Find and set up the ListView for paired devices
-
-        // Find and set up the ListView for paired devices
         val pairedListView = findViewById(R.id.paired_devices) as ListView
         pairedListView.adapter = mPairedDevicesArrayAdapter
         pairedListView.onItemClickListener = mDeviceClickListener
 
-        // Find and set up the ListView for newly discovered devices
 
         // Find and set up the ListView for newly discovered devices
         val newDevicesListView = findViewById(R.id.new_devices) as ListView
         newDevicesListView.adapter = mNewDevicesArrayAdapter
         newDevicesListView.onItemClickListener = mDeviceClickListener
 
-        // Register for broadcasts when a device is discovered
 
         // Register for broadcasts when a device is discovered
         var filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
         this.registerReceiver(mReceiver, filter)
 
-        // Register for broadcasts when discovery has finished
 
         // Register for broadcasts when discovery has finished
         filter = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
         this.registerReceiver(mReceiver, filter)
 
-
-        // Get a set of currently paired devices
-
         // Get a set of currently paired devices
 
         val pairedDevices: Set<BluetoothDevice> = bluetoothAdapter!!.bondedDevices
-
-        // If there are paired devices, add each one to the ArrayAdapter
 
         // If there are paired devices, add each one to the ArrayAdapter
         if (pairedDevices.size > 0) {

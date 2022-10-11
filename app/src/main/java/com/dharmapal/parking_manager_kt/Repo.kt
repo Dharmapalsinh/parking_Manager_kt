@@ -12,9 +12,11 @@ class Repo constructor(private val retrofitService: RetrofitClientCopy)  {
 
     fun forgot_Password(forgotpasswordReq: ForgotPassword_Req)=retrofitService.instance.forgotPassword(forgotpasswordReq)
 
-    fun save(saveParameters: SaveParameters)=retrofitService.instance.save(saveParameters)
+    fun save(saveParameters: SaveParameters)=retrofitService.instance.save(saveParameters.vehicle_no,
+                    saveParameters.vehicle_type,saveParameters.slot_number,saveParameters.slot_id,
+                    saveParameters.type,saveParameters.smart_code)
 
-    fun slot(slotParameters: SlotParameters)=retrofitService.instance.slot(slotParameters)
+    fun slot(slotParameters: String)=retrofitService.instance.slot(slotParameters)
 
     fun price()=retrofitService.instance.price()
 }
