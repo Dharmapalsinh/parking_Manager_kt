@@ -9,12 +9,10 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.*
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
-import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.databinding.ActivityQrCodeBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
@@ -49,7 +47,7 @@ class QrCodeActivity : AppCompatActivity() {
 //            fun onDecoded(@NonNull result: Result) {
 //                runOnUiThread {
 //                    passno = result.getText()
-//                    Scan(result.getText())
+//                    Sc an(result.getText())
 //                }
 //            }
 //        })
@@ -60,17 +58,20 @@ class QrCodeActivity : AppCompatActivity() {
         missing = findViewById(R.id.missingpass1)
         pass = findViewById(R.id.passnoo)
         checkout = findViewById(R.id.checkout)
-//        checkout.setOnClickListener(View.OnClickListener {
-//            if (flag == "2") {
-//                Checkout(pass.getText().toString())
-//            } else {
-//                Checkout(passno!!)
-//            }
-//        })
-//
+
+
+       binding.checkout.setOnClickListener(View.OnClickListener {
+
+            if (flag == "2") {
+                Checkout(binding.passnoo.text.toString())
+            } else {
+                Checkout(passno!!)
+            }
+        })
+
         binding.missingpass1.setOnClickListener(View.OnClickListener {
-           /* val i = Intent(this@QrCodeActivity, CheckOutActivity::class.java)
-            startActivity(i)*/
+            val i = Intent(this, CheckOutActivity::class.java)
+            startActivity(i)
 
 
         })
@@ -83,6 +84,17 @@ class QrCodeActivity : AppCompatActivity() {
         showMe.setCancelable(true)
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
+
+        Log.d("tagged",result)
+        viewmodel.scan(result)
+        showMe.dismiss()
+        viewmodel.scanData.observe(this){
+            Log.d("scan",it.msg.toString())
+        }
+        viewmodel.errorMessage.observe(this){
+            Log.d("scan",it.toString())
+        }
+
 //        val url: String = Config.scan
 //        mRequestQueue = Volley.newRequestQueue(this@QRCodeActivity)
 //        stringRequest = object : StringRequest(Request.Method.POST, url,
@@ -155,6 +167,17 @@ class QrCodeActivity : AppCompatActivity() {
         showMe.setCancelable(true)
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
+
+        Log.d("tagged",result)
+        viewmodel.checkout(result)
+        showMe.dismiss()
+        viewmodel.checkoutData.observe(this){
+            Log.d("scan",it.msg.toString())
+        }
+        viewmodel.errorMessage.observe(this){
+            Log.d("scan",it.toString())
+        }
+
 //        val url: String = Config.checkouts
 //        mRequestQueue = Volley.newRequestQueue(this@QRCodeActivity)
 //        stringRequest = object : StringRequest(Request.Method.POST, url,

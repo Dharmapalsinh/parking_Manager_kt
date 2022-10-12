@@ -40,6 +40,16 @@ interface api {
 
     @POST("missing")
     fun missing(
-        @Query("vehicle_no") vehicle_no:String
+        @Query("vehicle_no") vehicle_no : String
     ) : Call<MissingResponse>
+
+    @POST("scan")
+    fun scan(
+        @Query("pass_no") pass_no : String
+    ) : Call<ScanResponse>
+
+    @POST("chekout")
+    fun checkout(
+        @Query("pass_no") pass_no : String
+    ) : Call<CheckoutResponse>
 }

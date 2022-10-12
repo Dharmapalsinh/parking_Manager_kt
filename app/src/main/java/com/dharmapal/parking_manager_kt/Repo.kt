@@ -21,4 +21,8 @@ class Repo constructor(private val retrofitService: RetrofitClientCopy)  {
     fun price()=retrofitService.instance.price()
 
     fun missing(vehicle_no: String)=retrofitService.instance.missing(vehicle_no)
+
+    fun scan(pass_no: String)=retrofitService.instance.scan(pass_no)
+
+    fun checkout(pass_no: String)=retrofitService.instance.checkout(pass_no)
 }

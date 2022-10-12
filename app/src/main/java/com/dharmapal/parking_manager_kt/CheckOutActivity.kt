@@ -67,8 +67,7 @@ class CheckOutActivity : AppCompatActivity() {
             sfhTrackHolder.addCallback(object : SurfaceHolder.Callback {
                 override fun surfaceCreated(holder: SurfaceHolder) {
                     try {
-                        if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.CAMERA) !== PackageManager.PERMISSION_GRANTED
-                        ) {
+                        if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.CAMERA) !== PackageManager.PERMISSION_GRANTED) {
                             ActivityCompat.requestPermissions(
                                 this@CheckOutActivity,
                                 arrayOf(Manifest.permission.CAMERA),
@@ -76,7 +75,7 @@ class CheckOutActivity : AppCompatActivity() {
                             )
                             return
                         }
-                        cameraSource!!.start(surfaceView!!.holder)
+                        cameraSource!!.start(binding.surfaceView!!.holder)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }

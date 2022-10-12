@@ -24,6 +24,8 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
     val slotData=MutableLiveData<SlotResponse>()
     val priceData=MutableLiveData<Price_Response>()
     val missingData=MutableLiveData<MissingResponse>()
+    val scanData=MutableLiveData<ScanResponse>()
+    val checkoutData=MutableLiveData<CheckoutResponse>()
 
     fun logIn(number:String,pass:String){
         val response=repository.logIn(number,pass)
@@ -125,6 +127,32 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
                 missingData.postValue(response.body())
             }
             override fun onFailure(call: Call<MissingResponse>, t: Throwable) {
+                errorMessage.postValue(t.message)
+            }
+        })
+    }
+
+    fun scan(pass_no: String){
+        val response=repository.scan(pass_no)
+        response.enqueue(object :Callback<ScanResponse>{
+            override fun onResponse(call: Call<ScanResponse>, response: Response<ScanResponse>) {
+                Log.d("tagged",response.body().toString())
+                scanData.postValue(response.body())
+            }
+            override fun onFailure(call: Call<ScanResponse>, t: Throwable) {
+                errorMessage.postValue(t.message)
+            }
+        })
+    }
+
+    fun checkout(pass_no: String){
+        val response=repository.checkout(pass_no)
+        response.enqueue(object :Callback<CheckoutResponse>{
+            override fun onResponse(call: Call<CheckoutResponse>, response: Response<CheckoutResponse>) {
+                Log.d("tagged",response.body().toString())
+                checkoutData.postValue(response.body())
+            }
+            override fun onFailure(call: Call<CheckoutResponse>, t: Throwable) {
                 errorMessage.postValue(t.message)
             }
         })
