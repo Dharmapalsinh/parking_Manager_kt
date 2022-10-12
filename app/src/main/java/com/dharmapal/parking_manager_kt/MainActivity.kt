@@ -124,6 +124,7 @@ class MainActivity : AppCompatActivity() {
 
 //        binding.recyclerView.addOnItemTouchListener
 
+
         binding.prepaidcard.setOnClickListener {
             cardtype = "2"
 
@@ -328,7 +329,7 @@ class MainActivity : AppCompatActivity() {
         bottomSheetDialog =
             BottomSheetDialog(this@MainActivity, R.style.CustomBottomSheetDialogTheme)
         bottomSheetDialog!!.setContentView(R.layout.bottomsheet)
-        bottomSheetDialog!!.getWindow()!!.setBackgroundDrawable(ColorDrawable())
+        bottomSheetDialog!!.window!!.setBackgroundDrawable(ColorDrawable())
         bottomSheetDialog!!.setCanceledOnTouchOutside(false)
         bottomSheetDialog!!.setCancelable(true)
         bottomSheetDialog!!.show()

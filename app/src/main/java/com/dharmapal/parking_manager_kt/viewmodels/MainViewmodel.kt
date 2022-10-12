@@ -23,6 +23,7 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
     val saveData=MutableLiveData<SaveResponse>()
     val slotData=MutableLiveData<SlotResponse>()
     val priceData=MutableLiveData<Price_Response>()
+    val missingData=MutableLiveData<MissingResponse>()
 
     fun logIn(number:String,pass:String){
         val response=repository.logIn(number,pass)
@@ -104,15 +105,28 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
         val response=repository.slot(slotParameters)
         response.enqueue(object :Callback<SlotResponse>{
             override fun onResponse(call: Call<SlotResponse>, response: Response<SlotResponse>) {
-                Log.d("save",response.body().toString())
+                Log.d("slot",response.body().toString())
                 slotData.postValue(response.body())
             }
 
             override fun onFailure(call: Call<SlotResponse>, t: Throwable) {
-                Log.d("save",t.message.toString())
+                Log.d("slot",t.message.toString())
                 errorMessage.postValue(t.message)
             }
 
+        })
+    }
+
+    fun missing(vehicle_no: String){
+        val response=repository.missing(vehicle_no)
+        response.enqueue(object :Callback<MissingResponse>{
+            override fun onResponse(call: Call<MissingResponse>, response: Response<MissingResponse>) {
+                Log.d("tagged",response.body().toString())
+                missingData.postValue(response.body())
+            }
+            override fun onFailure(call: Call<MissingResponse>, t: Throwable) {
+                errorMessage.postValue(t.message)
+            }
         })
     }
 }

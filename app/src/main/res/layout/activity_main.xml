@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <SurfaceView
         android:id="@+id/surface_view"
         android:layout_width="match_parent"
@@ -198,14 +199,14 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_below="@+id/vehicle"
-                android:orientation="horizontal"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
                 android:clipToPadding="false"
-                android:paddingRight="30dp">
+                android:orientation="horizontal"
+                android:paddingRight="30dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
             </androidx.recyclerview.widget.RecyclerView>
 

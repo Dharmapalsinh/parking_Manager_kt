@@ -5,18 +5,24 @@ import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.*
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.ViewModelProvider
+import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.databinding.ActivityQrCodeBinding
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
 
 class QrCodeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityQrCodeBinding
+    private lateinit var viewmodel: MainViewmodel
 //    private var mCodeScanner: CodeScanner? = null
 //    private var scannerView: CodeScannerView? = null
     private var vnumber: TextView? = null
@@ -33,6 +39,10 @@ class QrCodeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityQrCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
+        viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
+
 //        scannerView = findViewById(R.id.scanner_view)
 //        mCodeScanner = CodeScanner(this, scannerView)
 //        mCodeScanner.setDecodeCallback(object : DecodeCallback() {
@@ -58,10 +68,12 @@ class QrCodeActivity : AppCompatActivity() {
 //            }
 //        })
 //
-//        missing.setOnClickListener(View.OnClickListener {
-//            val i = Intent(this@QrCodeActivity, CheckOut::class.java)
-//            startActivity(i)
-//        })
+        binding.missingpass1.setOnClickListener(View.OnClickListener {
+           /* val i = Intent(this@QrCodeActivity, CheckOutActivity::class.java)
+            startActivity(i)*/
+
+
+        })
     }
 
 

@@ -37,4 +37,9 @@ interface api {
 
     @POST("parking_cost")
     fun price():Call<Price_Response>
+
+    @POST("missing")
+    fun missing(
+        @Query("vehicle_no") vehicle_no:String
+    ) : Call<MissingResponse>
 }

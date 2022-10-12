@@ -1,7 +1,9 @@
 package com.dharmapal.parking_manager_kt
 
 import android.Manifest
+import android.app.AlertDialog
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -14,8 +16,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModelProvider
+import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityCheckOutBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.Detector.Detections
@@ -42,6 +47,9 @@ class CheckOutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityCheckOutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
+        viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
 
         val textRecognizer = TextRecognizer.Builder(applicationContext).build()
 
@@ -113,7 +121,21 @@ class CheckOutActivity : AppCompatActivity() {
     }
 
     private fun Checkout(codes: String) {
+        val showMe = ProgressDialog(this, AlertDialog.THEME_HOLO_LIGHT)
+        showMe.setMessage("Please wait")
+        showMe.setCancelable(true)
+        showMe.setCanceledOnTouchOutside(false)
+        showMe.show()
 
+        Log.d("tagged",codes)
+        viewmodel.missing(codes)
+        showMe.dismiss()
+        viewmodel.missingData.observe(this){
+            Log.d("missing",it.msg.toString())
+        }
+        viewmodel.errorMessage.observe(this){
+            Log.d("missing",it.toString())
+        }
 
     }
 
