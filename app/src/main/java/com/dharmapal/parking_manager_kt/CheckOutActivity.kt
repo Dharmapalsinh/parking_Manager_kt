@@ -14,6 +14,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -35,11 +36,6 @@ class CheckOutActivity : AppCompatActivity() {
     private var cameraSource: CameraSource? = null
     val RequestCameraPermissionID = 1001
     private val surfaceView: SurfaceView? = null
- //   private val sessionManager: SessionManager? = null
-   /* var stringRequest: StringRequest? = null
-    var stringRequest1:StringRequest? = null
-    var mRequestQueue: RequestQueue? = null
-    var mRequestQueue1:RequestQueue? = null*/
     val TAG = "STag"
     var codes: String? = null
 
@@ -67,7 +63,8 @@ class CheckOutActivity : AppCompatActivity() {
             sfhTrackHolder.addCallback(object : SurfaceHolder.Callback {
                 override fun surfaceCreated(holder: SurfaceHolder) {
                     try {
-                        if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.CAMERA) !== PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.CAMERA) !== PackageManager.PERMISSION_GRANTED
+                        ) {
                             ActivityCompat.requestPermissions(
                                 this@CheckOutActivity,
                                 arrayOf(Manifest.permission.CAMERA),
@@ -75,7 +72,7 @@ class CheckOutActivity : AppCompatActivity() {
                             )
                             return
                         }
-                        cameraSource!!.start(binding.surfaceView!!.holder)
+                        cameraSource!!.start(surfaceView!!.holder)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -127,15 +124,26 @@ class CheckOutActivity : AppCompatActivity() {
         showMe.show()
 
         Log.d("tagged",codes)
-        viewmodel.missing(codes)
-        showMe.dismiss()
-        viewmodel.missingData.observe(this){
-            Log.d("missing",it.msg.toString())
+        val numPlate:Regex =
+            "^[A-Z]{1,2}\\s?[0-9]{1,2}\\s?[A-Z]{1,2}\\s?[0-9]{4}\$".toRegex()
+
+
+        if (codes.contains(numPlate)){
+
+            viewmodel.missing(codes)
+            showMe.dismiss()
+            viewmodel.missingData.observe(this){
+                Log.d("missing",it.msg.toString()+codes)
+            }
+            viewmodel.errorMessage.observe(this){
+                Log.d("missing",it.toString())
+            }
         }
-        viewmodel.errorMessage.observe(this){
-            Log.d("missing",it.toString())
+        else{
+                            Toast.makeText(applicationContext,"try again",Toast.LENGTH_SHORT).show()
         }
 
+        showMe.dismiss()
     }
 
     private fun NetworkDialogs(id: String) {

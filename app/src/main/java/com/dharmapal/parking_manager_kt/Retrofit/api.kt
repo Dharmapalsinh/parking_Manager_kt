@@ -48,7 +48,7 @@ interface api {
         @Query("pass_no") pass_no : String
     ) : Call<ScanResponse>
 
-    @POST("chekout")
+    @GET("chekout")
     fun checkout(
         @Query("pass_no") pass_no : String
     ) : Call<CheckoutResponse>

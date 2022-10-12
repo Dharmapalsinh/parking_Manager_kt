@@ -1,28 +1,41 @@
 package com.dharmapal.parking_manager_kt
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.util.SparseArray
+import android.view.SurfaceHolder
 import android.view.View
 import android.view.Window
 import android.widget.*
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.util.isNotEmpty
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
+import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.databinding.ActivityQrCodeBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
+import com.google.android.gms.vision.CameraSource
+import com.google.android.gms.vision.Detector
+import com.google.android.gms.vision.barcode.Barcode
+import com.google.android.gms.vision.barcode.BarcodeDetector
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class QrCodeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityQrCodeBinding
     private lateinit var viewmodel: MainViewmodel
-//    private var mCodeScanner: CodeScanner? = null
-//    private var scannerView: CodeScannerView? = null
     private var vnumber: TextView? = null
     private  var missing:TextView? = null
     private var pass: EditText? = null
@@ -32,6 +45,9 @@ class QrCodeActivity : AppCompatActivity() {
     var passno: String? = null
     var flag: String? = "2"
     var lay: RelativeLayout? = null
+    private lateinit var detector: BarcodeDetector
+    private lateinit var cameraSource: CameraSource
+//    private lateinit var code:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +57,12 @@ class QrCodeActivity : AppCompatActivity() {
         val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
         viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
 
-//        scannerView = findViewById(R.id.scanner_view)
-//        mCodeScanner = CodeScanner(this, scannerView)
-//        mCodeScanner.setDecodeCallback(object : DecodeCallback() {
-//            fun onDecoded(@NonNull result: Result) {
-//                runOnUiThread {
-//                    passno = result.getText()
-//                    Sc an(result.getText())
-//                }
-//            }
-//        })
+        detector=BarcodeDetector.Builder(this).build()
+        cameraSource=CameraSource.Builder(this,detector)
+            .setAutoFocusEnabled(true)
+            .build()
+        binding.surfaceView.holder.addCallback(surfacecallback)
+        detector.setProcessor(processor)
 
         lay = findViewById(R.id.relVhcle)
 
@@ -62,11 +74,8 @@ class QrCodeActivity : AppCompatActivity() {
 
        binding.checkout.setOnClickListener(View.OnClickListener {
 
-            if (flag == "2") {
                 Checkout(binding.passnoo.text.toString())
-            } else {
-                Checkout(passno!!)
-            }
+
         })
 
         binding.missingpass1.setOnClickListener(View.OnClickListener {
@@ -78,87 +87,65 @@ class QrCodeActivity : AppCompatActivity() {
     }
 
 
+    private val surfacecallback= object :SurfaceHolder.Callback{
+        @SuppressLint("MissingPermission")
+        override fun surfaceCreated(p0: SurfaceHolder) {
+            try {
+                cameraSource.start(p0)
+            }
+            catch (e:Exception){
+
+            }
+        }
+
+        override fun surfaceChanged(p0: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
+
+        }
+
+        override fun surfaceDestroyed(p0: SurfaceHolder) {
+            cameraSource.stop()
+        }
+    }
+
+    private val processor=object :Detector.Processor<Barcode>{
+        override fun release() {
+
+        }
+
+        override fun receiveDetections(p0: Detector.Detections<Barcode>?) {
+            if (p0!=null && p0.detectedItems.isNotEmpty()){
+                val qrcodes:SparseArray<Barcode> =p0.detectedItems
+                val codes=qrcodes.valueAt(0)
+                Log.d("qrcode",codes.displayValue.toString())
+                lifecycleScope.launch {
+                    withContext(Dispatchers.Main){
+                        Scan(codes.displayValue)
+                        binding.passnoo.isVisible=true
+                        binding.relVhcle.isVisible=false
+                    }
+                }
+            }
+            else{
+
+            }
+        }
+    }
     fun Scan(result: String) {
-        val showMe = ProgressDialog(this@QrCodeActivity, AlertDialog.THEME_HOLO_LIGHT)
-        showMe.setMessage("Please wait")
-        showMe.setCancelable(true)
-        showMe.setCanceledOnTouchOutside(false)
-        showMe.show()
+//        val showMe = ProgressDialog(this@QrCodeActivity, AlertDialog.THEME_HOLO_LIGHT)
+//        showMe.setMessage("Please wait")
+//        showMe.setCancelable(true)
+//        showMe.setCanceledOnTouchOutside(false)
+//        showMe.show()
 
         Log.d("tagged",result)
         viewmodel.scan(result)
-        showMe.dismiss()
+//        showMe.dismiss()
         viewmodel.scanData.observe(this){
             Log.d("scan",it.msg.toString())
         }
         viewmodel.errorMessage.observe(this){
             Log.d("scan",it.toString())
         }
-
-//        val url: String = Config.scan
-//        mRequestQueue = Volley.newRequestQueue(this@QRCodeActivity)
-//        stringRequest = object : StringRequest(Request.Method.POST, url,
-//            object : Listener<String?>() {
-//                fun onResponse(response: String?) {
-//                    showMe.dismiss()
-//                    var j: JSONObject? = null
-//                    try {
-//                        j = JSONObject(response)
-//                        val status = j.getString("status")
-//                        if (status == "200") {
-//                            vno = j.getString("vehicle_no")
-//                            vnumber.setText(vno)
-//                        } else {
-//                            showMe.dismiss()
-//                            val toast = Toast.makeText(
-//                                this@QRCodeActivity,
-//                                "" + j.getString("msg"),
-//                                Toast.LENGTH_SHORT
-//                            )
-//                            toast.setGravity(Gravity.CENTER, 0, 0)
-//                            toast.show()
-//
-//                            /* finish();
-//                                overridePendingTransition( 0, 0);
-//                                startActivity(getIntent());
-//                                overridePendingTransition( 0, 0);*/pass.setVisibility(View.VISIBLE)
-//                            lay.setVisibility(View.GONE)
-//                        }
-//                    } catch (e: JSONException) {
-//                        Log.e("TAG", "Something Went Wrong")
-//                    }
-//                }
-//            },
-//            object : ErrorListener() {
-//                fun onErrorResponse(error: VolleyError?) {
-//                    showMe.dismiss()
-//                    NetworkDialogs(result)
-//                }
-//            }) {
-//            @get:Throws(AuthFailureError::class)
-//            val headers: Map<String, String>?
-//                get() {
-//                    val headers: MutableMap<String, String> = HashMap()
-//                    headers["apikey"] = "d29985af97d29a80e40cd81016d939af"
-//                    return headers
-//                }
-//
-//            @get:Throws(AuthFailureError::class)
-//            val params: Map<String, String>?
-//                get() {
-//                    val headers: MutableMap<String, String> = HashMap()
-//                    headers["pass_no"] = result
-//                    return headers
-//                }
-//        }
-//        stringRequest.setTag(com.wk.tech.carparking.Activities.QRCodeActivity.TAG)
-//        mRequestQueue.add(stringRequest)
-//        stringRequest.setRetryPolicy(
-//            DefaultRetryPolicy(
-//                60000,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-//            )
-//        )
     }
 
     fun Checkout(result: String) {
@@ -172,80 +159,13 @@ class QrCodeActivity : AppCompatActivity() {
         viewmodel.checkout(result)
         showMe.dismiss()
         viewmodel.checkoutData.observe(this){
-            Log.d("scan",it.msg.toString())
+            Log.d("checkout",it.msg.toString())
+            Toast.makeText(applicationContext,it.msg,Toast.LENGTH_SHORT).show()
         }
         viewmodel.errorMessage.observe(this){
-            Log.d("scan",it.toString())
+            Log.d("checkout",it.toString())
         }
-
-//        val url: String = Config.checkouts
-//        mRequestQueue = Volley.newRequestQueue(this@QRCodeActivity)
-//        stringRequest = object : StringRequest(Request.Method.POST, url,
-//            object : Listener<String?>() {
-//                fun onResponse(response: String?) {
-//                    showMe.dismiss()
-//                    var j: JSONObject? = null
-//                    try {
-//                        j = JSONObject(response)
-//                        val status = j.getString("status")
-//                        if (status == "200") {
-//                            val toast = Toast.makeText(
-//                                this@QRCodeActivity,
-//                                "" + j.getString("msg"),
-//                                Toast.LENGTH_SHORT
-//                            )
-//                            toast.setGravity(Gravity.CENTER, 0, 0)
-//                            toast.show()
-//                            finish()
-//                            overridePendingTransition(0, 0)
-//                            startActivity(intent)
-//                            overridePendingTransition(0, 0)
-//                        } else {
-//                            showMe.dismiss()
-//                            val toast = Toast.makeText(
-//                                this@QRCodeActivity,
-//                                "" + j.getString("msg"),
-//                                Toast.LENGTH_SHORT
-//                            )
-//                            toast.setGravity(Gravity.CENTER, 0, 0)
-//                            toast.show()
-//                        }
-//                    } catch (e: JSONException) {
-//                        Log.e("TAG", "Something Went Wrong")
-//                    }
-//                }
-//            },
-//            object : ErrorListener() {
-//                fun onErrorResponse(error: VolleyError?) {
-//                    showMe.dismiss()
-//                    NetworkDialogs(result)
-//                }
-//            }) {
-//            @get:Throws(AuthFailureError::class)
-//            val headers: Map<String, String>?
-//                get() {
-//                    val headers: MutableMap<String, String> = HashMap()
-//                    headers["apikey"] = "d29985af97d29a80e40cd81016d939af"
-//                    return headers
-//                }
-//
-//            @get:Throws(AuthFailureError::class)
-//            val params: Map<String, String>?
-//                get() {
-//                    val headers: MutableMap<String, String> = HashMap()
-//                    headers["pass_no"] = result
-//                    return headers
-//                }
-//        }
-//        stringRequest.setTag(com.wk.tech.carparking.Activities.QRCodeActivity.TAG)
-//        mRequestQueue.add(stringRequest)
-//        stringRequest.setRetryPolicy(
-//            DefaultRetryPolicy(
-//                60000,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-//            )
-//        )
-    }
+ }
 
     private fun NetworkDialogs(id: String) {
         val dialogs = Dialog(this@QrCodeActivity)

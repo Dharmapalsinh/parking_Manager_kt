@@ -43,47 +43,25 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewmodel: MainViewmodel
-    private val surfaceView: SurfaceView? = null
-    var sfhTrackHolder: SurfaceHolder? = null
-    private val textView: TextView? = null
-    private  var slot:TextView? = null
-    private  var passno:TextView? = null
-    private  var print:TextView? = null
     var smartcode: EditText? = null
-    var vnumber:EditText? = null
-    private val prepaid: RelativeLayout? = null
-    private  var vip:RelativeLayout? = null
     private lateinit var cameraSource: CameraSource
     val RequestCameraPermissionID = 1001
-    private val capture: ImageView? = null
-    var codes: String? = null
     var temp: String? = null
     private var bottomSheetDialog: BottomSheetDialog? = null
-    var recyclerView: RecyclerView? = null
     var pAdapter: PriceAdapter? = null
     private var objMediaPlayer: MediaPlayer? = null
     var lottieAnimationView: LottieAnimationView? = null
-//    private val sessionManager: SessionManager? = null
-//    var stringRequest: StringRequest? = null
-//    var stringRequest1:StringRequest? = null
-//    var mRequestQueue: RequestQueue? = null
-//    var mRequestQueue1:RequestQueue? = null
     private val price: ArrayList<PriceModel> = ArrayList()
-    val TAG = "STag"
     var pid = ""
     var slots: String? = null
     var slotid: String? = null
     var pno: String? = null
     var cardtype: String? = "3"
     var code: String? = null
-    var showingFirst = true
     private val PERMISSION_REQUEST_CODE = 200
     private val REQUEST_CONNECT_DEVICE = 1
 //    var mService: BluetoothService? = null
-    var con_dev: BluetoothDevice? = null
     var mBluetoothAdapter: BluetoothAdapter? = null
-    var vtypes: String? = null
-    var types: String? = null
 
 
     @SuppressLint("MissingPermission")
