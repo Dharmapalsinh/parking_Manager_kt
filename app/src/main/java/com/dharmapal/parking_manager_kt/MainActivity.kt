@@ -291,6 +291,7 @@ class MainActivity : AppCompatActivity() {
         viewmodel.save(SaveParameters(binding.vnumber.text.toString(),pid,slots!!,slotid!!,cardtype!!,"0"))
         viewmodel.saveData.observe(this){
             Log.d("save",it.toString())
+            Toast.makeText(applicationContext,"${it.msg}",Toast.LENGTH_SHORT).show()
         }
 
         showMe.dismiss()
@@ -408,6 +409,12 @@ class MainActivity : AppCompatActivity() {
             ),
             PERMISSION_REQUEST_CODE
         )
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(applicationContext,HomeActivity::class.java))
+//        finish()
     }
 
 }

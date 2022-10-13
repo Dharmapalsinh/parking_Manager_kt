@@ -3,7 +3,9 @@ package com.dharmapal.parking_manager_kt
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,11 +19,26 @@ import com.dharmapal.parking_manager_kt.databinding.ActivityLogInBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
 
-//todo:progressbar, session Manager
+
+//todo:progressbar
 class LogInActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLogInBinding
     private lateinit var viewmodel: MainViewmodel
 //    private val retrofitService = RetrofitClientCopy().spotizInstance
+
+    // creating constant keys for shared preferences.
+    val SHARED_PREFS = "shared_prefs"
+
+    // key for storing email.
+    val EMAIL_KEY = "email_key"
+
+    // key for storing password.
+    val PASSWORD_KEY = "password_key"
+
+    // variable for shared preferences.
+    private lateinit var sharedpreferences: SharedPreferences
+    private  var email: String? =null
+    private  var password: String? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +47,17 @@ class LogInActivity : AppCompatActivity() {
 
         val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
         viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
+
+
+        // getting the data which is stored in shared preferences.
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+
+        // in shared prefs inside het string method
+        // we are passing key value as EMAIL_KEY and
+        // default value is
+        // set to null if not present.
+        email = sharedpreferences.getString("EMAIL_KEY", null).toString();
+        password = sharedpreferences.getString("PASSWORD_KEY", null).toString();
 
         val number=binding.number
         val password=binding.pass
@@ -93,12 +121,30 @@ class LogInActivity : AppCompatActivity() {
 //            } else {
                 Login(number.text.toString(), password.text.toString())
 
+                val editor = sharedpreferences.edit()
+
+                editor.putString(EMAIL_KEY, number.text.toString())
+                editor.putString(PASSWORD_KEY, password.text.toString())
+            editor.putString("count","1")
+                editor.apply()
+
                 val i = Intent(this, HomeActivity::class.java)
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY)
+//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY)
 
                 startActivity(i)
 //            }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("onstartemail",email+password+sharedpreferences.getString("count",null))
+        if (sharedpreferences.getString("count",null).toString() == "1") {
+            val i = Intent(this@LogInActivity, HomeActivity::class.java)
+            startActivity(i)
+            finish()
+        }
+
     }
 
     fun Login(number:String, password:String){
