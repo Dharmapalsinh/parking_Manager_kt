@@ -1,6 +1,6 @@
 package com.dharmapal.parking_manager_kt
 
-import CheckNetworkConnection
+import com.dharmapal.parking_manager_kt.Utills.CheckNetworkConnection
 import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
@@ -8,7 +8,6 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -22,26 +21,20 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 import kotlin.math.roundToInt
 
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var viewmodel: MainViewmodel
+    private lateinit var viewModel: MainViewModel
     //private val retrofitService = RetrofitService.getInstance()
     // creating constant keys for shared preferences.
-    val SHARED_PREFS: String? = "shared_prefs"
-
-    // key for storing email.
-    val EMAIL_KEY = "email_key"
-
-    // key for storing password.
-    val PASSWORD_KEY = "password_key"
+    private val sharedPref: String = "shared_prefs"
 
     // variable for shared preferences.
-    private lateinit var sharedpreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -52,32 +45,31 @@ class HomeActivity : AppCompatActivity() {
         binding= ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
-        viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
+        val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
+        viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
         // initializing our shared preferences.
-        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        callNetworkConnection(application!!,this,this,viewmodel)
+        sharedPreferences = getSharedPreferences(sharedPref, Context.MODE_PRIVATE)
+        callNetworkConnection(application!!,this,this,viewModel)
 
-        binding.print.setOnClickListener(View.OnClickListener {
+        binding.print.setOnClickListener{
             val i = Intent(this, MainActivity::class.java)
             startActivity(i)
-        })
+        }
 
-        binding.checkout.setOnClickListener(View.OnClickListener {
+        binding.checkout.setOnClickListener {
             val i = Intent(this, QrCodeActivity::class.java)
             startActivity(i)
+        }
 
-        })
-
-        binding.logout.setOnClickListener(View.OnClickListener {
+        binding.logout.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setMessage("Are you sure you want to Logout")
             builder.setPositiveButton(
                 "Yes"
-            ) { dialog, id ->
+            ) { dialog, _ ->
                 //sessionManager.logoutUser()
-                val editor = sharedpreferences.edit()
+                val editor = sharedPreferences.edit()
                 editor.clear()
                 editor.putString("count","0")
                 editor.apply()
@@ -88,32 +80,32 @@ class HomeActivity : AppCompatActivity() {
             }
             builder.setNegativeButton(
                 "No"
-            ) { dialog, id -> dialog.dismiss() }
+            ) { dialog, _ -> dialog.dismiss() }
             val alertDialog = builder.create()
             alertDialog.show()
-        })
+        }
 
-           Submit()
+        submit()
 
     }
 
-    fun Submit(){
+    private fun submit(){
         val showMe = ProgressDialog(this, AlertDialog.THEME_HOLO_LIGHT)
         showMe.setMessage("Please wait")
         showMe.setCancelable(true)
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
 
-        viewmodel.submit()
+        viewModel.submit()
         showMe.dismiss()
-        viewmodel.dashboardData.observe(this){
+        viewModel.dashboardData.observe(this){
             if(it==null ){
-                NetworkDialog(this,viewmodel)
+                networkDialog(this,viewModel)
             }
             else {
                 Log.d("dashboard", it.toString())
 
-                val ints = ("" + it.occPer).toFloat().roundToInt().toInt()
+                val ints = ("" + it.occPer).toFloat().roundToInt()
 
                 binding.availabel.text = it.available.toString()
                 binding.prepaidusers.text = it.prepaidUser.toString()
@@ -125,8 +117,8 @@ class HomeActivity : AppCompatActivity() {
                 binding.progress.text = it.occPer.toString() + "%"
             }
         }
-        viewmodel.errorMessage.observe(this){
-            Log.d("taggederr",it.toString())
+        viewModel.errorMessage.observe(this){
+            Log.d("error",it.toString())
 
         }
 
@@ -177,7 +169,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-         fun NetworkDialog(context: Context,viewmodel: MainViewmodel) {
+         fun networkDialog(context: Context,viewModel: MainViewModel) {
             val dialogs = Dialog(context)
             dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialogs.setContentView(R.layout.networkdialog)
@@ -187,19 +179,19 @@ class HomeActivity : AppCompatActivity() {
                 //Submit()
                 if (checkForInternet(context)){
                     dialogs.dismiss()
-                    viewmodel.submit()
+                    viewModel.submit()
                 }
             }
             dialogs.show()
         }
 
-        fun callNetworkConnection(application:Application,lifecycleOwner: LifecycleOwner,context: Context,viewmodel: MainViewmodel) {
+        fun callNetworkConnection(application:Application,lifecycleOwner: LifecycleOwner,context: Context,viewModel: MainViewModel) {
             val checkNetworkConnection = CheckNetworkConnection(application)
             checkNetworkConnection.observe(lifecycleOwner) { isConnected ->
                 if (isConnected) {
 
                 } else {
-                    NetworkDialog(context,viewmodel)
+                    networkDialog(context,viewModel)
                 }
             }
 

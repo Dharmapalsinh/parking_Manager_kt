@@ -16,27 +16,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityLogInBinding
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 
 
 //todo:progressbar
 class LogInActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLogInBinding
-    private lateinit var viewmodel: MainViewmodel
-//    private val retrofitService = RetrofitClientCopy().spotizInstance
+    private lateinit var viewModel: MainViewModel
 
     // creating constant keys for shared preferences.
-    val SHARED_PREFS = "shared_prefs"
+    private val sharedPref = "shared_prefs"
 
     // key for storing email.
-    val EMAIL_KEY = "email_key"
+    private val emailKey = "email_key"
 
     // key for storing password.
-    val PASSWORD_KEY = "password_key"
+    private val passwordKey = "password_key"
 
     // variable for shared preferences.
-    private lateinit var sharedpreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
     private  var email: String? =null
     private  var password: String? =null
 
@@ -45,19 +44,19 @@ class LogInActivity : AppCompatActivity() {
         binding= ActivityLogInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
-        viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
+        val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
+        viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
 
         // getting the data which is stored in shared preferences.
-        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(sharedPref, Context.MODE_PRIVATE)
 
         // in shared prefs inside het string method
         // we are passing key value as EMAIL_KEY and
         // default value is
         // set to null if not present.
-        email = sharedpreferences.getString("EMAIL_KEY", null).toString();
-        password = sharedpreferences.getString("PASSWORD_KEY", null).toString();
+        email = sharedPreferences.getString("EMAIL_KEY", null).toString()
+        password = sharedPreferences.getString("PASSWORD_KEY", null).toString()
 
         val number=binding.number
         val password=binding.pass
@@ -77,7 +76,7 @@ class LogInActivity : AppCompatActivity() {
                 )
             }
             override fun afterTextChanged(s: Editable) {
-                if (s.length == 0) {
+                if (s.isEmpty()) {
                     binding.number.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_user,
                         0,
@@ -100,7 +99,7 @@ class LogInActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable) {
-                if (s.length == 0) {
+                if (s.isEmpty()) {
                     password.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_lock,
                         0,
@@ -112,34 +111,35 @@ class LogInActivity : AppCompatActivity() {
         })
 
         binding.login.setOnClickListener {
-//            if (number.text.toString() == "") {
-//                toast(this, "Please Enter Number First!!!")
-//            } else if (number.text.toString().length < 10) {
-//                toast(this, "Please Enter Correct Number!!!")
-//            } else if (password.text.toString() == "") {
-//                toast(this, "Please Enter Password First!!!")
-//            } else {
-                Login(number.text.toString(), password.text.toString())
+            if (number.text.toString() == "") {
+                toast(this, "Please Enter Number First!!!")
+            } else if (number.text.toString().length < 10) {
+                toast(this, "Please Enter Correct Number!!!")
+            } else if (password.text.toString() == "") {
+                toast(this, "Please Enter Password First!!!")
+            } else {
 
-                val editor = sharedpreferences.edit()
+            login(number.text.toString(), password.text.toString())
 
-                editor.putString(EMAIL_KEY, number.text.toString())
-                editor.putString(PASSWORD_KEY, password.text.toString())
-            editor.putString("count","1")
-                editor.apply()
+            val editor = sharedPreferences.edit()
 
-                val i = Intent(this, HomeActivity::class.java)
-//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY)
+            editor.putString(emailKey, number.text.toString())
+            editor.putString(passwordKey, password.text.toString())
+            editor.putString("count", "1")
+            editor.apply()
 
-                startActivity(i)
-//            }
+            val i = Intent(this, HomeActivity::class.java)
+            i.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
+            startActivity(i)
+            }
         }
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d("onstartemail",email+password+sharedpreferences.getString("count",null))
-        if (sharedpreferences.getString("count",null).toString() == "1") {
+        Log.d("onStartEmail",email+password+sharedPreferences.getString("count",null))
+        if (sharedPreferences.getString("count",null).toString() == "1") {
             val i = Intent(this@LogInActivity, HomeActivity::class.java)
             startActivity(i)
             finish()
@@ -147,7 +147,7 @@ class LogInActivity : AppCompatActivity() {
 
     }
 
-    fun Login(number:String, password:String){
+    private fun login(number:String, password:String){
         val showMe = ProgressDialog(this, AlertDialog.THEME_HOLO_LIGHT)
         showMe.setMessage("Please wait")
         showMe.setCancelable(true)
@@ -155,17 +155,17 @@ class LogInActivity : AppCompatActivity() {
         showMe.show()
 
         Log.d("tagged",password)
-        viewmodel.logIn(number,password)
+        viewModel.logIn(number,password)
         showMe.dismiss()
-        viewmodel.loginData.observe(this){
+        viewModel.loginData.observe(this){
             Log.d("tagged",it.id.toString())
         }
-        viewmodel.errorMessage.observe(this){
-            Log.d("taggederr",it.toString())
+        viewModel.errorMessage.observe(this){
+            Log.d("tagged",it.toString())
         }
 
     }
-    fun toast(activity: Activity?, Message: String?) {
+    private fun toast(activity: Activity?, Message: String?) {
         val toast = Toast.makeText(this, Message, Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()

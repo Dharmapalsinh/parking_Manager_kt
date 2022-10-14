@@ -4,21 +4,21 @@ import com.dharmapal.parking_manager_kt.models.*
 import retrofit2.Call
 import retrofit2.http.*
 
-interface api {
+interface API {
     @POST("login")
     fun logIn(
         @Query("mobile") mobile:String="1234567890",
         @Query("pass") pass:String="1234567890"
-    ) : Call<logInResponse>
+    ) : Call<LogInResponse>
 
     @POST("forget_password")
     fun forgotPassword(
-        @Body forgotpasswordReq: ForgotPassword_Req?
-    ) : Call<ForgotPassword_Response>
+        @Body forgotPasswordReq: ForgotPasswordReq?
+    ) : Call<ForgotPasswordResponse>
 
     @GET("dashboard")
     fun submit(
-    ) : Call<Dash_Response>
+    ) : Call<DashResponse>
 
     @GET("save")
     fun save (
@@ -36,7 +36,7 @@ interface api {
     ): Call<SlotResponse>
 
     @POST("parking_cost")
-    fun price():Call<Price_Response>
+    fun price():Call<PriceResponse>
 
     @POST("missing")
     fun missing(

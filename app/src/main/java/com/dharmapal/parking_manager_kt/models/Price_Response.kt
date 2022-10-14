@@ -3,7 +3,7 @@ package com.dharmapal.parking_manager_kt.models
 
 import com.google.gson.annotations.SerializedName
 
-data class Price_Response(
+data class PriceResponse(
     @SerializedName("msg")
     val msg: String?,
     @SerializedName("status")

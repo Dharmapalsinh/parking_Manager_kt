@@ -6,7 +6,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
@@ -23,7 +22,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.checkForInternet
@@ -32,8 +30,8 @@ import com.dharmapal.parking_manager_kt.adapters.PriceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityMainBinding
 import com.dharmapal.parking_manager_kt.models.PriceModel
 import com.dharmapal.parking_manager_kt.models.SaveParameters
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.text.TextBlock
@@ -41,29 +39,29 @@ import com.google.android.gms.vision.text.TextRecognizer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.io.IOException
 
+@Suppress("DEPRECATED_IDENTITY_EQUALS")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewmodel: MainViewmodel
-    var smartcode: EditText? = null
+    private lateinit var viewModel: MainViewModel
+    var smartCode: EditText? = null
     private lateinit var cameraSource: CameraSource
-    val RequestCameraPermissionID = 1001
+    val requestCameraPermissionID = 1001
     var temp: String? = null
     private var bottomSheetDialog: BottomSheetDialog? = null
-    var pAdapter: PriceAdapter? = null
+    private var pAdapter: PriceAdapter? = null
     private var objMediaPlayer: MediaPlayer? = null
-    var lottieAnimationView: LottieAnimationView? = null
+    private var lottieAnimationView: LottieAnimationView? = null
     private val price: ArrayList<PriceModel> = ArrayList()
-    var pid = ""
-    var slots: String? = null
-    var slotid: String? = null
-    var pno: String? = null
-    var cardtype: String? = "3"
+    private var pid = ""
+    private var slots: String? = null
+    private var slotid: String? = null
+    private var pno: String? = null
+    private var cardtype: String? = "3"
     var code: String? = null
-    private val PERMISSION_REQUEST_CODE = 200
-    private val REQUEST_CONNECT_DEVICE = 1
-//    var mService: BluetoothService? = null
-    var mBluetoothAdapter: BluetoothAdapter? = null
+    private val permissionRequestCode = 200
+    private val requestConnectDevice = 1
+    private var mBluetoothAdapter: BluetoothAdapter? = null
 
 
     @SuppressLint("MissingPermission")
@@ -72,8 +70,8 @@ class MainActivity : AppCompatActivity() {
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
-        viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
+        val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
+        viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -81,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         val serverIntent = Intent(applicationContext, DeviceListActivity::class.java)
-        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE)
+        startActivityForResult(serverIntent, requestConnectDevice)
 
         requestPermission()
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -92,19 +90,16 @@ class MainActivity : AppCompatActivity() {
             mBluetoothAdapter!!.enable()
         }
 
-        callNetworkConnection(application!!, this, this, viewmodel)
+        callNetworkConnection(application!!, this, this, viewModel)
         binding.recyclerView.layoutManager=
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        pAdapter= PriceAdapter(applicationContext,price){
+       /* pAdapter= PriceAdapter(applicationContext,price){
             val model = it
             pid = model.id.toString()
             GetSlot(pid)
-        }
+        }*/
         binding.recyclerView.adapter=pAdapter
-
-//        binding.recyclerView.addOnItemTouchListener
-
 
         binding.prepaidcard.setOnClickListener {
             cardtype = "2"
@@ -114,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             } else if (pid == "") {
                 Toast.makeText(this@MainActivity, "Please Select Vehicle Type!!!",Toast.LENGTH_SHORT).show()
             } else {
-                BottomSheet(pid, slots, slotid, pno, cardtype,binding.vnumber.text.toString())
+                bottomSheet(pid, slots, slotid, pno, cardtype,binding.vnumber.text.toString())
             }
 
             binding.prepaidcard.background =
@@ -155,7 +150,7 @@ class MainActivity : AppCompatActivity() {
                             ActivityCompat.requestPermissions(
                                 this@MainActivity,
                                 arrayOf(permission.CAMERA),
-                                RequestCameraPermissionID
+                                requestCameraPermissionID
                             )
                             return
                         }
@@ -186,7 +181,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun receiveDetections(detections: Detector.Detections<TextBlock?>) {
-                val items: SparseArray<TextBlock?>? = detections.getDetectedItems()
+                val items: SparseArray<TextBlock?>? = detections.detectedItems
                 if (items!!.size() != 0) {
                     binding.cameraTxt.post {
                         val stringBuilder = StringBuilder()
@@ -197,11 +192,11 @@ class MainActivity : AppCompatActivity() {
 
                             for (i in 0 until items.size()) {
                                 val item: TextBlock = items.valueAt(i)!!
-                                stringBuilder.append(item.getValue())
+                                stringBuilder.append(item.value)
                                 stringBuilder.append("\n")
                             }
 
-                        Log.d("stringgg",stringBuilder.toString())
+                        Log.d("string",stringBuilder.toString())
                         if (stringBuilder.toString().contains(numPlate)){
 
                             binding.cameraTxt.text = stringBuilder.toString()
@@ -230,7 +225,7 @@ class MainActivity : AppCompatActivity() {
         binding.printPass.setOnClickListener {
 
 
-//            checkinprint()
+//            checkInPrint()
 //            // Submit();
             if (binding.vnumber.text.toString() == "") {
                 Toast.makeText(this@MainActivity, "Please Scan Vehicle or Enter Vehicle Number!!!",Toast.LENGTH_SHORT).show()
@@ -238,15 +233,15 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Please Select Vehicle Type!!!",Toast.LENGTH_SHORT).show()
             } else {
                 if(checkForInternet(this)){
-                checkinprint()
+                    checkInPrint()
                 }
                 else{
-                    NetworkDialog()
+                    networkDialog()
                 }
             }
         }
 
-        Lists()
+        lists()
     }
 
     private fun playOnOffSound() {
@@ -255,36 +250,22 @@ class MainActivity : AppCompatActivity() {
         objMediaPlayer!!.start()
     }
 
-    private fun NetworkDialog(){
-        val  dialogs: android.app.Dialog = android.app.Dialog(this@MainActivity )
-        dialogs.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
-        dialogs.setContentView(R.layout.networkdialog)
-        dialogs.setCanceledOnTouchOutside(false)
-        val done: android.widget.Button = dialogs.findViewById<android.view.View>(R.id.done) as android.widget.Button
-        done.setOnClickListener(object : android.view.View.OnClickListener{
-            override fun onClick(view: android.view.View){
-                dialogs.dismiss()
-                Lists()
-                checkinprint()
-            }
-        })
-        dialogs.show()
-    }
-
-    private fun NetworkDialogs(id: String) {
-        val dialogs = Dialog(this@MainActivity)
+    private fun networkDialog(){
+        val  dialogs = Dialog(this@MainActivity )
         dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialogs.setContentView(R.layout.networkdialog)
         dialogs.setCanceledOnTouchOutside(false)
-        val done = dialogs.findViewById<View>(R.id.done) as Button
+        val done: Button = dialogs.findViewById<View>(R.id.done) as Button
         done.setOnClickListener {
             dialogs.dismiss()
-            GetSlot(id)
+            lists()
+            checkInPrint()
         }
         dialogs.show()
     }
 
-    fun checkinprint()
+
+    private fun checkInPrint()
     {
 
         val showMe = ProgressDialog(this@MainActivity)
@@ -295,24 +276,24 @@ class MainActivity : AppCompatActivity() {
 
         //TODO:call api save
 
-        Lists()
-        viewmodel.save(SaveParameters(binding.vnumber.text.toString(),pid,slots!!,slotid!!,cardtype!!,"0"))
-        viewmodel.saveData.observe(this){
+        lists()
+        viewModel.save(SaveParameters(binding.vnumber.text.toString(),pid,slots!!,slotid!!,cardtype!!,"0"))
+        viewModel.saveData.observe(this){
             Log.d("save",it.toString())
-            Toast.makeText(applicationContext,"${it.msg}",Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, it.msg,Toast.LENGTH_SHORT).show()
         }
 
         showMe.dismiss()
     }
 
-        fun BottomSheet(
-        pid: String?,
-        slots: String?,
-        slotsid: String?,
-        pno: String?,
-        cardtypess: String?,
-        vno: String?
-    ) {
+        private fun bottomSheet(
+            pid: String?,
+            slots: String?,
+            slotsId: String?,
+            cardTypes: String?,
+            vno: String?,
+            toString: String
+        ) {
         bottomSheetDialog =
             BottomSheetDialog(this@MainActivity, R.style.CustomBottomSheetDialogTheme)
         bottomSheetDialog!!.setContentView(R.layout.bottomsheet)
@@ -323,15 +304,15 @@ class MainActivity : AppCompatActivity() {
         lottieAnimationView =
             bottomSheetDialog!!.findViewById(R.id.animation_view) as LottieAnimationView?
         lottieAnimationView!!.playAnimation()
-        lottieAnimationView!!.setSpeed(1.3.toFloat())
-        smartcode = bottomSheetDialog!!.findViewById(R.id.smartcode)
-        smartcode!!.addTextChangedListener(object : TextWatcher {
+            lottieAnimationView!!.speed = 1.3.toFloat()
+        smartCode = bottomSheetDialog!!.findViewById(R.id.smartcode)
+        smartCode!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.length == 10) {
-                    code = smartcode!!.text.toString()
-                    GetData(pid!!, slots!!, slotsid!!, cardtypess!!, s.toString(), vno!!)
-                    smartcode!!.requestFocus()
+                    code = smartCode!!.text.toString()
+                    getData(pid!!, slots!!, slotsId!!, cardTypes!!, s.toString(), vno!!)
+                    smartCode!!.requestFocus()
                 }
             }
 
@@ -339,7 +320,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun Lists()
+    private fun lists()
     {
 
         val showMe = ProgressDialog(this@MainActivity, AlertDialog.THEME_HOLO_LIGHT)
@@ -348,19 +329,19 @@ class MainActivity : AppCompatActivity() {
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
 
-        viewmodel.price()
-        viewmodel.priceData.observe(this){ priceResponse ->
+        viewModel.price()
+        viewModel.priceData.observe(this){ priceResponse ->
             if (price.isEmpty()){
             priceResponse.twoWheeler!!.forEach {
                 price.add(PriceModel(id = it.id, amount = it.price,type = it.vehicleType))
 
             }
             }
-            pAdapter=PriceAdapter(applicationContext,price){
+            /*pAdapter=PriceAdapter(applicationContext,price){
                 val model = it
                 pid = model.id.toString()
-                GetSlot(pid)
-            }
+                getSlot(pid)
+            }*/
             binding.recyclerView.adapter=pAdapter
         }
 
@@ -370,7 +351,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun GetData(pids: String, slotss: String, slotsids: String, cardtypess: String, codes: String, vno: String) {
+    fun getData(pID: String, slot: String, slotsId: String, cardType: String, codes: String, vno: String) {
 
         val showMe = ProgressDialog(this@MainActivity)
         showMe.setMessage("Please wait")
@@ -378,16 +359,16 @@ class MainActivity : AppCompatActivity() {
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
 
-            Lists()
-            viewmodel.save(SaveParameters(vno,pids,slotss,slotsids,cardtypess,codes))
-            viewmodel.saveData.observe(this){
+            lists()
+            viewModel.save(SaveParameters(vno,pID,slot,slotsId,cardType,codes))
+            viewModel.saveData.observe(this){
                 Log.d("save",it.toString())
             }
 
             showMe.dismiss()
     }
 
-    fun GetSlot(pid: String) {
+    fun getSlot(pid: String) {
         val showMe = ProgressDialog(this@MainActivity, AlertDialog.THEME_HOLO_LIGHT)
         showMe.setMessage("Please wait")
         showMe.setCancelable(true)
@@ -395,12 +376,12 @@ class MainActivity : AppCompatActivity() {
         showMe.show()
 
 
-        viewmodel.slot((pid))
-        viewmodel.slotData.observe(this){
+        viewModel.slot((pid))
+        viewModel.slotData.observe(this){
             Log.d("slot",it.toString()+pid)
             slots=it.slot
             slotid=it.slot_id
-            binding.slotNo!!.text = it.slot
+            binding.slotNo.text = it.slot
         }
 
         showMe.dismiss()
@@ -415,7 +396,7 @@ class MainActivity : AppCompatActivity() {
                 permission.READ_EXTERNAL_STORAGE,
                 permission.BLUETOOTH
             ),
-            PERMISSION_REQUEST_CODE
+            permissionRequestCode
         )
     }
 

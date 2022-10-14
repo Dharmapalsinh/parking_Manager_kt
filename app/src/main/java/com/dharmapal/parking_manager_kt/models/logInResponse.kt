@@ -4,7 +4,7 @@ package com.dharmapal.parking_manager_kt.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class logInResponse(
+data class LogInResponse(
     @SerializedName("id")
     @Expose
     val id: String?,

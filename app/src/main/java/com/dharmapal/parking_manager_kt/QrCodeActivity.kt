@@ -2,30 +2,25 @@ package com.dharmapal.parking_manager_kt
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.SparseArray
 import android.view.SurfaceHolder
-import android.view.View
-import android.view.Window
 import android.widget.*
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.util.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.dharmapal.parking_manager_kt.HomeActivity.Companion.NetworkDialog
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
+import com.dharmapal.parking_manager_kt.HomeActivity.Companion.networkDialog
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
-import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.databinding.ActivityQrCodeBinding
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
@@ -37,70 +32,62 @@ import kotlinx.coroutines.withContext
 class QrCodeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityQrCodeBinding
-    private lateinit var viewmodel: MainViewmodel
-    private var vnumber: TextView? = null
+    private lateinit var viewModel: MainViewModel
+    private var vNumber: TextView? = null
     private  var missing:TextView? = null
     private var pass: EditText? = null
     private var checkout: CardView? = null
-    val TAG = "STag"
-    var vno: String? = null
-    var passno: String? = null
-    var flag: String? = "2"
-    var lay: RelativeLayout? = null
+    private var lay: RelativeLayout? = null
     private lateinit var detector: BarcodeDetector
     private lateinit var cameraSource: CameraSource
-//    private lateinit var code:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityQrCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
-        viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
+        val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
+        viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
         detector=BarcodeDetector.Builder(this).build()
         cameraSource=CameraSource.Builder(this,detector)
             .setAutoFocusEnabled(true)
             .build()
-        binding.surfaceView.holder.addCallback(surfacecallback)
+        binding.surfaceView.holder.addCallback(surfaceCallback)
         detector.setProcessor(processor)
 
         lay = findViewById(R.id.relVhcle)
 
-        vnumber = findViewById(R.id.vnumber)
+        vNumber = findViewById(R.id.vnumber)
         missing = findViewById(R.id.missingpass1)
         pass = findViewById(R.id.passnoo)
         checkout = findViewById(R.id.checkout)
 
-        callNetworkConnection(application!!, this, this, viewmodel)
+        callNetworkConnection(application!!, this, this, viewModel)
 
-       binding.checkout.setOnClickListener(View.OnClickListener {
+       binding.checkout.setOnClickListener{
            if(HomeActivity.checkForInternet(this)){
-               Checkout(binding.passnoo.text.toString())
+               checkout(binding.passnoo.text.toString())
            }
            else{
-               NetworkDialog(this,viewmodel)
+               networkDialog(this,viewModel)
            }
 
-        })
-
-        binding.missingpass1.setOnClickListener(View.OnClickListener {
+        }
+       binding.missingpass1.setOnClickListener {
             val i = Intent(this, CheckOutActivity::class.java)
             startActivity(i)
 
-
-        })
+       }
     }
 
-
-    private val surfacecallback= object :SurfaceHolder.Callback{
+    private val surfaceCallback= object :SurfaceHolder.Callback{
         @SuppressLint("MissingPermission")
         override fun surfaceCreated(p0: SurfaceHolder) {
             try {
                 cameraSource.start(p0)
             }
-            catch (e:Exception){
+            catch (_:Exception){
 
             }
         }
@@ -121,12 +108,12 @@ class QrCodeActivity : AppCompatActivity() {
 
         override fun receiveDetections(p0: Detector.Detections<Barcode>?) {
             if (p0!=null && p0.detectedItems.isNotEmpty()){
-                val qrcodes:SparseArray<Barcode> =p0.detectedItems
-                val codes=qrcodes.valueAt(0)
+                val qrCodes:SparseArray<Barcode> =p0.detectedItems
+                val codes=qrCodes.valueAt(0)
                 Log.d("qrcode",codes.displayValue.toString())
                 lifecycleScope.launch {
                     withContext(Dispatchers.Main){
-                        Scan(codes.displayValue)
+                        scan(codes.displayValue)
                         binding.passnoo.isVisible=true
                         binding.relVhcle.isVisible=false
                     }
@@ -137,7 +124,7 @@ class QrCodeActivity : AppCompatActivity() {
             }
         }
     }
-    fun Scan(result: String) {
+    fun scan(result: String) {
 //        val showMe = ProgressDialog(this@QrCodeActivity, AlertDialog.THEME_HOLO_LIGHT)
 //        showMe.setMessage("Please wait")
 //        showMe.setCancelable(true)
@@ -145,17 +132,17 @@ class QrCodeActivity : AppCompatActivity() {
 //        showMe.show()
 
         Log.d("tagged",result)
-        viewmodel.scan(result)
+        viewModel.scan(result)
 //        showMe.dismiss()
-        viewmodel.scanData.observe(this){
-            Log.d("scan",it.msg.toString())
+        viewModel.scanData.observe(this){
+            Log.d("scan", it.msg)
         }
-        viewmodel.errorMessage.observe(this){
+        viewModel.errorMessage.observe(this){
             Log.d("scan",it.toString())
         }
     }
 
-    fun Checkout(result: String) {
+    private fun checkout(result: String) {
         val showMe = ProgressDialog(this@QrCodeActivity, AlertDialog.THEME_HOLO_LIGHT)
         showMe.setMessage("Please wait")
         showMe.setCancelable(true)
@@ -163,27 +150,17 @@ class QrCodeActivity : AppCompatActivity() {
         showMe.show()
 
         Log.d("tagged",result)
-        viewmodel.checkout(result)
+        viewModel.checkout(result)
         showMe.dismiss()
-        viewmodel.checkoutData.observe(this){
-            Log.d("checkout",it.msg.toString())
+        viewModel.checkoutData.observe(this){
+            Log.d("checkout", it.msg)
             Toast.makeText(applicationContext,it.msg,Toast.LENGTH_SHORT).show()
         }
-        viewmodel.errorMessage.observe(this){
+        viewModel.errorMessage.observe(this){
             Log.d("checkout",it.toString())
         }
- }
-
-    private fun NetworkDialogs(id: String) {
-        val dialogs = Dialog(this@QrCodeActivity)
-        dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialogs.setContentView(R.layout.networkdialog)
-        dialogs.setCanceledOnTouchOutside(false)
-        val done = dialogs.findViewById<View>(R.id.done) as Button
-        done.setOnClickListener {
-            dialogs.dismiss()
-            Scan(id)
-        }
-        dialogs.show()
     }
+
 }
+
+

@@ -1,39 +1,40 @@
 package com.dharmapal.parking_manager_kt.viewmodels
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Repo
 import com.dharmapal.parking_manager_kt.models.*
-import com.dharmapal.parking_manager_kt.models.DashResponse
-import com.dharmapal.parking_manager_kt.models.ForgotPasswordReq
-import com.dharmapal.parking_manager_kt.models.ForgotPasswordResponse
-import com.dharmapal.parking_manager_kt.models.LogInResponse
+import com.dharmapal.parking_manager_kt.models.Dash_Response
+import com.dharmapal.parking_manager_kt.models.ForgotPassword_Req
+import com.dharmapal.parking_manager_kt.models.ForgotPassword_Response
+import com.dharmapal.parking_manager_kt.models.logInResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
+class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
 
     val errorMessage = MutableLiveData<String>()
-    val loginData=MutableLiveData<LogInResponse>()
-    val dashboardData=MutableLiveData<DashResponse>()
+    val loginData=MutableLiveData<logInResponse>()
+    val dashboardData=MutableLiveData<Dash_Response>()
     val saveData=MutableLiveData<SaveResponse>()
     val slotData=MutableLiveData<SlotResponse>()
-    val priceData=MutableLiveData<PriceResponse>()
+    val priceData=MutableLiveData<Price_Response>()
     val missingData=MutableLiveData<MissingResponse>()
     val scanData=MutableLiveData<ScanResponse>()
     val checkoutData=MutableLiveData<CheckoutResponse>()
 
     fun logIn(number:String,pass:String){
         val response=repository.logIn(number,pass)
-        response.enqueue(object :Callback<LogInResponse>{
-            override fun onResponse(call: Call<LogInResponse>, response: Response<LogInResponse>) {
+        response.enqueue(object :Callback<logInResponse>{
+            override fun onResponse(call: Call<logInResponse>, response: Response<logInResponse>) {
                 Log.d("tagged",response.body().toString())
                 loginData.postValue(response.body())
             }
-            override fun onFailure(call: Call<LogInResponse>, t: Throwable) {
+            override fun onFailure(call: Call<logInResponse>, t: Throwable) {
                 errorMessage.postValue(t.message)
             }
         })
@@ -41,48 +42,48 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
 
     fun submit(){
         val response=repository.submit()
-        response.enqueue(object :Callback<DashResponse>{
-            override fun onResponse(call: Call<DashResponse>, response: Response<DashResponse>) {
+        response.enqueue(object :Callback<Dash_Response>{
+            override fun onResponse(call: Call<Dash_Response>, response: Response<Dash_Response>) {
                 Log.d("dashboard",response.body().toString())
                 dashboardData.postValue(response.body())
             }
 
-            override fun onFailure(call: Call<DashResponse>, t: Throwable) {
+            override fun onFailure(call: Call<Dash_Response>, t: Throwable) {
                 Log.d("dashboard",t.message.toString())
                 errorMessage.postValue(t.message)
             }
 
         })
     }
-    fun forgotPassword(forgotPasswordReq: ForgotPasswordReq){
-        val response=repository.forgotPassword(forgotPasswordReq)
-        response.enqueue(object :Callback<ForgotPasswordResponse>{
+    fun forgotPassword(forgotpasswordReq: ForgotPassword_Req){
+        val response=repository.forgot_Password(forgotpasswordReq)
+        response.enqueue(object :Callback<ForgotPassword_Response>{
             override fun onResponse(
-                call: Call<ForgotPasswordResponse>,
-                response: Response<ForgotPasswordResponse>
+                call: Call<ForgotPassword_Response>,
+                response: Response<ForgotPassword_Response>
             ) {
-                Log.d("FPass",response.body()!!.msg.toString())
+                Log.d("fpass",response.body()!!.msg.toString())
             }
 
-            override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
-                Log.d("FPass",t.message.toString())
+            override fun onFailure(call: Call<ForgotPassword_Response>, t: Throwable) {
+                Log.d("fpass",t.message.toString())
             }
         })
     }
 
     fun price(){
         val response=repository.price()
-        response.enqueue(object : Callback<PriceResponse>{
+        response.enqueue(object : Callback<Price_Response>{
             override fun onResponse(
-                call: Call<PriceResponse>,
-                response: Response<PriceResponse>
+                call: Call<Price_Response>,
+                response: Response<Price_Response>
             ) {
                 priceData.postValue(response.body())
-                Log.d("price",response.body().toString())
+                Log.d("priceee",response.body().toString())
             }
 
-            override fun onFailure(call: Call<PriceResponse>, t: Throwable) {
-                Log.d("price",t.message.toString())
+            override fun onFailure(call: Call<Price_Response>, t: Throwable) {
+                Log.d("priceee",t.message.toString())
             }
         })
     }
@@ -158,12 +159,13 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
     }
 }
 
-class MainViewModelFactory(private val repository: Repo):
+class MainViewmodelFactory(private val repository: Repo
+):
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            MainViewModel(this.repository) as T
+        return if (modelClass.isAssignableFrom(MainViewmodel::class.java)) {
+            MainViewmodel(this.repository) as T
         } else {
             throw IllegalArgumentException("ViewModel Not Found")
         }

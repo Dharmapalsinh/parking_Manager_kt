@@ -2,23 +2,19 @@ package com.dharmapal.parking_manager_kt
 
 import android.Manifest
 import android.app.AlertDialog
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceHolder
-import android.view.View
-import android.view.Window
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityCheckOutBinding
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodelFactory
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
+import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.Detector.Detections
@@ -26,23 +22,24 @@ import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
 import java.io.IOException
 
+@Suppress("DEPRECATED_IDENTITY_EQUALS")
 class CheckOutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCheckOutBinding
-    private lateinit var viewmodel: MainViewmodel
+    private lateinit var viewModel: MainViewModel
 
     private var cameraSource: CameraSource? = null
-    val RequestCameraPermissionID = 1001
-    var codes: String? = null
+    val requestCameraPermissionID = 1001
+    private var codes: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityCheckOutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
-        viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
+        val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
+        viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
-        HomeActivity.callNetworkConnection(application,this,this,viewmodel)
+        HomeActivity.callNetworkConnection(application,this,this,viewModel)
         val textRecognizer = TextRecognizer.Builder(applicationContext).build()
 
         if (!textRecognizer.isOperational) {
@@ -64,11 +61,11 @@ class CheckOutActivity : AppCompatActivity() {
                             ActivityCompat.requestPermissions(
                                 this@CheckOutActivity,
                                 arrayOf(Manifest.permission.CAMERA),
-                                RequestCameraPermissionID
+                                requestCameraPermissionID
                             )
                             return
                         }
-                        cameraSource!!.start(binding.surfaceView!!.holder)
+                        cameraSource!!.start(binding.surfaceView.holder)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -112,7 +109,7 @@ class CheckOutActivity : AppCompatActivity() {
                checkout(codes!!)
            }
            else{
-               HomeActivity.NetworkDialog(this,viewmodel)
+               HomeActivity.NetworkDialog(this,viewModel)
            }
        }
     }
@@ -131,18 +128,18 @@ class CheckOutActivity : AppCompatActivity() {
 
         if (codes.contains(numPlate)){
 
-            viewmodel.missing(codes)
+            viewModel.missing(codes)
             showMe.dismiss()
-            viewmodel.missingData.observe(this){
+            viewModel.missingData.observe(this){
                 Log.d("missing", it.msg +codes)
                 Toast.makeText(applicationContext,it.msg,Toast.LENGTH_SHORT).show()
             }
-            viewmodel.errorMessage.observe(this){
+            viewModel.errorMessage.observe(this){
                 Log.d("missing",it.toString())
             }
         }
         else{
-                            Toast.makeText(applicationContext,"try again",Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext,"try again",Toast.LENGTH_SHORT).show()
         }
 
         showMe.dismiss()

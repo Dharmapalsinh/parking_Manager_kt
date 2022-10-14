@@ -3,7 +3,7 @@ package com.dharmapal.parking_manager_kt.models
 
 import com.google.gson.annotations.SerializedName
 
-data class Dash_Response(
+data class DashResponse(
     @SerializedName("avail_per")
     val availPer: Double?,
     @SerializedName("available")

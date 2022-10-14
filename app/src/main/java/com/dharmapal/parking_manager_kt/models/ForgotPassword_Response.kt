@@ -3,13 +3,13 @@ package com.dharmapal.parking_manager_kt.models
 
 import com.google.gson.annotations.SerializedName
 
-data class ForgotPassword_Response(
+data class ForgotPasswordResponse(
     @SerializedName("msg")
     val msg: String?,
     @SerializedName("status")
     val status: String?
 )
 
-data class ForgotPassword_Req(
+data class ForgotPasswordReq(
     val mail:String?
 )

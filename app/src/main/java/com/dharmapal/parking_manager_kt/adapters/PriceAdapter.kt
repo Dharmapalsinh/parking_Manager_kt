@@ -1,6 +1,6 @@
 package com.dharmapal.parking_manager_kt.adapters
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dharmapal.parking_manager_kt.R
 import com.dharmapal.parking_manager_kt.models.PriceModel
 
-class PriceAdapter(private val context: Context, private val list: List<PriceModel>,val onclick:(PriceModel)->Unit) :
+class PriceAdapter(private val list: List<PriceModel>,val onclick:(PriceModel)->Unit) :
     RecyclerView.Adapter<PriceAdapter.ViewHolder>() {
-    var lastPosition = 0
-    var row_index = -1
+    var rowIndex = -1
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var bg: RelativeLayout
@@ -39,15 +38,16 @@ class PriceAdapter(private val context: Context, private val list: List<PriceMod
         return ViewHolder(v)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val model = list[holder.adapterPosition]
         holder.amount.text = model.amount
         holder.type.text = model.type
         holder.bg.setOnClickListener {
-            row_index = position
+            rowIndex = position
             notifyDataSetChanged()
         }
-        if (row_index == position) {
+        if (rowIndex == position) {
             holder.check.visibility = View.VISIBLE
         } else {
             holder.check.visibility = View.GONE

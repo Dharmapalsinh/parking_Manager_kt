@@ -1,6 +1,5 @@
 package com.dharmapal.parking_manager_kt
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -9,7 +8,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -21,16 +19,12 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.dharmapal.parking_manager_kt.databinding.ActivityDeviceListBinding
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewmodel
 
 class DeviceListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDeviceListBinding
-    private lateinit var viewmodel: MainViewmodel
-    // Return Intent extra
-    var EXTRA_DEVICE_ADDRESS = "device_address"
+    private var extraDeviceAddress = "device_address"
 
     private var mPairedDevicesArrayAdapter: ArrayAdapter<String>? = null
     private var mNewDevicesArrayAdapter: ArrayAdapter<String>? = null
@@ -51,12 +45,12 @@ class DeviceListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        // Set result CANCELED incase the user backs out
+        // Set result CANCELED inCase the user backs out
         setResult(RESULT_CANCELED)
 
         binding.buttonScan.setOnClickListener {
             doDiscovery(bluetoothAdapter!!)
-            it.setVisibility(View.GONE)
+            it.visibility = View.GONE
         }
 
 
@@ -66,13 +60,13 @@ class DeviceListActivity : AppCompatActivity() {
         mNewDevicesArrayAdapter = ArrayAdapter(this, R.layout.device_name)
 
         // Find and set up the ListView for paired devices
-        val pairedListView = findViewById(R.id.paired_devices) as ListView
+        val pairedListView = findViewById<ListView>(R.id.paired_devices)
         pairedListView.adapter = mPairedDevicesArrayAdapter
         pairedListView.onItemClickListener = mDeviceClickListener
 
 
         // Find and set up the ListView for newly discovered devices
-        val newDevicesListView = findViewById(R.id.new_devices) as ListView
+        val newDevicesListView = findViewById<ListView>(R.id.new_devices)
         newDevicesListView.adapter = mNewDevicesArrayAdapter
         newDevicesListView.onItemClickListener = mDeviceClickListener
 
@@ -91,8 +85,8 @@ class DeviceListActivity : AppCompatActivity() {
         val pairedDevices: Set<BluetoothDevice> = bluetoothAdapter!!.bondedDevices
 
         // If there are paired devices, add each one to the ArrayAdapter
-        if (pairedDevices.size > 0) {
-            binding.titlePairedDevices.setVisibility(View.VISIBLE)
+        if (pairedDevices.isNotEmpty()) {
+            binding.titlePairedDevices.visibility = View.VISIBLE
             for (device in pairedDevices) {
                 mPairedDevicesArrayAdapter!!.add(
                     """
@@ -128,19 +122,19 @@ class DeviceListActivity : AppCompatActivity() {
         setTitle(R.string.scanning)
 
         // Turn on sub-title for new devices
-        binding.titleNewDevices.setVisibility(View.VISIBLE)
+        binding.titleNewDevices.visibility = View.VISIBLE
 
-        val mypairedDevices = bluetoothAdapter.bondedDevices
+        val myPairedDevices = bluetoothAdapter.bondedDevices
         val list : ArrayList<BluetoothDevice> = ArrayList()
 
-        if (mypairedDevices.isNotEmpty())
+        if (myPairedDevices.isNotEmpty())
         {
-            for ( device:BluetoothDevice in mypairedDevices)
+            for ( device:BluetoothDevice in myPairedDevices)
                 list.add(device)
 
             //list.add(device.name() + "\n" + device.address())
 
-            Log.i("Device", "This is messeage ${list.toString()}")
+            Log.i("Device", "This is message $list")
 
         }
         else {
@@ -160,7 +154,7 @@ class DeviceListActivity : AppCompatActivity() {
 
     // The on-click listener for all devices in the ListViews
     private val mDeviceClickListener =
-        OnItemClickListener { av, v, arg2, arg3 ->
+        OnItemClickListener { _, v, _, _ ->
             //����б�������豸
             // Cancel discovery because it's costly and we're about to connect
 //            mService.cancelDiscovery()
@@ -171,7 +165,7 @@ class DeviceListActivity : AppCompatActivity() {
 
             // Create the result Intent and include the MAC address
             val intent = Intent()
-            intent.putExtra(EXTRA_DEVICE_ADDRESS, address)
+            intent.putExtra(extraDeviceAddress, address)
             Log.d("���ӵ�ַ", address)
 
             // Set result and finish this Activity

@@ -33,7 +33,7 @@ class RetrofitClientCopy(private val serverUrl: String = "https://manage.spotiz.
             .build()
     }
 
-    val instance: api by lazy { retrofit.create(api::class.java) }
+    val instance: API by lazy { retrofit.create(API::class.java) }
 }
 
 class RetrofitInterceptor: Interceptor {
