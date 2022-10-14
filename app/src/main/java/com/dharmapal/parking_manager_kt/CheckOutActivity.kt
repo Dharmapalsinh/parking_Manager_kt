@@ -109,7 +109,7 @@ class CheckOutActivity : AppCompatActivity() {
                checkout(codes!!)
            }
            else{
-               HomeActivity.NetworkDialog(this,viewModel)
+               HomeActivity.networkDialog(this,viewModel)
            }
        }
     }

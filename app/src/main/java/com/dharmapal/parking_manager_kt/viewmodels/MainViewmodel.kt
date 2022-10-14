@@ -18,6 +18,7 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
 
     val errorMessage = MutableLiveData<String>()
     val loginData=MutableLiveData<LogInResponse>()
+    val forgotpassData=MutableLiveData<String>()
     val dashboardData=MutableLiveData<DashResponse>()
     val saveData=MutableLiveData<SaveResponse>()
     val slotData=MutableLiveData<SlotResponse>()
@@ -62,6 +63,8 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
                 response: Response<ForgotPasswordResponse>
             ) {
                 Log.d("FPass",response.body()!!.msg.toString())
+                forgotpassData.postValue(response.body()!!.msg)
+                Log.d("fpass",response.body()!!.msg.toString())
             }
 
             override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {

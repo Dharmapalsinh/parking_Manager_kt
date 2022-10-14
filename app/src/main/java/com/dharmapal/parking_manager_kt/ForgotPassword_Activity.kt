@@ -29,10 +29,11 @@ class ForgotPassword_Activity : AppCompatActivity() {
         val email=binding.email
 
         binding.send.setOnClickListener {
-            if (email.text.toString() == "") {
+            val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
+            if (!email.text.contains(EMAIL_REGEX.toRegex())) {
                 val toast = Toast.makeText(
                     this@ForgotPassword_Activity,
-                    "Please Enter Email Address",
+                    "Please Enter Valid Email Address",
                     Toast.LENGTH_SHORT
                 )
                 toast.setGravity(Gravity.CENTER, 0, 0)
@@ -51,6 +52,9 @@ class ForgotPassword_Activity : AppCompatActivity() {
 //        showMe.setCanceledOnTouchOutside(false)
 //        showMe.show()
         viewModel.forgotPassword(ForgotPasswordReq(""))
+        viewModel.forgotpassData.observe(this){
+            Toast.makeText(applicationContext,it,Toast.LENGTH_SHORT).show()
+        }
     }
 
 

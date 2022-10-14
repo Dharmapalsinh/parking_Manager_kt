@@ -9,7 +9,7 @@ class Repo constructor(private val retrofitService: RetrofitClientCopy)  {
     fun logIn(number: String,pass :String)=retrofitService.instance.logIn(number,pass)
     fun submit() = retrofitService.instance.submit()
 
-    fun forgotPassword(forgotPasswordReq: ForgotPasswordReq)=retrofitService.instance.forgotPassword(forgotPasswordReq)
+    fun forgotPassword(forgotPasswordReq: ForgotPasswordReq)=retrofitService.instance.forgotPassword(forgotPasswordReq.mail)
 
     fun save(saveParameters: SaveParameters)=retrofitService.instance.save(saveParameters.vehicle_no,
                     saveParameters.vehicle_type,saveParameters.slot_number,saveParameters.slot_id,

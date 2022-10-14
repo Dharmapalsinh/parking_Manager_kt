@@ -11,9 +11,9 @@ interface API {
         @Query("pass") pass:String="1234567890"
     ) : Call<LogInResponse>
 
-    @POST("forget_password")
+    @GET("forget_password")
     fun forgotPassword(
-        @Body forgotPasswordReq: ForgotPasswordReq?
+        @Query("mail") mail:String?
     ) : Call<ForgotPasswordResponse>
 
     @GET("dashboard")

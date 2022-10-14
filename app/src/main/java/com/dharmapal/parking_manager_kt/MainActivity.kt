@@ -94,11 +94,11 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager=
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-       /* pAdapter= PriceAdapter(applicationContext,price){
+        pAdapter= PriceAdapter(price){
             val model = it
             pid = model.id.toString()
-            GetSlot(pid)
-        }*/
+            getSlot(pid)
+        }
         binding.recyclerView.adapter=pAdapter
 
         binding.prepaidcard.setOnClickListener {
@@ -337,11 +337,11 @@ class MainActivity : AppCompatActivity() {
 
             }
             }
-            /*pAdapter=PriceAdapter(applicationContext,price){
+            pAdapter=PriceAdapter(price){
                 val model = it
                 pid = model.id.toString()
                 getSlot(pid)
-            }*/
+            }
             binding.recyclerView.adapter=pAdapter
         }
 
