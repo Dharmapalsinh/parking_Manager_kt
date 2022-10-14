@@ -1,17 +1,24 @@
 package com.dharmapal.parking_manager_kt
 
+import CheckNetworkConnection
 import android.app.AlertDialog
+import android.app.Application
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
@@ -50,7 +57,7 @@ class HomeActivity : AppCompatActivity() {
 
         // initializing our shared preferences.
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-
+        callNetworkConnection(application!!,this,this,viewmodel)
 
         binding.print.setOnClickListener(View.OnClickListener {
             val i = Intent(this, MainActivity::class.java)
@@ -87,6 +94,7 @@ class HomeActivity : AppCompatActivity() {
         })
 
            Submit()
+
     }
 
     fun Submit(){
@@ -99,8 +107,8 @@ class HomeActivity : AppCompatActivity() {
         viewmodel.submit()
         showMe.dismiss()
         viewmodel.dashboardData.observe(this){
-            if(it==null){
-                NetworkDialog()
+            if(it==null ){
+                NetworkDialog(this,viewmodel)
             }
             else {
                 Log.d("dashboard", it.toString())
@@ -122,18 +130,79 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
+
     }
 
-    private fun NetworkDialog() {
-        val dialogs = Dialog(this)
-        dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialogs.setContentView(R.layout.networkdialog)
-        dialogs.setCanceledOnTouchOutside(false)
-        val done = dialogs.findViewById<View>(R.id.done) as Button
-        done.setOnClickListener {
-            dialogs.dismiss()
-            //Submit()
+
+
+
+    companion object{
+
+        private fun checkForInternet(context: Context): Boolean {
+
+            // register activity with the connectivity manager service
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+            // if the android version is equal to M
+            // or greater we need to use the
+            // NetworkCapabilities to check what type of
+            // network has the internet connection
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                // Returns a Network object corresponding to
+                // the currently active default data network.
+                val network = connectivityManager.activeNetwork ?: return false
+
+                // Representation of the capabilities of an active network.
+                val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+                return when {
+                    // Indicates this network uses a Wi-Fi transport,
+                    // or WiFi has network connectivity
+                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+
+                    // Indicates this network uses a Cellular transport. or
+                    // Cellular has network connectivity
+                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+
+                    // else return false
+                    else -> false
+                }
+            } else {
+                // if the android version is below M
+                @Suppress("DEPRECATION") val networkInfo =
+                    connectivityManager.activeNetworkInfo ?: return false
+                @Suppress("DEPRECATION")
+                return networkInfo.isConnected
+            }
         }
-        dialogs.show()
+
+        private fun NetworkDialog(context: Context,viewmodel: MainViewmodel) {
+            val dialogs = Dialog(context)
+            dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialogs.setContentView(R.layout.networkdialog)
+            dialogs.setCanceledOnTouchOutside(false)
+            val done = dialogs.findViewById<View>(R.id.done) as Button
+            done.setOnClickListener {
+                //Submit()
+                if (checkForInternet(context)){
+                    dialogs.dismiss()
+                    viewmodel.submit()
+                }
+            }
+            dialogs.show()
+        }
+
+        private fun callNetworkConnection(application:Application,lifecycleOwner: LifecycleOwner,context: Context,viewmodel: MainViewmodel) {
+            val checkNetworkConnection = CheckNetworkConnection(application)
+            checkNetworkConnection.observe(lifecycleOwner) { isConnected ->
+                if (isConnected) {
+
+                } else {
+                    NetworkDialog(context,viewmodel)
+                }
+            }
+
+        }
     }
 }

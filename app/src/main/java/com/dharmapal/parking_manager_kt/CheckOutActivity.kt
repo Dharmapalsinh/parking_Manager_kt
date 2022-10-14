@@ -8,12 +8,9 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceHolder
-import android.view.SurfaceView
 import android.view.View
 import android.view.Window
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -35,8 +32,6 @@ class CheckOutActivity : AppCompatActivity() {
 
     private var cameraSource: CameraSource? = null
     val RequestCameraPermissionID = 1001
-    private val surfaceView: SurfaceView? = null
-    val TAG = "STag"
     var codes: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +54,7 @@ class CheckOutActivity : AppCompatActivity() {
                 .setRequestedFps(2.0f)
                 .build()
 
-            val sfhTrackHolder = binding.surfaceView!!.holder
+            val sfhTrackHolder = binding.surfaceView.holder
             sfhTrackHolder.addCallback(object : SurfaceHolder.Callback {
                 override fun surfaceCreated(holder: SurfaceHolder) {
                     try {
@@ -72,7 +67,7 @@ class CheckOutActivity : AppCompatActivity() {
                             )
                             return
                         }
-                        cameraSource!!.start(surfaceView!!.holder)
+                        cameraSource!!.start(binding.surfaceView!!.holder)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -97,26 +92,26 @@ class CheckOutActivity : AppCompatActivity() {
             override fun receiveDetections(detections: Detections<TextBlock>) {
                 val items = detections.detectedItems
                 if (items.size() != 0) {
-                   binding.cameraTxt!!.post {
+                   binding.cameraTxt.post {
                         val stringBuilder = StringBuilder()
                         for (i in 0 until items.size()) {
                             val item = items.valueAt(i)
                             stringBuilder.append(item.value)
                             stringBuilder.append("\n")
                         }
-                        binding.cameraTxt!!.text = stringBuilder.toString()
+                        binding.cameraTxt.text = stringBuilder.toString()
                     }
                 }
             }
         })
 
-       binding.capture.setOnClickListener(View.OnClickListener {
-            codes = binding.cameraTxt!!.text.toString().trim { it <= ' ' }
-            Checkout(codes!!)
-        })
+       binding.capture.setOnClickListener {
+           codes = binding.cameraTxt.text.toString().trim { it <= ' ' }
+           checkout(codes!!)
+       }
     }
 
-    private fun Checkout(codes: String) {
+    private fun checkout(codes: String) {
         val showMe = ProgressDialog(this, AlertDialog.THEME_HOLO_LIGHT)
         showMe.setMessage("Please wait")
         showMe.setCancelable(true)
@@ -133,7 +128,8 @@ class CheckOutActivity : AppCompatActivity() {
             viewmodel.missing(codes)
             showMe.dismiss()
             viewmodel.missingData.observe(this){
-                Log.d("missing",it.msg.toString()+codes)
+                Log.d("missing", it.msg +codes)
+                Toast.makeText(applicationContext,it.msg,Toast.LENGTH_SHORT).show()
             }
             viewmodel.errorMessage.observe(this){
                 Log.d("missing",it.toString())
@@ -154,7 +150,7 @@ class CheckOutActivity : AppCompatActivity() {
         val done = dialogs.findViewById<View>(R.id.done) as Button
         done.setOnClickListener {
             dialogs.dismiss()
-            Checkout(id)
+            checkout(id)
         }
         dialogs.show()
     }
