@@ -19,6 +19,8 @@ import androidx.core.util.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.dharmapal.parking_manager_kt.HomeActivity.Companion.NetworkDialog
+import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.databinding.ActivityQrCodeBinding
@@ -71,10 +73,15 @@ class QrCodeActivity : AppCompatActivity() {
         pass = findViewById(R.id.passnoo)
         checkout = findViewById(R.id.checkout)
 
+        callNetworkConnection(application!!, this, this, viewmodel)
 
        binding.checkout.setOnClickListener(View.OnClickListener {
-
-                Checkout(binding.passnoo.text.toString())
+           if(HomeActivity.checkForInternet(this)){
+               Checkout(binding.passnoo.text.toString())
+           }
+           else{
+               NetworkDialog(this,viewmodel)
+           }
 
         })
 

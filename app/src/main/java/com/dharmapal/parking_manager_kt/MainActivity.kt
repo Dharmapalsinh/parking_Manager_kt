@@ -25,6 +25,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
+import com.dharmapal.parking_manager_kt.HomeActivity.Companion.checkForInternet
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.adapters.PriceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityMainBinding
@@ -90,6 +92,7 @@ class MainActivity : AppCompatActivity() {
             mBluetoothAdapter!!.enable()
         }
 
+        callNetworkConnection(application!!, this, this, viewmodel)
         binding.recyclerView.layoutManager=
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
@@ -234,7 +237,12 @@ class MainActivity : AppCompatActivity() {
             } else if (pid == "") {
                 Toast.makeText(this@MainActivity, "Please Select Vehicle Type!!!",Toast.LENGTH_SHORT).show()
             } else {
+                if(checkForInternet(this)){
                 checkinprint()
+                }
+                else{
+                    NetworkDialog()
+                }
             }
         }
 

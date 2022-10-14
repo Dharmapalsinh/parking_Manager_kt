@@ -138,7 +138,7 @@ class HomeActivity : AppCompatActivity() {
 
     companion object{
 
-        private fun checkForInternet(context: Context): Boolean {
+         fun checkForInternet(context: Context): Boolean {
 
             // register activity with the connectivity manager service
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -177,7 +177,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        private fun NetworkDialog(context: Context,viewmodel: MainViewmodel) {
+         fun NetworkDialog(context: Context,viewmodel: MainViewmodel) {
             val dialogs = Dialog(context)
             dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialogs.setContentView(R.layout.networkdialog)
@@ -193,7 +193,7 @@ class HomeActivity : AppCompatActivity() {
             dialogs.show()
         }
 
-        private fun callNetworkConnection(application:Application,lifecycleOwner: LifecycleOwner,context: Context,viewmodel: MainViewmodel) {
+        fun callNetworkConnection(application:Application,lifecycleOwner: LifecycleOwner,context: Context,viewmodel: MainViewmodel) {
             val checkNetworkConnection = CheckNetworkConnection(application)
             checkNetworkConnection.observe(lifecycleOwner) { isConnected ->
                 if (isConnected) {

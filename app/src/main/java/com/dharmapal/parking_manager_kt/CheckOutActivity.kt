@@ -42,6 +42,7 @@ class CheckOutActivity : AppCompatActivity() {
         val viewModelFactory= MainViewmodelFactory(Repo(RetrofitClientCopy()))
         viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
 
+        HomeActivity.callNetworkConnection(application,this,this,viewmodel)
         val textRecognizer = TextRecognizer.Builder(applicationContext).build()
 
         if (!textRecognizer.isOperational) {
@@ -106,8 +107,13 @@ class CheckOutActivity : AppCompatActivity() {
         })
 
        binding.capture.setOnClickListener {
-           codes = binding.cameraTxt.text.toString().trim { it <= ' ' }
-           checkout(codes!!)
+           if (HomeActivity.checkForInternet(this)){
+               codes = binding.cameraTxt.text.toString().trim { it <= ' ' }
+               checkout(codes!!)
+           }
+           else{
+               HomeActivity.NetworkDialog(this,viewmodel)
+           }
        }
     }
 
@@ -142,16 +148,4 @@ class CheckOutActivity : AppCompatActivity() {
         showMe.dismiss()
     }
 
-    private fun NetworkDialogs(id: String) {
-        val dialogs = Dialog(this)
-        dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialogs.setContentView(R.layout.networkdialog)
-        dialogs.setCanceledOnTouchOutside(false)
-        val done = dialogs.findViewById<View>(R.id.done) as Button
-        done.setOnClickListener {
-            dialogs.dismiss()
-            checkout(id)
-        }
-        dialogs.show()
-    }
 }
