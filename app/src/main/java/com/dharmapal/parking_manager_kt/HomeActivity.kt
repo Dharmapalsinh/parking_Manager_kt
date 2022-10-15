@@ -52,38 +52,38 @@ class HomeActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences(sharedPref, Context.MODE_PRIVATE)
         callNetworkConnection(application!!,this,this,viewModel)
 
-        binding.print.setOnClickListener{
+        binding.btnScanEntry.setOnClickListener{
             val i = Intent(this, MainActivity::class.java)
             startActivity(i)
         }
 
-        binding.checkout.setOnClickListener {
+        binding.btnScanexit.setOnClickListener {
             val i = Intent(this, QrCodeActivity::class.java)
             startActivity(i)
         }
 
-        binding.logout.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage("Are you sure you want to Logout")
-            builder.setPositiveButton(
-                "Yes"
-            ) { dialog, _ ->
-                //sessionManager.logoutUser()
-                val editor = sharedPreferences.edit()
-                editor.clear()
-                editor.putString("count","0")
-                editor.apply()
-                val i = Intent(this, LogInActivity::class.java)
-                startActivity(i)
-                dialog.dismiss()
-//                finish()
-            }
-            builder.setNegativeButton(
-                "No"
-            ) { dialog, _ -> dialog.dismiss() }
-            val alertDialog = builder.create()
-            alertDialog.show()
-        }
+//        binding.logout.setOnClickListener {
+//            val builder = AlertDialog.Builder(this)
+//            builder.setMessage("Are you sure you want to Logout")
+//            builder.setPositiveButton(
+//                "Yes"
+//            ) { dialog, _ ->
+//                //sessionManager.logoutUser()
+//                val editor = sharedPreferences.edit()
+//                editor.clear()
+//                editor.putString("count","0")
+//                editor.apply()
+//                val i = Intent(this, LogInActivity::class.java)
+//                startActivity(i)
+//                dialog.dismiss()
+////                finish()
+//            }
+//            builder.setNegativeButton(
+//                "No"
+//            ) { dialog, _ -> dialog.dismiss() }
+//            val alertDialog = builder.create()
+//            alertDialog.show()
+//        }
 
         submit()
 
@@ -109,9 +109,9 @@ class HomeActivity : AppCompatActivity() {
 
                 binding.availabel.text = it.available.toString()
                 binding.prepaidusers.text = it.prepaidUser.toString()
-                binding.vippasses.text = it.vipUser.toString()
-                binding.missingpasses.text = it.missingPass.toString()
-                binding.todayscollection.text = it.totalCol
+                binding.vip.text = it.vipUser.toString()
+//                binding.missingpasses.text = it.missingPass.toString()
+                binding.collection.text = it.totalCol
                 binding.occupied.text = it.occupied.toString()
                 binding.circularProgressBar.progress = ints
                 binding.progress.text = it.occPer.toString() + "%"

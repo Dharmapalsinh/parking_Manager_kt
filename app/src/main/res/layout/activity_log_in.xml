@@ -14,7 +14,7 @@
 
         <ImageView
             android:layout_gravity="center"
-            android:src="@drawable/logo"
+            android:src="@drawable/newlogo"
             android:layout_width="150dp"
             android:layout_height="wrap_content" />
 
