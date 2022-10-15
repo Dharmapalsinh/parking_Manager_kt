@@ -1,4 +1,5 @@
 package com.dharmapal.parking_manager_kt
+/*
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -164,3 +165,4 @@ class QrCodeActivity : AppCompatActivity() {
 }
 
 
+*/
