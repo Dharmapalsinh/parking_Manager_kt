@@ -53,32 +53,32 @@ class QrCodeActivity : AppCompatActivity() {
         cameraSource=CameraSource.Builder(this,detector)
             .setAutoFocusEnabled(true)
             .build()
-        binding.surfaceView.holder.addCallback(surfaceCallback)
+        binding.surfaceview.holder.addCallback(surfaceCallback)
         detector.setProcessor(processor)
 
         lay = findViewById(R.id.relVhcle)
 
         vNumber = findViewById(R.id.vnumber)
-        missing = findViewById(R.id.missingpass1)
-        pass = findViewById(R.id.passnoo)
-        checkout = findViewById(R.id.checkout)
+//        missing = findViewById(R.id.missingpass1)
+//        pass = findViewById(R.id.passnoo)
+        checkout = findViewById(R.id.btn_checkout)
 
         callNetworkConnection(application!!, this, this, viewModel)
 
-       binding.checkout.setOnClickListener{
+       binding.btnCheckout.setOnClickListener{
            if(HomeActivity.checkForInternet(this)){
-               checkout(binding.passnoo.text.toString())
+               checkout(binding.passNum.text.toString())
            }
            else{
                networkDialog(this,viewModel)
            }
 
         }
-       binding.missingpass1.setOnClickListener {
-            val i = Intent(this, CheckOutActivity::class.java)
-            startActivity(i)
-
-       }
+//       binding.missingpass1.setOnClickListener {
+//            val i = Intent(this, CheckOutActivity::class.java)
+//            startActivity(i)
+//
+//       }
     }
 
     private val surfaceCallback= object :SurfaceHolder.Callback{
@@ -114,8 +114,8 @@ class QrCodeActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     withContext(Dispatchers.Main){
                         scan(codes.displayValue)
-                        binding.passnoo.isVisible=true
-                        binding.relVhcle.isVisible=false
+//                        binding.passnoo.isVisible=true
+//                        binding.relVhcle.isVisible=false
                     }
                 }
             }
