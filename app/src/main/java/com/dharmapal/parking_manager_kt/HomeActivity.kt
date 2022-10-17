@@ -57,10 +57,10 @@ class HomeActivity : AppCompatActivity() {
             startActivity(i)
         }
 
-        binding.btnScanexit.setOnClickListener {
+       /* binding.btnScanexit.setOnClickListener {
             val i = Intent(this, QrCodeActivity::class.java)
             startActivity(i)
-        }
+        }*/
 
 //        binding.logout.setOnClickListener {
 //            val builder = AlertDialog.Builder(this)

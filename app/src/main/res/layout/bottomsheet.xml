@@ -9,7 +9,6 @@
     <TextView
         android:id="@+id/pr"
         android:layout_marginTop="30dp"
-        android:fontFamily="@font/exo_2"
         android:includeFontPadding="false"
         android:text="Scan Prepiad Card"
         android:textColor="#000"
