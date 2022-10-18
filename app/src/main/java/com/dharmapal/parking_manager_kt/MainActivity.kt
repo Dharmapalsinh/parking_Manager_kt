@@ -116,6 +116,8 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.selectedbordercategory)
             binding.vipcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+            binding.normalcard.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
         }
 
         binding.vipcard.setOnClickListener {
@@ -124,7 +126,18 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.selectedbordercategory)
             binding.prepaidcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+            binding.normalcard.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+        }
 
+        binding.normalcard.setOnClickListener {
+            cardtype = "3"
+            binding.normalcard.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.selectedbordercategory)
+            binding.prepaidcard.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+            binding.vipcard.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
         }
 
         val textRecognizer: TextRecognizer = TextRecognizer.Builder(applicationContext).build()
@@ -281,6 +294,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.saveData.observe(this){
             Log.d("save",it.toString())
             Toast.makeText(applicationContext, it.msg,Toast.LENGTH_SHORT).show()
+
+            binding.vnumber.text.clear()
+            binding.slotNo.text = "-"
+
         }
 
         showMe.dismiss()

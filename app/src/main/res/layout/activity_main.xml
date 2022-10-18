@@ -4,353 +4,353 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<!--
-    <SurfaceView
-        android:id="@+id/surface_view"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginHorizontal="0dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
-
-    <ImageView
-        android:id="@+id/capture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="140dp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/ic_photo_cameras" />
-
-    <TextView
-        android:id="@+id/camera_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/surface_view"
-        android:layout_centerHorizontal="true"
-        android:text="there's no text"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="28dp"
-        android:visibility="gone" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/surface_view"
-        android:layout_marginTop="10dp">
-
-        <RelativeLayout
+    <!--
+        <SurfaceView
+            android:id="@+id/surface_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="20dp">
+            android:layout_height="200dp"
+            android:layout_marginHorizontal="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:id="@+id/capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="140dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_photo_cameras" />
+
+        <TextView
+            android:id="@+id/camera_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/surface_view"
+            android:layout_centerHorizontal="true"
+            android:text="there's no text"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="28dp"
+            android:visibility="gone" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/surface_view"
+            android:layout_marginTop="10dp">
 
             <RelativeLayout
-                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_height="match_parent"
+                android:paddingBottom="20dp">
 
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/newlogo" />
+                <RelativeLayout
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/newlogo" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:visibility="gone"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/monospace"
+                            android:includeFontPadding="false"
+                            android:text="01/04/2019"
+                            android:textSize="9sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#c4c4c4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/monospace"
+                            android:includeFontPadding="false"
+                            android:text="01:15 PM"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/pass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:visibility="gone"
-                    android:layout_centerVertical="true"
-                    android:orientation="vertical"
-                    android:weightSum="2">
+                    android:layout_below="@+id/toolbar"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:fontFamily="@font/monospace"
                         android:includeFontPadding="false"
-                        android:text="01/04/2019"
-                        android:textSize="9sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#c4c4c4" />
+                        android:text="Pass Number : "
+                        android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/passno"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:fontFamily="@font/monospace"
                         android:includeFontPadding="false"
-                        android:text="01:15 PM"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
+                        android:text="1234"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/pass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/monospace"
-                    android:includeFontPadding="false"
-                    android:text="Pass Number : "
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/passno"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/monospace"
-                    android:includeFontPadding="false"
-                    android:text="1234"
-                    android:textColor="#000000"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/relVhcle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/pass"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/bordervehicle"
-                android:elevation="3dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
 
                 <RelativeLayout
-                    android:id="@+id/nos"
+                    android:id="@+id/relVhcle"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pass"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/bordervehicle"
+                    android:elevation="3dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
-                    <TextView
-                        android:id="@+id/number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/monospace"
-                        android:includeFontPadding="false"
-                        android:text="Vehicle Number"
-                        android:textSize="10sp" />
-
-                    <EditText
-                        android:id="@+id/vnumber"
+                    <RelativeLayout
+                        android:id="@+id/nos"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/number"
-                        android:background="#EBEBEB"
+                        android:layout_marginLeft="15dp">
+
+                        <TextView
+                            android:id="@+id/number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/monospace"
+                            android:includeFontPadding="false"
+                            android:text="Vehicle Number"
+                            android:textSize="10sp" />
+
+                        <EditText
+                            android:id="@+id/vnumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@+id/number"
+                            android:background="#EBEBEB"
+                            android:fontFamily="@font/monospace"
+                            android:hint="Vehicle No"
+                            android:includeFontPadding="false"
+                            android:textSize="27sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dp"
+                        android:clickable="true"
+                        android:drawableTop="@drawable/ic_photo_camera"
                         android:fontFamily="@font/monospace"
-                        android:hint="Vehicle No"
+                        android:foreground="@drawable/ripple_effect"
                         android:includeFontPadding="false"
-                        android:textSize="27sp"
-                        android:textStyle="bold" />
+                        android:text="Retake"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/vehicle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
+                    android:layout_below="@+id/relVhcle"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/monospace"
+                    android:includeFontPadding="false"
+                    android:text="Vehicle Type"
+                    android:textSize="12sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/vehicle"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingRight="30dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <RelativeLayout
+                    android:id="@+id/slot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/recyclerView"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/borderslot"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true">
+
+                        <TextView
+                            android:id="@+id/slotNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/monospace"
+                            android:includeFontPadding="false"
+                            android:text="-"
+                            android:textColor="#33C57C"
+                            android:textSize="37sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/slotNo"
+                            android:fontFamily="@font/monospace"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="Available Parking Slot"
+                            android:textColor="#908f8f"
+                            android:textSize="11dp" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/slot"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <RelativeLayout
+                        android:id="@+id/prepaidcard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="7dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bordercategory"
+                        android:clickable="true"
+                        android:foreground="@drawable/ripple_effect"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="7dp">
+
+                        <ImageView
+                            android:id="@+id/prepaidCards"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/card" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/prepaidCards"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/monospace"
+                            android:includeFontPadding="false"
+                            android:text="Prepaid Card"
+                            android:textColor="#4e4e4e"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/vipcard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bordercategory"
+                        android:clickable="true"
+                        android:foreground="@drawable/ripple_effect"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="7dp">
+
+                        <ImageView
+                            android:id="@+id/vipCard"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/vip" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/vipCard"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/monospace"
+                            android:includeFontPadding="false"
+                            android:text="VIP Pass"
+                            android:textColor="#4e4e4e"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/printPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/category"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/borderprint"
                     android:clickable="true"
-                    android:drawableTop="@drawable/ic_photo_camera"
                     android:fontFamily="@font/monospace"
                     android:foreground="@drawable/ripple_effect"
+                    android:gravity="center"
                     android:includeFontPadding="false"
-                    android:text="Retake"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/vehicle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/relVhcle"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/monospace"
-                android:includeFontPadding="false"
-                android:text="Vehicle Type"
-                android:textSize="12sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/vehicle"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:paddingRight="30dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <RelativeLayout
-                android:id="@+id/slot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/recyclerView"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/borderslot"
-                android:paddingTop="18dp"
-                android:paddingBottom="10dp">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-
-                    <TextView
-                        android:id="@+id/slotNo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/monospace"
-                        android:includeFontPadding="false"
-                        android:text="-"
-                        android:textColor="#33C57C"
-                        android:textSize="37sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/slotNo"
-                        android:fontFamily="@font/monospace"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="Available Parking Slot"
-                        android:textColor="#908f8f"
-                        android:textSize="11dp" />
-                </RelativeLayout>
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="Print"
+                    android:textColor="#fff"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/slot"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
 
-                <RelativeLayout
-                    android:id="@+id/prepaidcard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="7dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bordercategory"
-                    android:clickable="true"
-                    android:foreground="@drawable/ripple_effect"
-                    android:paddingTop="3dp"
-                    android:paddingBottom="7dp">
-
-                    <ImageView
-                        android:id="@+id/prepaidCards"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/card" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/prepaidCards"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/monospace"
-                        android:includeFontPadding="false"
-                        android:text="Prepaid Card"
-                        android:textColor="#4e4e4e"
-                        android:textSize="12sp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/vipcard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bordercategory"
-                    android:clickable="true"
-                    android:foreground="@drawable/ripple_effect"
-                    android:paddingTop="3dp"
-                    android:paddingBottom="7dp">
-
-                    <ImageView
-                        android:id="@+id/vipCard"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/vip" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/vipCard"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/monospace"
-                        android:includeFontPadding="false"
-                        android:text="VIP Pass"
-                        android:textColor="#4e4e4e"
-                        android:textSize="12sp" />
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/printPass"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/category"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/borderprint"
-                android:clickable="true"
-                android:fontFamily="@font/monospace"
-                android:foreground="@drawable/ripple_effect"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="Print"
-                android:textColor="#fff"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-
-    </ScrollView>-->
+        </ScrollView>-->
 
     <SurfaceView
         android:id="@+id/surface_view"
@@ -500,336 +500,346 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="#EAF1F4"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#EAF1F4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-<!--                <RadioGroup-->
-<!--                    android:id="@+id/radioGroup"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent">-->
+            <!-- <RadioGroup
+                 android:id="@+id/radioGroup"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="parent">
 
-<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content">-->
+                 <androidx.constraintlayout.widget.ConstraintLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content">
 
-<!--                        <RadioButton-->
-<!--                            android:id="@+id/rb_1"-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginHorizontal="15dp"-->
-<!--                            android:buttonTint="@color/colorPrimaryDark"-->
-<!--                            android:checked="true"-->
-<!--                            android:text="Normal"-->
-<!--                            android:textSize="14sp"-->
-<!--                            app:layout_constraintEnd_toEndOf="parent"-->
-<!--                            app:layout_constraintStart_toStartOf="parent"-->
-<!--                            app:layout_constraintTop_toTopOf="parent" />-->
+                     <RadioButton
+                         android:id="@+id/rb_1"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_marginHorizontal="15dp"
+                         android:buttonTint="@color/colorPrimaryDark"
+                         android:checked="true"
+                         android:text="Normal"
+                         android:textSize="14sp"
+                         app:layout_constraintEnd_toEndOf="parent"
+                         app:layout_constraintStart_toStartOf="parent"
+                         app:layout_constraintTop_toTopOf="parent" />
 
-<!--                        <RadioButton-->
-<!--                            android:id="@+id/rb_2"-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:buttonTint="@color/colorPrimaryDark"-->
-<!--                            android:checked="false"-->
-<!--                            android:text="VIP Pass"-->
-<!--                            android:textSize="14sp"-->
-<!--                            app:layout_constraintEnd_toEndOf="@+id/rb_1"-->
-<!--                            app:layout_constraintStart_toStartOf="@+id/rb_1"-->
-<!--                            app:layout_constraintTop_toBottomOf="@+id/rb_1" />-->
+                     <RadioButton
+                         android:id="@+id/rb_2"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:buttonTint="@color/colorPrimaryDark"
+                         android:checked="false"
+                         android:text="VIP Pass"
+                         android:textSize="14sp"
+                         app:layout_constraintEnd_toEndOf="@+id/rb_1"
+                         app:layout_constraintStart_toStartOf="@+id/rb_1"
+                         app:layout_constraintTop_toBottomOf="@+id/rb_1" />
 
-<!--                        <RadioButton-->
-<!--                            android:id="@+id/rb_3"-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:buttonTint="@color/colorPrimaryDark"-->
-<!--                            android:checked="false"-->
-<!--                            android:text="Prepaid Card"-->
-<!--                            android:textSize="14sp"-->
-<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                            app:layout_constraintEnd_toEndOf="@+id/rb_2"-->
-<!--                            app:layout_constraintStart_toStartOf="@+id/rb_2"-->
-<!--                            app:layout_constraintTop_toBottomOf="@+id/rb_2" />-->
+                     <RadioButton
+                         android:id="@+id/rb_3"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:buttonTint="@color/colorPrimaryDark"
+                         android:checked="false"
+                         android:text="Prepaid Card"
+                         android:textSize="14sp"
+                         app:layout_constraintBottom_toBottomOf="parent"
+                         app:layout_constraintEnd_toEndOf="@+id/rb_2"
+                         app:layout_constraintStart_toStartOf="@+id/rb_2"
+                         app:layout_constraintTop_toBottomOf="@+id/rb_2" />
 
-<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
-<!--                </RadioGroup>-->
+                 </androidx.constraintlayout.widget.ConstraintLayout>
+             </RadioGroup>-->
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:text="Vehicle Type : "
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Vehicle Type : "
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="15dp"
-                    android:layout_marginVertical="15dp"
-                    android:orientation="horizontal"
-                    tools:listitem="@layout/pricecard"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginVertical="15dp"
+                android:orientation="horizontal"
+                tools:listitem="@layout/pricecard"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5">
 
-                </androidx.recyclerview.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="5dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerView">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    android:paddingVertical="12dp">
 
 
-                        <TextView
-                            android:id="@+id/textView6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="15dp"
-                            android:text="Available Slot"
-                            android:textColor="@color/black"
-                            android:textSize="20dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:text="Available \nSlot"
+                        android:textAlignment="textStart"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView6"
-                            app:layout_constraintEnd_toStartOf="@+id/slotNo"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/textView6"
-                            app:layout_constraintTop_toTopOf="@+id/textView6"
-                            app:srcCompat="@drawable/arrow" />
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+                        app:layout_constraintEnd_toStartOf="@+id/slotNo"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView6"
+                        app:layout_constraintTop_toTopOf="@+id/textView6"
+                        app:srcCompat="@drawable/arrow" />
 
-                        <TextView
-                            android:id="@+id/slotNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:includeFontPadding="false"
-                            android:text="-"
-                            android:textColor="#33C57C"
-                            android:textSize="37sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView6"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/imageView2"
-                            app:layout_constraintTop_toTopOf="@+id/textView6" />
+                    <TextView
+                        android:id="@+id/slotNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:includeFontPadding="false"
+                        android:text="-"
+                        android:textColor="#33C57C"
+                        android:textSize="37sp"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="100dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/imageView2"
+                        app:layout_constraintTop_toTopOf="@+id/textView6" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/prepaidcard"
-                    android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/prepaidcard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                app:cardCornerRadius="10dp"
+                android:elevation="5dp"
+                app:layout_constraintEnd_toStartOf="@+id/vipcard"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="15dp"
-                    app:cardCornerRadius="10dp"
-                    android:elevation="5dp"
-                    app:layout_constraintEnd_toStartOf="@+id/vipcard"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView">
+                    android:paddingHorizontal="8dp">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/prepaidCards"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="15dp"
+                        android:src="@drawable/card"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
-                            android:id="@+id/prepaidCards"
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_margin="15dp"
-                            android:src="@drawable/card"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginVertical="5dp"
+                        android:text="Prepaid Card"
+                        android:textColor="#4e4e4e"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/prepaidCards"
+                        app:layout_constraintStart_toStartOf="@+id/prepaidCards"
+                        app:layout_constraintTop_toBottomOf="@+id/prepaidCards" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginVertical="5dp"
-                            android:text="Prepaid Card"
-                            android:textColor="#4e4e4e"
-                            android:textSize="12sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/prepaidCards"
-                            app:layout_constraintStart_toStartOf="@+id/prepaidCards"
-                            app:layout_constraintTop_toBottomOf="@+id/prepaidCards" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/vipcard"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:cardCornerRadius="10dp"
+                android:elevation="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/prepaidcard"
+                app:layout_constraintEnd_toStartOf="@+id/normalcard"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/prepaidcard"
+                app:layout_constraintTop_toTopOf="@+id/prepaidcard">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/vipcard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    app:cardCornerRadius="10dp"
-                    android:elevation="5dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/prepaidcard"
-                    app:layout_constraintEnd_toStartOf="@+id/normalcard"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/prepaidcard"
-                    app:layout_constraintTop_toTopOf="@+id/prepaidcard">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/vipCard"
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_margin="15dp"
-                            android:src="@drawable/vip"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/vipCard"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginVertical="5dp"
-                            android:includeFontPadding="false"
-                            android:text="VIP Pass"
-                            android:textAlignment="center"
-                            android:textColor="#4e4e4e"
-                            android:textSize="12sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/vipCard"
-                            app:layout_constraintStart_toStartOf="@+id/vipCard"
-                            app:layout_constraintTop_toBottomOf="@+id/vipCard" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/normalcard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    app:cardCornerRadius="10dp"
-                    android:elevation="5dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/vipcard"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/vipcard"
-                    app:layout_constraintTop_toTopOf="@+id/vipcard">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/normalCard"
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_margin="15dp"
-                            android:src="@drawable/user"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginVertical="5dp"
-                            android:includeFontPadding="false"
-                            android:text="Normal"
-                            android:textAlignment="center"
-                            android:textColor="#4e4e4e"
-                            android:textSize="12sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/normalCard"
-                            app:layout_constraintStart_toStartOf="@+id/normalCard"
-                            app:layout_constraintTop_toBottomOf="@+id/normalCard" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/printPass"
-                    android:layout_width="0dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="15dp"
-                    android:layout_marginVertical="25dp"
-                    app:cardBackgroundColor="#12AF0D"
-                    app:cardCornerRadius="15dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/vipcard">
+                    android:paddingHorizontal="8dp">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/vipCard"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="15dp"
+                        android:src="@drawable/vip"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/tv_pass"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginVertical="15dp"
-                            android:drawableStart="@drawable/rightarrow"
-                            android:drawablePadding="8dp"
-                            android:foreground="@drawable/ripple_effect"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:text="Print &amp; Go"
-                            android:textColor="#fff"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/vipCard"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginVertical="5dp"
+                        android:includeFontPadding="false"
+                        android:text="VIP Pass"
+                        android:textAlignment="center"
+                        android:textColor="#4e4e4e"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/vipCard"
+                        app:layout_constraintStart_toStartOf="@+id/vipCard"
+                        app:layout_constraintTop_toBottomOf="@+id/vipCard" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/normalcard"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:cardCornerRadius="10dp"
+                android:elevation="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/vipcard"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/vipcard"
+                app:layout_constraintTop_toTopOf="@+id/vipcard">
 
-        </androidx.core.widget.NestedScrollView>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="8dp">
+
+                    <ImageView
+                        android:id="@+id/normalCard"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:paddingVertical="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="15dp"
+                        android:src="@drawable/user"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginVertical="5dp"
+                        android:includeFontPadding="false"
+                        android:text="Normal"
+                        android:textAlignment="center"
+                        android:textColor="#4e4e4e"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/normalCard"
+                        app:layout_constraintStart_toStartOf="@+id/normalCard"
+                        app:layout_constraintTop_toBottomOf="@+id/normalCard" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/printPass"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginVertical="25dp"
+                app:cardBackgroundColor="#12AF0D"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vipcard">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_pass"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginVertical="15dp"
+                        android:drawableStart="@drawable/rightarrow"
+                        android:drawablePadding="8dp"
+                        android:foreground="@drawable/ripple_effect"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="Print &amp; Go"
+                        android:textColor="#fff"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
 
