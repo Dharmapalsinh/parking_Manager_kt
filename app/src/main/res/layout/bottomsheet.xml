@@ -11,7 +11,7 @@
         android:id="@+id/pr"
         android:layout_marginTop="30dp"
         android:includeFontPadding="false"
-        tools:text="@string/scan_prepaid_card"
+        android:text="@string/scan_prepaid_card"
         android:textColor="#000"
         android:textSize="18sp"
         android:layout_marginLeft="20dp"

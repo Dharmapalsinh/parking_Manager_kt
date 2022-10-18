@@ -23,7 +23,7 @@
         android:gravity="center"
         android:textSize="16sp"
         android:textStyle="bold"
-        tools:text="@string/error_no_connection"
+        android:text="@string/error_no_connection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -34,7 +34,7 @@
         android:gravity="center"
         android:textColor="#fff"
         android:layout_centerHorizontal="true"
-        tools:text="@string/net"
+        android:text="@string/net"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -42,7 +42,7 @@
         android:id="@+id/done"
         android:textColor="#02786c"
         android:layout_below="@+id/notes"
-        tools:text="@string/try_again"
+        android:text="@string/try_again"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10sp"
         android:layout_marginTop="10sp"

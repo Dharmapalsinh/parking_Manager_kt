@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        tools:text="@string/error_no_text"
+        android:text="@string/error_no_text"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="28dp"
         android:visibility="gone" />

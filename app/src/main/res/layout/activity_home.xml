@@ -59,7 +59,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="12dp"
                 android:elevation="4dp"
-                tools:text="@string/welcome"
+                android:text="@string/welcome"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +72,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                tools:text="@string/spt"
+                android:text="@string/spt"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/textView"
@@ -129,7 +129,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="@string/prepaid"
+                android:text="@string/prepaid"
                 android:layout_marginTop="0dp"
                 android:textAlignment="center"
                 app:layout_constraintTop_toBottomOf="@id/prepaidusers"
@@ -166,7 +166,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="@string/vip"
+                android:text="@string/vip"
                 android:layout_marginTop="0dp"
                 android:textAlignment="center"
                 app:layout_constraintTop_toBottomOf="@id/vip"
@@ -202,7 +202,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="@string/collection"
+                android:text="@string/collection"
                 android:layout_marginTop="0dp"
                 android:textAlignment="center"
                 app:layout_constraintTop_toBottomOf="@id/collection"
@@ -238,7 +238,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="@string/total_entry"
+                android:text="@string/total_entry"
                 android:layout_marginTop="0dp"
                 android:textAlignment="center"
                 app:layout_constraintTop_toBottomOf="@id/parkingEntry"
@@ -320,7 +320,7 @@
             android:layout_marginEnd="24dp"
             android:layout_toRightOf="@+id/chart"
             android:includeFontPadding="false"
-            tools:text="@string/parking_status"
+            android:text="@string/parking_status"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -350,7 +350,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="0dp"
                 android:includeFontPadding="false"
-                tools:text="@string/occupied"
+                android:text="@string/occupied"
                 android:textColor="#ff00"
                 android:textSize="13sp" />
 
@@ -387,7 +387,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:includeFontPadding="false"
-                tools:text="@string/available"
+                android:text="@string/available"
                 android:textColor="#98C90B"
                 android:textSize="13sp" />
 
@@ -431,7 +431,7 @@
                 android:textColor="@color/white"
                 android:letterSpacing="0.04"
                 android:textSize="16sp"
-                tools:text="@string/scan_exit"
+                android:text="@string/scan_exit"
                 android:drawableEnd="@drawable/rightarrow"
                 android:textAlignment="center"
                 android:paddingVertical="12dp"/>
@@ -465,7 +465,7 @@
                 android:layout_height="match_parent"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                tools:text="@string/scan_entry"
+                android:text="@string/scan_entry"
                 android:textAlignment="center"
                 android:paddingVertical="12dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

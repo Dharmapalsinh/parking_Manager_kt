@@ -9,7 +9,7 @@
     android:id="@+id/bg">
 
     <androidx.cardview.widget.CardView
-
+        android:id="@+id/card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
