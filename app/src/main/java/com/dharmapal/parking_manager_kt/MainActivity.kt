@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.checkForInternet
+import com.dharmapal.parking_manager_kt.HomeActivity.Companion.networkDialog
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.adapters.PriceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityMainBinding
@@ -139,6 +140,27 @@ class MainActivity : AppCompatActivity() {
             binding.vipcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
         }
+
+        binding.btnCash.setOnClickListener {
+
+            if (binding.btnUpi.isChecked){
+                binding.btnUpi.isChecked=false
+            }
+        }
+
+        binding.btnUpi.setOnClickListener {
+
+            if (binding.btnCash.isChecked){
+                binding.btnCash.isChecked=false
+            }
+
+            if (binding.btnUpi.isChecked){
+                Toast.makeText(applicationContext,"new act",Toast.LENGTH_SHORT).show()
+            }
+            else{}
+        }
+
+
 
         val textRecognizer: TextRecognizer = TextRecognizer.Builder(applicationContext).build()
 
