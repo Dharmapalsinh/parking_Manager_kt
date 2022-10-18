@@ -9,7 +9,7 @@
     android:id="@+id/bg">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
@@ -41,7 +41,7 @@
                 android:includeFontPadding="false"
                 android:maxLength="4"
                 android:singleLine="true"
-                android:text="20"
+                tools:text="20"
                 android:textColor="#fff"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -59,7 +59,7 @@
                 android:includeFontPadding="false"
                 android:maxLength="15"
                 android:singleLine="true"
-                android:text="Two Wheeler"
+                tools:text="@string/two_wheeler"
                 android:textColor="#fff"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"

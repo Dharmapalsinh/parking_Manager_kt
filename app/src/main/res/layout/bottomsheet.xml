@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="250dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/bottomsheet"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -10,7 +11,7 @@
         android:id="@+id/pr"
         android:layout_marginTop="30dp"
         android:includeFontPadding="false"
-        android:text="Scan Prepiad Card"
+        tools:text="@string/scan_prepaid_card"
         android:textColor="#000"
         android:textSize="18sp"
         android:layout_marginLeft="20dp"

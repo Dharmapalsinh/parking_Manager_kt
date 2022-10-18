@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:letterSpacing="0.04"
-            android:text="DL 10 GJ2456"
+            tools:text="@string/vehicle_no"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -53,7 +53,7 @@
             android:id="@+id/txt_passnum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pass No :"
+            tools:text="@string/pass_no"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -64,7 +64,7 @@
             android:id="@+id/pass_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1234567"
+            tools:text="1234567"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/txt_passnum"
             app:layout_constraintTop_toBottomOf="@+id/txt_passnum" />
@@ -74,7 +74,7 @@
         android:id="@+id/txt_twowheeler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time For Two Wheelar"
+        tools:text="@string/time"
         android:layout_marginStart="24dp"
         android:textSize="20sp"
         android:layout_marginTop="24dp"
@@ -98,7 +98,7 @@
             android:id="@+id/txt_arrTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ARRIVING TIME"
+            tools:text="@string/arriving_time"
             android:textColor="#03A9F4"
             app:layout_constraintBottom_toTopOf="@+id/arrTime"
             app:layout_constraintEnd_toStartOf="@+id/imageView2"
@@ -111,7 +111,7 @@
             android:id="@+id/arrTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Today at 12 pm"
+            tools:text="@string/arriving_time_display"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txt_arrTime"
             app:layout_constraintTop_toBottomOf="@+id/txt_arrTime" />
@@ -131,7 +131,7 @@
             android:id="@+id/txt_leavingTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LEAVING TIME"
+            tools:text="@string/leaving_time"
             android:textColor="#03A9F4"
             app:layout_constraintBottom_toTopOf="@+id/textView5"
             app:layout_constraintEnd_toEndOf="parent"
@@ -144,7 +144,7 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Today at 9 pm"
+            tools:text="@string/leaving_time_display"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txt_leavingTime"
             app:layout_constraintTop_toBottomOf="@+id/txt_leavingTime" />
@@ -166,7 +166,7 @@
             android:id="@+id/txt_refund"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Refundable\nAmount"
+            tools:text="@string/refund"
             android:textStyle="bold"
             android:textAlignment="textStart"
             android:textSize="18sp"
@@ -191,7 +191,7 @@
             android:id="@+id/refund"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0.00 RS"
+            tools:text="@string/refund_amount"
             android:textStyle="bold"
             android:textSize="24sp"
             android:textColor="#069C0C"
@@ -213,8 +213,8 @@
         android:backgroundTint="#1B8008"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayoutamount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintEnd_toEndOf="parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -229,176 +229,176 @@
                 android:layout_height="match_parent"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                android:text="Checkout"
+                tools:text="@string/checkout"
                 android:textAlignment="center"
                 android:paddingVertical="12dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
     <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".QrCodeActivity">-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    tools:context=".QrCodeActivity">-->
 
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
-<!--      &lt;!&ndash;  <com.budiyev.android.codescanner.CodeScannerView-->
-<!--            android:id="@+id/scanner_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="200dp"-->
-<!--            app:autoFocusButtonColor="@android:color/white"-->
-<!--            app:autoFocusButtonVisible="true"-->
-<!--            app:flashButtonColor="@android:color/white"-->
-<!--            app:flashButtonVisible="true"-->
-<!--            app:frameAspectRatioHeight="1"-->
-<!--            app:frameAspectRatioWidth="1"-->
-<!--            app:frameColor="@android:color/white"-->
-<!--            app:frameCornersRadius="0dp"-->
-<!--            app:frameCornersSize="50dp"-->
-<!--            app:frameSize="0.75"-->
-<!--            app:frameThickness="3dp"-->
-<!--            app:maskColor="#77000000" />&ndash;&gt;-->
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
+    <!--      &lt;!&ndash;  <com.budiyev.android.codescanner.CodeScannerView-->
+    <!--            android:id="@+id/scanner_view"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="200dp"-->
+    <!--            app:autoFocusButtonColor="@android:color/white"-->
+    <!--            app:autoFocusButtonVisible="true"-->
+    <!--            app:flashButtonColor="@android:color/white"-->
+    <!--            app:flashButtonVisible="true"-->
+    <!--            app:frameAspectRatioHeight="1"-->
+    <!--            app:frameAspectRatioWidth="1"-->
+    <!--            app:frameColor="@android:color/white"-->
+    <!--            app:frameCornersRadius="0dp"-->
+    <!--            app:frameCornersSize="50dp"-->
+    <!--            app:frameSize="0.75"-->
+    <!--            app:frameThickness="3dp"-->
+    <!--            app:maskColor="#77000000" />&ndash;&gt;-->
 
-<!--        <SurfaceView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="200dp"-->
-<!--            android:id="@+id/surface_view"-->
-<!--            />-->
+    <!--        <SurfaceView-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="200dp"-->
+    <!--            android:id="@+id/surface_view"-->
+    <!--            />-->
 
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:id="@+id/r1"-->
-<!--            android:layout_below="@+id/surface_view"-->
-<!--            android:layout_height="match_parent">-->
+    <!--        <RelativeLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:id="@+id/r1"-->
+    <!--            android:layout_below="@+id/surface_view"-->
+    <!--            android:layout_height="match_parent">-->
 
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/relVhcle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginLeft="20dp"-->
-<!--                android:layout_marginTop="30dp"-->
-<!--                android:layout_marginRight="20dp"-->
-<!--                android:background="@drawable/bordervehicle"-->
-<!--                android:elevation="3dp"-->
-<!--                android:paddingTop="10dp"-->
-<!--                android:paddingBottom="10dp">-->
+    <!--            <RelativeLayout-->
+    <!--                android:id="@+id/relVhcle"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginLeft="20dp"-->
+    <!--                android:layout_marginTop="30dp"-->
+    <!--                android:layout_marginRight="20dp"-->
+    <!--                android:background="@drawable/bordervehicle"-->
+    <!--                android:elevation="3dp"-->
+    <!--                android:paddingTop="10dp"-->
+    <!--                android:paddingBottom="10dp">-->
 
-<!--                <RelativeLayout-->
-<!--                    android:id="@+id/nos"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginLeft="15dp">-->
+    <!--                <RelativeLayout-->
+    <!--                    android:id="@+id/nos"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginLeft="15dp">-->
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/vnumber"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_alignParentTop="true"-->
-<!--                        android:layout_marginTop="0dp"-->
-<!--                        android:background="#EBEBEB"-->
-<!--                        android:focusable="false"-->
-<!--                        android:fontFamily="@font/sfpro"-->
-<!--                        android:hint="Vehicle No"-->
-<!--                        android:includeFontPadding="false"-->
-<!--                        android:textSize="27sp"-->
-<!--                        android:textStyle="bold" />-->
-
-
-<!--                </RelativeLayout>-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentRight="true"-->
-<!--                    android:layout_centerVertical="true"-->
-<!--                    android:layout_marginRight="15dp"-->
-<!--                    android:clickable="true"-->
-<!--                    android:drawableTop="@drawable/ic_photo_camera"-->
-<!--                    android:fontFamily="@font/sfpro"-->
-<!--                    android:foreground="@drawable/ripple_effect"-->
-<!--                    android:includeFontPadding="false"-->
-<!--                    android:text="Retake"-->
-<!--                    android:textSize="10sp"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:visibility="gone" />-->
-
-<!--            </RelativeLayout>-->
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/vnumber"-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_alignParentTop="true"-->
+    <!--                        android:layout_marginTop="0dp"-->
+    <!--                        android:background="#EBEBEB"-->
+    <!--                        android:focusable="false"-->
+    <!--                        android:fontFamily="@font/sfpro"-->
+    <!--                        android:hint="Vehicle No"-->
+    <!--                        android:includeFontPadding="false"-->
+    <!--                        android:textSize="27sp"-->
+    <!--                        android:textStyle="bold" />-->
 
 
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:id="@+id/checkout"-->
-<!--                android:layout_width="205sp"-->
-<!--                android:layout_height="190sp"-->
-<!--                android:layout_centerInParent="true"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginLeft="30sp"-->
-<!--                android:layout_marginRight="30sp"-->
-<!--                android:clickable="true"-->
-<!--                android:foreground="?attr/selectableItemBackground"-->
-<!--                app:cardCornerRadius="5sp"-->
-<!--                app:cardElevation="4sp"-->
-<!--                app:cardUseCompatPadding="true">-->
+    <!--                </RelativeLayout>-->
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="fill_parent"-->
-<!--                    android:gravity="center">-->
+    <!--                <TextView-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_alignParentRight="true"-->
+    <!--                    android:layout_centerVertical="true"-->
+    <!--                    android:layout_marginRight="15dp"-->
+    <!--                    android:clickable="true"-->
+    <!--                    android:drawableTop="@drawable/ic_photo_camera"-->
+    <!--                    android:fontFamily="@font/sfpro"-->
+    <!--                    android:foreground="@drawable/ripple_effect"-->
+    <!--                    android:includeFontPadding="false"-->
+    <!--                    android:text="Retake"-->
+    <!--                    android:textSize="10sp"-->
+    <!--                    android:textStyle="bold"-->
+    <!--                    android:visibility="gone" />-->
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:drawableTop="@drawable/ic_car"-->
-<!--                        android:drawablePadding="10sp"-->
-<!--                        android:fontFamily="@font/exo_2"-->
-<!--                        android:gravity="center"-->
-<!--                        android:text="Checkout"-->
-<!--                        android:textColor="#000"-->
-<!--                        android:textSize="22sp" />-->
+    <!--            </RelativeLayout>-->
 
-<!--                </LinearLayout>-->
 
-<!--            </androidx.cardview.widget.CardView>-->
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:id="@+id/checkout"-->
+    <!--                android:layout_width="205sp"-->
+    <!--                android:layout_height="190sp"-->
+    <!--                android:layout_centerInParent="true"-->
+    <!--                android:layout_centerHorizontal="true"-->
+    <!--                android:layout_marginLeft="30sp"-->
+    <!--                android:layout_marginRight="30sp"-->
+    <!--                android:clickable="true"-->
+    <!--                android:foreground="?attr/selectableItemBackground"-->
+    <!--                app:cardCornerRadius="5sp"-->
+    <!--                app:cardElevation="4sp"-->
+    <!--                app:cardUseCompatPadding="true">-->
 
-<!--            <EditText-->
-<!--                android:id="@+id/passnoo"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:layout_marginLeft="20dp"-->
-<!--                android:layout_marginTop="40dp"-->
-<!--                android:layout_marginRight="20dp"-->
-<!--                android:background="@drawable/border12"-->
-<!--                android:hint="Enter Your Pass Number"-->
-<!--                android:inputType="number"-->
-<!--                android:paddingLeft="5dp"-->
-<!--                android:visibility="gone" />-->
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="fill_parent"-->
+    <!--                    android:layout_height="fill_parent"-->
+    <!--                    android:gravity="center">-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/missingpass1"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="45dp"-->
-<!--                android:layout_alignParentBottom="true"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginLeft="20dp"-->
-<!--                android:layout_marginRight="20dp"-->
-<!--                android:layout_marginBottom="20dp"-->
-<!--                android:background="@drawable/borderprint"-->
-<!--                android:clickable="true"-->
-<!--                android:fontFamily="@font/sfpro"-->
-<!--                android:foreground="@drawable/ripple_effect"-->
-<!--                android:gravity="center"-->
-<!--                android:includeFontPadding="false"-->
-<!--                android:paddingTop="5dp"-->
-<!--                android:paddingBottom="5dp"-->
-<!--                android:text="Missing Pass"-->
-<!--                android:textColor="#fff"-->
-<!--                android:textSize="22sp"-->
-<!--                android:textStyle="bold" />-->
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:drawableTop="@drawable/ic_car"-->
+    <!--                        android:drawablePadding="10sp"-->
+    <!--                        android:fontFamily="@font/exo_2"-->
+    <!--                        android:gravity="center"-->
+    <!--                        android:text="Checkout"-->
+    <!--                        android:textColor="#000"-->
+    <!--                        android:textSize="22sp" />-->
 
-<!--        </RelativeLayout>-->
+    <!--                </LinearLayout>-->
 
-<!--    </RelativeLayout>-->
-<!--</FrameLayout>-->
+    <!--            </androidx.cardview.widget.CardView>-->
+
+    <!--            <EditText-->
+    <!--                android:id="@+id/passnoo"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="40dp"-->
+    <!--                android:layout_marginLeft="20dp"-->
+    <!--                android:layout_marginTop="40dp"-->
+    <!--                android:layout_marginRight="20dp"-->
+    <!--                android:background="@drawable/border12"-->
+    <!--                android:hint="Enter Your Pass Number"-->
+    <!--                android:inputType="number"-->
+    <!--                android:paddingLeft="5dp"-->
+    <!--                android:visibility="gone" />-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/missingpass1"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="45dp"-->
+    <!--                android:layout_alignParentBottom="true"-->
+    <!--                android:layout_centerHorizontal="true"-->
+    <!--                android:layout_marginLeft="20dp"-->
+    <!--                android:layout_marginRight="20dp"-->
+    <!--                android:layout_marginBottom="20dp"-->
+    <!--                android:background="@drawable/borderprint"-->
+    <!--                android:clickable="true"-->
+    <!--                android:fontFamily="@font/sfpro"-->
+    <!--                android:foreground="@drawable/ripple_effect"-->
+    <!--                android:gravity="center"-->
+    <!--                android:includeFontPadding="false"-->
+    <!--                android:paddingTop="5dp"-->
+    <!--                android:paddingBottom="5dp"-->
+    <!--                android:text="Missing Pass"-->
+    <!--                android:textColor="#fff"-->
+    <!--                android:textSize="22sp"-->
+    <!--                android:textStyle="bold" />-->
+
+    <!--        </RelativeLayout>-->
+
+    <!--    </RelativeLayout>-->
+    <!--</FrameLayout>-->
 
