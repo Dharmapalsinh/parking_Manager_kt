@@ -27,6 +27,7 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
     val missingData=MutableLiveData<MissingResponse>()
     val scanData=MutableLiveData<ScanResponse>()
     val checkoutData=MutableLiveData<CheckoutResponse>()
+    val RazorQRData=MutableLiveData<RazorQr_Response>()
 
 //    val authPayload = "rzp_test_CYmjPvZ9udBdjl:xGwUIty7DsvhNxNZj6sehVu5"
 //    val data = authPayload.toByteArray()
@@ -39,6 +40,7 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
                 call: Call<RazorQr_Response>,
                 response: Response<RazorQr_Response>
             ) {
+                RazorQRData.postValue(response.body())
                 Log.d("RazorQr",response.body().toString())
             }
 
