@@ -514,58 +514,58 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+<!--                <RadioGroup-->
+<!--                    android:id="@+id/radioGroup"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent">-->
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content">-->
 
-                        <RadioButton
-                            android:id="@+id/rb_1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="15dp"
-                            android:buttonTint="@color/colorPrimaryDark"
-                            android:checked="true"
-                            android:text="Normal"
-                            android:textSize="14sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+<!--                        <RadioButton-->
+<!--                            android:id="@+id/rb_1"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginHorizontal="15dp"-->
+<!--                            android:buttonTint="@color/colorPrimaryDark"-->
+<!--                            android:checked="true"-->
+<!--                            android:text="Normal"-->
+<!--                            android:textSize="14sp"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                        <RadioButton
-                            android:id="@+id/rb_2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/colorPrimaryDark"
-                            android:checked="false"
-                            android:text="VIP Pass"
-                            android:textSize="14sp"
-                            app:layout_constraintEnd_toEndOf="@+id/rb_1"
-                            app:layout_constraintStart_toStartOf="@+id/rb_1"
-                            app:layout_constraintTop_toBottomOf="@+id/rb_1" />
+<!--                        <RadioButton-->
+<!--                            android:id="@+id/rb_2"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:buttonTint="@color/colorPrimaryDark"-->
+<!--                            android:checked="false"-->
+<!--                            android:text="VIP Pass"-->
+<!--                            android:textSize="14sp"-->
+<!--                            app:layout_constraintEnd_toEndOf="@+id/rb_1"-->
+<!--                            app:layout_constraintStart_toStartOf="@+id/rb_1"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/rb_1" />-->
 
-                        <RadioButton
-                            android:id="@+id/rb_3"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/colorPrimaryDark"
-                            android:checked="false"
-                            android:text="Prepaid Card"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/rb_2"
-                            app:layout_constraintStart_toStartOf="@+id/rb_2"
-                            app:layout_constraintTop_toBottomOf="@+id/rb_2" />
+<!--                        <RadioButton-->
+<!--                            android:id="@+id/rb_3"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:buttonTint="@color/colorPrimaryDark"-->
+<!--                            android:checked="false"-->
+<!--                            android:text="Prepaid Card"-->
+<!--                            android:textSize="14sp"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toEndOf="@+id/rb_2"-->
+<!--                            app:layout_constraintStart_toStartOf="@+id/rb_2"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/rb_2" />-->
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </RadioGroup>
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--                </RadioGroup>-->
 
                 <TextView
                     android:id="@+id/textView5"
@@ -576,7 +576,7 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"

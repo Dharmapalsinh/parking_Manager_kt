@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Repo
+import com.dharmapal.parking_manager_kt.Repo2
 import com.dharmapal.parking_manager_kt.models.*
 import com.dharmapal.parking_manager_kt.models.DashResponse
 import com.dharmapal.parking_manager_kt.models.ForgotPasswordReq
@@ -26,6 +27,26 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
     val missingData=MutableLiveData<MissingResponse>()
     val scanData=MutableLiveData<ScanResponse>()
     val checkoutData=MutableLiveData<CheckoutResponse>()
+
+//    val authPayload = "rzp_test_CYmjPvZ9udBdjl:xGwUIty7DsvhNxNZj6sehVu5"
+//    val data = authPayload.toByteArray()
+//    val base64 = Base64.encodeToString(data, Base64.NO_WRAP)
+
+    fun testqr(repository: Repo2){
+        val response=repository.QRtest()
+        response.enqueue(object :Callback<RazorQr_Response>{
+            override fun onResponse(
+                call: Call<RazorQr_Response>,
+                response: Response<RazorQr_Response>
+            ) {
+                Log.d("RazorQr",response.body().toString())
+            }
+
+            override fun onFailure(call: Call<RazorQr_Response>, t: Throwable) {
+                Log.d("RazorQr",t.message.toString())
+            }
+        })
+    }
 
     fun logIn(number:String,pass:String){
         val response=repository.logIn(number,pass)

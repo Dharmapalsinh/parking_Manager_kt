@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.dharmapal.parking_manager_kt.R
 import com.dharmapal.parking_manager_kt.models.PriceModel
@@ -16,7 +17,7 @@ class PriceAdapter(private val list: List<PriceModel>,val onclick:(PriceModel)->
     var rowIndex = -1
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var bg: RelativeLayout
+        var bg: ConstraintLayout
         var amount: TextView
         var type: TextView
         var check: ImageView

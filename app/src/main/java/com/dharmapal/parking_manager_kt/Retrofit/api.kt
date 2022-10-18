@@ -1,10 +1,22 @@
 package com.dharmapal.parking_manager_kt.Retrofit
 
+import android.util.Base64.NO_WRAP
+import android.util.Base64.encodeToString
 import com.dharmapal.parking_manager_kt.models.*
 import retrofit2.Call
 import retrofit2.http.*
+import java.util.*
+
+interface API2{
+    @GET("payments/qr_codes/")
+    fun tempQR(
+    ):Call<RazorQr_Response>
+
+}
 
 interface API {
+
+
     @POST("login")
     fun logIn(
         @Query("mobile") mobile:String="1234567890",

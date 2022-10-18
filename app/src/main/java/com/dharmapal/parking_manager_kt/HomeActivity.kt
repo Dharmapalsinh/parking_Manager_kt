@@ -21,6 +21,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
+import com.dharmapal.parking_manager_kt.databinding.ActivityQrCodeBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 import kotlin.math.roundToInt
@@ -48,7 +49,8 @@ class HomeActivity : AppCompatActivity() {
         val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
         viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
-        // initializing our shared preferences.
+        viewModel.testqr(Repo2(RetrofitClientCopy()))
+//         initializing our shared preferences.
         sharedPreferences = getSharedPreferences(sharedPref, Context.MODE_PRIVATE)
         callNetworkConnection(application!!,this,this,viewModel)
 
@@ -57,10 +59,10 @@ class HomeActivity : AppCompatActivity() {
             startActivity(i)
         }
 
-       /* binding.btnScanexit.setOnClickListener {
+        binding.btnScanexit.setOnClickListener {
             val i = Intent(this, QrCodeActivity::class.java)
             startActivity(i)
-        }*/
+        }
 
 //        binding.logout.setOnClickListener {
 //            val builder = AlertDialog.Builder(this)

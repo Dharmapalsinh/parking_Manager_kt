@@ -1,5 +1,6 @@
+
+
 package com.dharmapal.parking_manager_kt
-/*
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -57,7 +58,7 @@ class QrCodeActivity : AppCompatActivity() {
         binding.surfaceview.holder.addCallback(surfaceCallback)
         detector.setProcessor(processor)
 
-        lay = findViewById(R.id.relVhcle)
+//        lay = findViewById(R.id.relVhcle)
 
         vNumber = findViewById(R.id.vnumber)
 //        missing = findViewById(R.id.missingpass1)
@@ -66,13 +67,13 @@ class QrCodeActivity : AppCompatActivity() {
 
         callNetworkConnection(application!!, this, this, viewModel)
 
-       binding.btnCheckout.setOnClickListener{
-           if(HomeActivity.checkForInternet(this)){
-               checkout(binding.passNum.text.toString())
-           }
-           else{
-               networkDialog(this,viewModel)
-           }
+        binding.btnCheckout.setOnClickListener{
+            if(HomeActivity.checkForInternet(this)){
+                checkout(binding.passNum.text.toString())
+            }
+            else{
+                networkDialog(this,viewModel)
+            }
 
         }
 //       binding.missingpass1.setOnClickListener {
@@ -163,6 +164,3 @@ class QrCodeActivity : AppCompatActivity() {
     }
 
 }
-
-
-*/
