@@ -27,7 +27,7 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
     val missingData=MutableLiveData<MissingResponse>()
     val scanData=MutableLiveData<ScanResponse>()
     val checkoutData=MutableLiveData<CheckoutResponse>()
-    val RazorQRData=MutableLiveData<RazorQr_Response>()
+    val razorQrData=MutableLiveData<RazorQrResponse>()
 
 //    val authPayload = "rzp_test_CYmjPvZ9udBdjl:xGwUIty7DsvhNxNZj6sehVu5"
 //    val data = authPayload.toByteArray()
@@ -35,16 +35,16 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
 
     fun testqr(repository: Repo2){
         val response=repository.QRtest()
-        response.enqueue(object :Callback<RazorQr_Response>{
+        response.enqueue(object :Callback<RazorQrResponse>{
             override fun onResponse(
-                call: Call<RazorQr_Response>,
-                response: Response<RazorQr_Response>
+                call: Call<RazorQrResponse>,
+                response: Response<RazorQrResponse>
             ) {
-                RazorQRData.postValue(response.body())
+                razorQrData.postValue(response.body())
                 Log.d("RazorQr",response.body().toString())
             }
 
-            override fun onFailure(call: Call<RazorQr_Response>, t: Throwable) {
+            override fun onFailure(call: Call<RazorQrResponse>, t: Throwable) {
                 Log.d("RazorQr",t.message.toString())
             }
         })

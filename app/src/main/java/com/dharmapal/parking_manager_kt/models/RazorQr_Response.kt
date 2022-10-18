@@ -3,7 +3,7 @@ package com.dharmapal.parking_manager_kt.models
 
 import com.google.gson.annotations.SerializedName
 
-data class RazorQr_Response(
+data class RazorQrResponse(
     @SerializedName("count")
     val count: Int?,
     @SerializedName("entity")

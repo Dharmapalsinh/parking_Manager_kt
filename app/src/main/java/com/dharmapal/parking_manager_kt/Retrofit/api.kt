@@ -10,7 +10,7 @@ import java.util.*
 interface API2{
     @GET("payments/qr_codes/")
     fun tempQR(
-    ):Call<RazorQr_Response>
+    ):Call<RazorQrResponse>
 
 }
 
