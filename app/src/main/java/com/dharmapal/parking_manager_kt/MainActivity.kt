@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.checkForInternet
-import com.dharmapal.parking_manager_kt.HomeActivity.Companion.networkDialog
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.adapters.PriceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityMainBinding
@@ -159,7 +158,6 @@ class MainActivity : AppCompatActivity() {
             }
             else{}
         }
-
 
 
         val textRecognizer: TextRecognizer = TextRecognizer.Builder(applicationContext).build()
@@ -407,7 +405,7 @@ class MainActivity : AppCompatActivity() {
             showMe.dismiss()
     }
 
-    fun getSlot(pid: String) {
+    private fun getSlot(pid: String) {
         val showMe = ProgressDialog(this@MainActivity, AlertDialog.THEME_HOLO_LIGHT)
         showMe.setMessage("Please wait")
         showMe.setCancelable(true)

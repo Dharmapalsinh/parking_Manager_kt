@@ -16,6 +16,7 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:elevation="5dp"
         app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -41,31 +42,31 @@
                 android:includeFontPadding="false"
                 android:maxLength="4"
                 android:singleLine="true"
-                tools:text="20"
                 android:textColor="#fff"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="20" />
 
             <TextView
                 android:id="@+id/vehicleType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/amount"
-                android:layout_marginVertical="5dp"
                 android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
                 android:includeFontPadding="false"
                 android:maxLength="15"
                 android:singleLine="true"
-                tools:text="@string/two_wheeler"
                 android:textColor="#fff"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/amount" />
+                app:layout_constraintTop_toBottomOf="@id/amount"
+                tools:text="@string/two_wheeler" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
