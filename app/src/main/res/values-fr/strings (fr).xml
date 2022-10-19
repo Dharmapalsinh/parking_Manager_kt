@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">parking_Manager_kt</string>
-    <string name="net">Something Went Wrong\n Please Check Your Network &amp;</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="app_name">Gestionnaire de parking_kt</string>
+    <string name="net">Quelque chose s\'est mal passé\NVeuillez vérifier votre réseau. &amp;</string>
+    <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+    <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
 
-    <string name="none_paired">No devices have been paired</string>
-    <string name="scanning">scanning for devices...</string>
-    <string name="select_device">select a device to connect</string>
-    <string name="none_found">No devices found</string>
+    <string name="none_paired">Aucun appareil n\'a été apparié</string>
+    <string name="scanning">recherche d\'appareils…</string>
+    <string name="select_device">sélectionnez un appareil à connecter</string>
+    <string name="none_found">Aucun appareil trouvé</string>
+
+    <string name="error_no_text">Il n\'y a pas de texte</string>
+    <string name="paired_devise">Appareils appariés</string>
+    <string name="other_available_device">Autres appareils disponibles</string>
+    <string name="btn_scan">Scanner</string>
+    <string name="email">Entrez votre courriel</string>
+    <string name="btn_send">ENVOYER</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="spt">Spotiz SA</string>
+    <string name="prepaid">Utilisateurs\nprépayés</string>
+    <string name="vip">Pass\nVIP</string>
+
 </resources>
