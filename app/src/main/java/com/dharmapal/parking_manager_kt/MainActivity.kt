@@ -6,6 +6,9 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
@@ -61,6 +64,8 @@ class MainActivity : AppCompatActivity() {
     var code: String? = null
     private val permissionRequestCode = 200
     private val requestConnectDevice = 1
+
+    private lateinit var bluetoothManager: BluetoothManager
     private var mBluetoothAdapter: BluetoothAdapter? = null
 
 
@@ -78,17 +83,17 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
-        val serverIntent = Intent(applicationContext, DeviceListActivity::class.java)
-        startActivityForResult(serverIntent, requestConnectDevice)
+//        val serverIntent = Intent(applicationContext, DeviceListActivity::class.java)
+//        startActivityForResult(serverIntent, requestConnectDevice)
 
         requestPermission()
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-
-        if (mBluetoothAdapter == null) {
-            Log.d("tag", "enableDisableBT: Does not have BT capabilities.")
-        } else if (!mBluetoothAdapter!!.isEnabled) {
-            mBluetoothAdapter!!.enable()
-        }
+//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+//
+//        if (mBluetoothAdapter == null) {
+//            Log.d("tag", "enableDisableBT: Does not have BT capabilities.")
+//        } else if (!mBluetoothAdapter!!.isEnabled) {
+//            mBluetoothAdapter!!.enable()
+//        }
 
         callNetworkConnection(application!!, this, this, viewModel)
         binding.recyclerView.layoutManager=
@@ -140,6 +145,19 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
         }
 
+
+        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        mBluetoothAdapter = bluetoothManager.adapter
+
+        if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+        val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+            it.bondState==BluetoothDevice.BOND_BONDED
+        }
+            if (connected_dv.isNotEmpty()){
+                binding.dvName.text=connected_dv[0].name
+            }
+        }
+
         binding.btnCash.setOnClickListener {
 
             if (binding.btnUpi.isChecked){
@@ -159,6 +177,10 @@ class MainActivity : AppCompatActivity() {
             else{}
         }
 
+        binding.btnConnect.setOnClickListener {
+            val intent=Intent(applicationContext,DeviceListActivity::class.java)
+            startActivity(intent)
+        }
 
         val textRecognizer: TextRecognizer = TextRecognizer.Builder(applicationContext).build()
 

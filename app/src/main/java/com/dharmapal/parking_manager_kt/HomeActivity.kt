@@ -1,6 +1,5 @@
 package com.dharmapal.parking_manager_kt
 
-import com.dharmapal.parking_manager_kt.Utills.CheckNetworkConnection
 import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
@@ -20,8 +19,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
+import com.dharmapal.parking_manager_kt.Utills.CheckNetworkConnection
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
-import com.dharmapal.parking_manager_kt.databinding.ActivityQrCodeBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 import kotlin.math.roundToInt
