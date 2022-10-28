@@ -14,11 +14,13 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import com.dharmapal.parking_manager_kt.adapters.DeviceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityDeviceListBinding
 import java.util.*
@@ -46,6 +48,19 @@ class DeviceListActivity : AppCompatActivity() {
         bluetoothAdapter = bluetoothManager.adapter
         receiver = BluetoothReceiver()
 
+
+        val view: View = LayoutInflater.from(this).inflate(R.layout.item_dialog, null)
+        view.findViewById<ImageView>(R.id.iv1).setOnClickListener {
+            Toast.makeText(this,"iv1",Toast.LENGTH_SHORT).show()
+        }
+        val alertDialog=AlertDialog.Builder(this)
+            .setTitle("Select Device Type")
+            .setView(view)
+            .create()
+        alertDialog.show()
+
+
+        wifiManager= applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (ActivityCompat.checkSelfPermission(
@@ -72,10 +87,7 @@ class DeviceListActivity : AppCompatActivity() {
             when (ContextCompat.checkSelfPermission(
                 baseContext, android.Manifest.permission.ACCESS_COARSE_LOCATION
             )) {
-                PackageManager.PERMISSION_DENIED -> androidx.appcompat.app.AlertDialog.Builder(this)
-                    .setTitle("RunTime permission")
-                    .setMessage("Give permission")
-                    .setNeutralButton("Okay", DialogInterface.OnClickListener { dialog, which ->
+                PackageManager.PERMISSION_DENIED ->
                         if (ContextCompat.checkSelfPermission(
                                 baseContext,
                                 android.Manifest.permission.ACCESS_COARSE_LOCATION
@@ -88,7 +100,6 @@ class DeviceListActivity : AppCompatActivity() {
                                 101
                             )
                         }
-                    }).show()
                 //.findViewById<TextView>(R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
 
                 PackageManager.PERMISSION_GRANTED -> {
@@ -99,23 +110,19 @@ class DeviceListActivity : AppCompatActivity() {
             when (ContextCompat.checkSelfPermission(
                 baseContext, Manifest.permission.ACCESS_FINE_LOCATION
             )) {
-                PackageManager.PERMISSION_DENIED -> androidx.appcompat.app.AlertDialog.Builder(this)
-                    .setTitle("RunTime permission")
-                    .setMessage("Give permission")
-                    .setNeutralButton("Okay", DialogInterface.OnClickListener { dialog, which ->
-                        if (ContextCompat.checkSelfPermission(
-                                baseContext,
-                                Manifest.permission.ACCESS_FINE_LOCATION
-                            ) !=
-                            PackageManager.PERMISSION_GRANTED
-                        ) {
-                            ActivityCompat.requestPermissions(
-                                this,
-                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                                102
-                            )
-                        }
-                    }).show()
+                PackageManager.PERMISSION_DENIED ->
+                    if (ContextCompat.checkSelfPermission(
+                            baseContext,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) !=
+                        PackageManager.PERMISSION_GRANTED
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                            102
+                        )
+                    }
                 //.findViewById<TextView>(R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
 
                 PackageManager.PERMISSION_GRANTED -> {
@@ -141,9 +148,30 @@ class DeviceListActivity : AppCompatActivity() {
         binding.buttonScan.setOnClickListener {
             list.clear()
             discoverDevice()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startActivity( Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
+            }
+            Log.d("wifidevices", wifiManager.scanResults.toString())
         }
     }
 
+//    //connects to the given ssid
+//    private fun connectToWPAWiFi(ssid:String,pass:String){
+//        if(isConnectedTo(ssid)){ //see if we are already connected to the given ssid
+//            toast("Connected to"+ssid)
+//            return
+//        }
+//        val wm:WifiManager= applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+//        var wifiConfig=getWiFiConfig(ssid)
+//        if(wifiConfig==null){//if the given ssid is not present in the WiFiConfig, create a config for it
+//            createWPAProfile(ssid,pass)
+//            wifiConfig=getWiFiConfig(ssid)
+//        }
+//        wm.disconnect()
+//        wm.enableNetwork(wifiConfig!!.networkId,true)
+//        wm.reconnect()
+//        Log.d("wifi", "intiated connection to SSID$ssid");
+//    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -151,12 +179,21 @@ class DeviceListActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode==103){
-            enableBT()
-            getPairedDevice()
-        }
-        else if (requestCode==104){
-            discoverDevice()
+        when (requestCode) {
+            103 -> {
+                enableBT()
+                getPairedDevice()
+            }
+            104 -> {
+                discoverDevice()
+            }
+            101 -> {
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
         }
     }
     @SuppressLint("MissingPermission")
@@ -234,7 +271,7 @@ class DeviceListActivity : AppCompatActivity() {
                 BluetoothDevice.ACTION_FOUND -> {
 
                     val device =
-                        intent?.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+                        intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                     if (device != null) {
                         Log.d("DiscoverDevice4", "${device.name} ${device.address}")
                         if (device.name != null) {
