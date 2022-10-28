@@ -18,6 +18,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -199,14 +201,14 @@ class DeviceListActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     private fun enableBT(){
 
-        if (!bluetoothAdapter.isEnabled) {
-            bluetoothAdapter.enable()
-            val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivity(intent)
+            if (!bluetoothAdapter.isEnabled) {
+                bluetoothAdapter.enable()
+                val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                startActivity(intent)
 
-            val intentFilter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
-            registerReceiver(receiver, intentFilter)
-        }
+                val intentFilter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
+                registerReceiver(receiver, intentFilter)
+            }
     }
 
     private fun buildAlertMessageNoGps() {
@@ -284,7 +286,7 @@ class DeviceListActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_LONG).show()
                 it.createBond()
             }
-            binding.newDevices.adapter = deviceAdapter
+            deviceAdapter.also { binding.newDevices.adapter = it }
         }
 
     }
@@ -300,6 +302,7 @@ class DeviceListActivity : AppCompatActivity() {
             Log.d("bondedDevice", device.name + "  " + device.address + "  " + device.bondState)
             device.removeBond()
         }
+
     }
 
     private fun BluetoothDevice.removeBond() {

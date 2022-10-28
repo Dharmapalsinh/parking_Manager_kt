@@ -366,6 +366,12 @@ class MainActivity : AppCompatActivity() {
 
             binding.vnumber.text.clear()
             binding.slotNo.text = "-"
+            binding.prepaidcard.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+            binding.vipcard.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+            binding.normalcard.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
 
         }
 

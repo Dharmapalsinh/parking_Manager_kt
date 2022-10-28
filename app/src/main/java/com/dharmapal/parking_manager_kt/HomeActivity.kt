@@ -54,7 +54,7 @@ class HomeActivity : AppCompatActivity() {
         callNetworkConnection(application!!,this,this,viewModel)
 
         binding.btnScanEntry.setOnClickListener{
-            val i = Intent(this, MainActivity::class.java)
+            val i = Intent(this, DeviceListActivity::class.java)
             startActivity(i)
         }
 
