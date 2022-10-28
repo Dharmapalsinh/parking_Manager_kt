@@ -1,5 +1,6 @@
 package com.dharmapal.parking_manager_kt
 
+import android.Manifest
 import android.Manifest.permission
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -13,6 +14,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     private var mBluetoothAdapter: BluetoothAdapter? = null
 
 
-    @SuppressLint("MissingPermission")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
@@ -457,6 +459,20 @@ class MainActivity : AppCompatActivity() {
             ),
             permissionRequestCode
         )
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                    103
+                )
+            }
+        }
     }
 
     override fun onBackPressed() {
