@@ -151,15 +151,30 @@ class MainActivity : AppCompatActivity() {
         bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         mBluetoothAdapter = bluetoothManager.adapter
 
-        if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-        val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-            it.bondState==BluetoothDevice.BOND_BONDED
-        }
-            if (connected_dv.isNotEmpty()){
-                binding.dvName.text=connected_dv[0].name
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                    103
+                )
             }
         }
-
+        else{
+            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                    it.bondState==BluetoothDevice.BOND_BONDED
+                }
+                if (connected_dv.isNotEmpty()){
+                    binding.dvName.text=connected_dv[0].name
+                }
+            }
+        }
         binding.btnCash.setOnClickListener {
 
             if (binding.btnUpi.isChecked){
@@ -301,6 +316,16 @@ class MainActivity : AppCompatActivity() {
         lists()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode==103 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+            //todo: after permission grant
+        }
+    }
     private fun playOnOffSound() {
         objMediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.beep)
         objMediaPlayer!!.setOnCompletionListener { mp -> mp.release() }
@@ -460,19 +485,7 @@ class MainActivity : AppCompatActivity() {
             permissionRequestCode
         )
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                    103
-                )
-            }
-        }
+
     }
 
     override fun onBackPressed() {
