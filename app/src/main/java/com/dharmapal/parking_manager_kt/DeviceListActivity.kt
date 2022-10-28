@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothManager
 import android.content.*
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -30,6 +31,9 @@ class DeviceListActivity : AppCompatActivity() {
     var list = ArrayList<BluetoothDevice>()
     private lateinit var bluetoothManager: BluetoothManager
     private lateinit var bluetoothAdapter: BluetoothAdapter
+
+    private lateinit var wifiManager: WifiManager
+//    private lateinit var wifiAdapter: wifiAdapter
     lateinit var receiver: BluetoothReceiver
     lateinit var receiver2: Discoverability
 
@@ -49,6 +53,35 @@ class DeviceListActivity : AppCompatActivity() {
 //        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.BLUETOOTH_SCAN
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.BLUETOOTH_SCAN),
+                        104
+                    )
+                }
+            }
+
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                        103
+                    )
+                }
+            }
+
             when (ContextCompat.checkSelfPermission(
                 baseContext, android.Manifest.permission.ACCESS_COARSE_LOCATION
             )) {
@@ -102,6 +135,8 @@ class DeviceListActivity : AppCompatActivity() {
                     Log.d("DiscoverDevice", "Permission Granted")
                 }
             }
+
+
         }
         else{
 
@@ -122,21 +157,9 @@ class DeviceListActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun enableBT(){
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                    103
-                )
-            }
-        }
         if (!bluetoothAdapter.isEnabled) {
             bluetoothAdapter.enable()
             val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
@@ -172,6 +195,7 @@ class DeviceListActivity : AppCompatActivity() {
 
 
     private val discoverDeviceReceiver = object : BroadcastReceiver() {
+
         @SuppressLint("MissingPermission")
         override fun onReceive(context: Context?, intent: Intent?) {
             var action = intent!!.action
@@ -209,20 +233,9 @@ class DeviceListActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("MissingPermission")
     private fun getPairedDevice() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                    103
-                )
-            }
-        }
+
         val arr = bluetoothAdapter.bondedDevices
         Log.d("bondedDevice", arr.size.toString())
         Log.d("bondedDevice", arr.toString())
