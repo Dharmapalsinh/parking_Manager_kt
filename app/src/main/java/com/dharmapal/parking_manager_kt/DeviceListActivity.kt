@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.dharmapal.parking_manager_kt.adapters.DeviceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityDeviceListBinding
 import java.util.*
@@ -45,28 +46,7 @@ class DeviceListActivity : AppCompatActivity() {
         bluetoothAdapter = bluetoothManager.adapter
         receiver = BluetoothReceiver()
 
-//        if (bluetoothManager.adapter.bondedDevices.isEmpty()){
-//            bluetoothManager.adapter.bondedDevices
-//        }
-//        else{
-//
-//        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_SCAN
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(Manifest.permission.BLUETOOTH_SCAN),
-                        104
-                    )
-                }
-            }
 
             if (ActivityCompat.checkSelfPermission(
                     this,
@@ -80,8 +60,15 @@ class DeviceListActivity : AppCompatActivity() {
                         103
                     )
                 }
+                else{
+                    enableBT()
+                    getPairedDevice()
+                }
             }
-
+            else{
+                enableBT()
+                getPairedDevice()
+            }
             when (ContextCompat.checkSelfPermission(
                 baseContext, android.Manifest.permission.ACCESS_COARSE_LOCATION
             )) {
@@ -148,8 +135,8 @@ class DeviceListActivity : AppCompatActivity() {
         }
 
 
-        enableBT()
-        getPairedDevice()
+//        enableBT()
+//        getPairedDevice()
 
         binding.buttonScan.setOnClickListener {
             list.clear()
@@ -157,6 +144,21 @@ class DeviceListActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode==103){
+            enableBT()
+            getPairedDevice()
+        }
+        else if (requestCode==104){
+            discoverDevice()
+        }
+    }
     @SuppressLint("MissingPermission")
     private fun enableBT(){
 
@@ -182,7 +184,6 @@ class DeviceListActivity : AppCompatActivity() {
         alert.show()
     }
 
-    @SuppressLint("MissingPermission")
     private fun discoverDevice() {
         val filter = IntentFilter()
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
@@ -190,7 +191,26 @@ class DeviceListActivity : AppCompatActivity() {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
         registerReceiver(discoverDeviceReceiver, filter)
-        bluetoothAdapter.startDiscovery()
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH_SCAN
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.BLUETOOTH_SCAN),
+                    104
+                )
+            }
+            else{
+                bluetoothAdapter.startDiscovery()
+            }
+        }
+        else{
+            bluetoothAdapter.startDiscovery()
+        }
     }
 
 
