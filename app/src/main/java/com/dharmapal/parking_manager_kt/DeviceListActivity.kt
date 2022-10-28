@@ -112,6 +112,31 @@ class DeviceListActivity : AppCompatActivity() {
             buildAlertMessageNoGps()
         }
 
+
+        enableBT()
+        getPairedDevice()
+
+        binding.buttonScan.setOnClickListener {
+            list.clear()
+            discoverDevice()
+        }
+    }
+
+    private fun enableBT(){
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                    103
+                )
+            }
+        }
         if (!bluetoothAdapter.isEnabled) {
             bluetoothAdapter.enable()
             val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
@@ -119,13 +144,6 @@ class DeviceListActivity : AppCompatActivity() {
 
             val intentFilter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
             registerReceiver(receiver, intentFilter)
-        }
-
-        getPairedDevice()
-
-        binding.buttonScan.setOnClickListener {
-            list.clear()
-            discoverDevice()
         }
     }
 
@@ -190,16 +208,28 @@ class DeviceListActivity : AppCompatActivity() {
 
     }
 
-    @SuppressLint("MissingPermission")
+
     private fun getPairedDevice() {
-        var arr = bluetoothAdapter.bondedDevices
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                    103
+                )
+            }
+        }
+        val arr = bluetoothAdapter.bondedDevices
         Log.d("bondedDevice", arr.size.toString())
         Log.d("bondedDevice", arr.toString())
         for (device in arr) {
             Log.d("bondedDevice", device.name + "  " + device.address + "  " + device.bondState)
             device.removeBond()
         }
-
     }
 
     private fun BluetoothDevice.removeBond() {
