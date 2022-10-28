@@ -4,4 +4,4 @@
     android:id="@+id/dvName"
     android:layout_height="wrap_content"
     android:padding="5dp"
-    android:textSize="18sp" />
+    android:textSize="18sp"/>
