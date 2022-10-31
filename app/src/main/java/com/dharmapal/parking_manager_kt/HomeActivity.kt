@@ -16,6 +16,7 @@ import android.view.View
 import android.view.Window
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
@@ -40,6 +41,11 @@ class HomeActivity : AppCompatActivity() {
         super.onBackPressed()
         this.finish()
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("lc","start")
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityHomeBinding.inflate(layoutInflater)
@@ -54,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
         callNetworkConnection(application!!,this,this,viewModel)
 
         binding.btnScanEntry.setOnClickListener{
-            val i = Intent(this, DeviceListActivity::class.java)
+            val i = Intent(this, MainActivity::class.java)
             startActivity(i)
         }
 
@@ -180,7 +186,10 @@ class HomeActivity : AppCompatActivity() {
                 //Submit()
                 if (checkForInternet(context)){
                     dialogs.dismiss()
-                    viewModel.submit()
+//                    viewModel.submit()
+                }
+                else{
+
                 }
             }
             dialogs.show()

@@ -62,6 +62,6 @@ interface API {
 
     @GET("chekout")
     fun checkout(
-        @Query("pass_no") pass_no : String
+        @Query("vehicle_no") vehicle_no: String
     ) : Call<CheckoutResponse>
 }

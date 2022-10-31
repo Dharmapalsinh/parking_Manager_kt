@@ -69,7 +69,7 @@ class QrCodeActivity : AppCompatActivity() {
 
         binding.btnCheckout.setOnClickListener{
             if(HomeActivity.checkForInternet(this)){
-                checkout(binding.passNum.text.toString())
+                checkout(binding.vNumber.text.toString())
             }
             else{
                 networkDialog(this,viewModel)

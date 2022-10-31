@@ -170,8 +170,8 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
         })
     }
 
-    fun checkout(pass_no: String){
-        val response=repository.checkout(pass_no)
+    fun checkout(vehicle_no: String){
+        val response=repository.checkout(vehicle_no)
         response.enqueue(object :Callback<CheckoutResponse>{
             override fun onResponse(call: Call<CheckoutResponse>, response: Response<CheckoutResponse>) {
                 Log.d("tagged",response.body().toString())

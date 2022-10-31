@@ -56,6 +56,7 @@
     <string name="error_no_connection">No Connection</string>
     <string name="try_again">Try Again</string>
     <string name="two_wheeler">Two Wheeler</string>
+    <string name="connect">connect</string>
 
 
 </resources>

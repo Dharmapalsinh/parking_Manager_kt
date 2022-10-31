@@ -16,9 +16,11 @@ import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.print.PrintManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Printer
 import android.util.SparseArray
 import android.view.*
 import android.widget.*
@@ -26,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
@@ -42,7 +45,12 @@ import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.io.OutputStream
+import java.io.PrintStream
 
 @Suppress("DEPRECATED_IDENTITY_EQUALS")
 class MainActivity : AppCompatActivity() {
@@ -71,11 +79,60 @@ class MainActivity : AppCompatActivity() {
     private var mBluetoothAdapter: BluetoothAdapter? = null
 
 
+    override fun onStart() {
+        super.onStart()
+        Log.d("lcycle","start")
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                    103
+                )
+            }
+            else{
+                bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+                mBluetoothAdapter = bluetoothManager.adapter
+                if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                    val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                        it.bondState==BluetoothDevice.BOND_BONDED
+                    }
+                    if (connected_dv.isNotEmpty()){
+                        binding.dvName.text=connected_dv[0].name
+                    }
+                    else{
+                        binding.dvName.text="No Device Connected"
+                    }
+                }
+            }
+        }
+        else{
+            bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+            mBluetoothAdapter = bluetoothManager.adapter
+            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                    it.bondState==BluetoothDevice.BOND_BONDED
+                }
+                if (connected_dv.isNotEmpty()){
+                    binding.dvName.text=connected_dv[0].name
+                }
+                else{
+                    binding.dvName.text="No Device Connected"
+                }
+            }
+        }
 
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("lcycle","create")
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
         viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
@@ -148,33 +205,10 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        mBluetoothAdapter = bluetoothManager.adapter
 
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                    103
-                )
-            }
-        }
-        else{
-            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                    it.bondState==BluetoothDevice.BOND_BONDED
-                }
-                if (connected_dv.isNotEmpty()){
-                    binding.dvName.text=connected_dv[0].name
-                }
-            }
-        }
+
+
         binding.btnCash.setOnClickListener {
 
             if (binding.btnUpi.isChecked){
@@ -295,7 +329,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.printPass.setOnClickListener {
-
+            val outputStream:OutputStream? =null
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO){
+//                    outputStream!!.write("First Testing".toByteArray())
+                    doPrint()
+                }
+            }
 
 //            checkInPrint()
 //            // Submit();
@@ -304,6 +344,7 @@ class MainActivity : AppCompatActivity() {
             } else if (pid == "") {
                 Toast.makeText(this@MainActivity, "Please Select Vehicle Type!!!",Toast.LENGTH_SHORT).show()
             } else {
+
                 if(checkForInternet(this)){
                     checkInPrint()
                 }
@@ -316,14 +357,44 @@ class MainActivity : AppCompatActivity() {
         lists()
     }
 
+    private fun doPrint() {
+
+            // Get a PrintManager instance
+            val printManager = this.getSystemService(Context.PRINT_SERVICE) as PrintManager
+            // Set job name, which will be displayed in the print queue
+            val jobName = "${this.getString(R.string.app_name)} Document"
+            // Start a print job, passing in a PrintDocumentAdapter implementation
+            // to handle the generation of a print document
+        Log.d("printwifi","print")
+            printManager.print(jobName, MyPrintDocumentAdapter(this), null)
+
+    }
+
+    @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode==103 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-            //todo: after permission grant
+        if (requestCode==103 ){
+            for (element in grantResults) {
+                if (element == PackageManager.PERMISSION_GRANTED) {
+                    bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+                    mBluetoothAdapter = bluetoothManager.adapter
+                    if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                        val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                            it.bondState==BluetoothDevice.BOND_BONDED
+                        }
+                        if (connected_dv.isNotEmpty()){
+                            binding.dvName.text=connected_dv[0].name
+                        }
+                        else{
+                            binding.dvName.text="No Device Connected"
+                        }
+                    }
+                }
+            }
         }
     }
     private fun playOnOffSound() {

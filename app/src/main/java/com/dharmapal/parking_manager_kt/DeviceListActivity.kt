@@ -21,8 +21,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.dharmapal.parking_manager_kt.adapters.DeviceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityDeviceListBinding
 import java.util.*
@@ -52,15 +55,26 @@ class DeviceListActivity : AppCompatActivity() {
 
 
         val view: View = LayoutInflater.from(this).inflate(R.layout.item_dialog, null)
-        view.findViewById<ImageView>(R.id.iv1).setOnClickListener {
-            Toast.makeText(this,"iv1",Toast.LENGTH_SHORT).show()
-        }
+
         val alertDialog=AlertDialog.Builder(this)
             .setTitle("Select Device Type")
             .setView(view)
             .create()
         alertDialog.show()
-
+        val view1=view.findViewById<ConstraintLayout>(R.id.cv_bluetooth)
+        view1.setOnClickListener {
+            Toast.makeText(this,"Bluetooth",Toast.LENGTH_SHORT).show()
+            alertDialog.dismiss()
+            binding.buttonScan.isVisible=true
+            binding.buttonConnect.isVisible=false
+        }
+        val view2=view.findViewById<ConstraintLayout>(R.id.cv_wifi)
+        view2.setOnClickListener {
+            Toast.makeText(this,"Wifi",Toast.LENGTH_SHORT).show()
+            alertDialog.dismiss()
+            binding.buttonScan.isVisible=false
+            binding.buttonConnect.isVisible=true
+        }
 
         wifiManager= applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -150,6 +164,9 @@ class DeviceListActivity : AppCompatActivity() {
         binding.buttonScan.setOnClickListener {
             list.clear()
             discoverDevice()
+        }
+
+        binding.buttonConnect.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 startActivity( Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
             }

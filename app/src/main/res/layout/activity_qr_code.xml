@@ -22,7 +22,7 @@
         android:paddingVertical="8dp"
         app:layout_constraintTop_toBottomOf="@id/surfaceview">
 
-        <TextView
+        <EditText
             android:id="@+id/v_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
