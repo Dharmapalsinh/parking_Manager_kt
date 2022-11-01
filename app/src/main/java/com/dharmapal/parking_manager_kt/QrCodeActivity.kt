@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.util.SparseArray
 import android.view.SurfaceHolder
@@ -104,6 +106,28 @@ class QrCodeActivity : AppCompatActivity() {
 //
 //       }
 
+        binding.vNumber.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.arrivingVehicle(binding.vNumber.text.toString())
+                viewModel.arrivingVehicleData.observe(this@QrCodeActivity){
+                    if (it.response!=null) {
+                        binding.arrTime.text = it.response.checkinTime!!.subSequence(11,19)
+                        binding.leavingTime.text=it.response.currentTime!!.subSequence(11,19)
+                    }
+                    else{
+
+                    }
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+        })
 
         textRecognizer.setProcessor(object : Detector.Processor<TextBlock> {
             override fun release() {
@@ -133,16 +157,6 @@ class QrCodeActivity : AppCompatActivity() {
                             val temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
                             playOnOffSound()
                             binding.vNumber.setText(stringBuilder.toString().replace("\\s".toRegex(),""))
-                            viewModel.arrivingVehicle(binding.vNumber.text.toString())
-                            viewModel.arrivingVehicleData.observe(this@QrCodeActivity){
-                                if (it.response!=null) {
-                                    binding.arrTime.text = it.response.checkinTime!!.subSequence(11,19)
-                                    binding.leavingTime.text=it.response.currentTime!!.subSequence(11,19)
-                                }
-                                else{
-
-                                }
-                            }
                             cameraSource.stop()
                         }
                         else{
