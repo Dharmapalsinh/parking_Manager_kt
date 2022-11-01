@@ -52,6 +52,7 @@ class QrCodeActivity : AppCompatActivity() {
         viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
         detector=BarcodeDetector.Builder(this).build()
+
         cameraSource=CameraSource.Builder(this,detector)
             .setAutoFocusEnabled(true)
             .build()

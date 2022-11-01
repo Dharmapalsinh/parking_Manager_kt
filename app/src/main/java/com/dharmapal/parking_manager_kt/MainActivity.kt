@@ -49,6 +49,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.io.InputStream
 import java.io.OutputStream
 import java.io.PrintStream
 
@@ -74,10 +75,13 @@ class MainActivity : AppCompatActivity() {
     var code: String? = null
     private val permissionRequestCode = 200
     private val requestConnectDevice = 1
-
+    var vtypes: String? = null
+    var types: String? = null
     private lateinit var bluetoothManager: BluetoothManager
     private var mBluetoothAdapter: BluetoothAdapter? = null
 
+    private val outputStream: OutputStream? = null
+    private val inStream: InputStream? = null
 
     override fun onStart() {
         super.onStart()
@@ -205,10 +209,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-
-
-
         binding.btnCash.setOnClickListener {
 
             if (binding.btnUpi.isChecked){
@@ -329,16 +329,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.printPass.setOnClickListener {
-            val outputStream:OutputStream? =null
+            /*val outputStream:OutputStream? =null
             lifecycleScope.launch {
                 withContext(Dispatchers.IO){
 //                    outputStream!!.write("First Testing".toByteArray())
                     doPrint()
                 }
-            }
-
+            }*/
 //            checkInPrint()
-//            // Submit();
+//             Submit();
             if (binding.vnumber.text.toString() == "") {
                 Toast.makeText(this@MainActivity, "Please Scan Vehicle or Enter Vehicle Number!!!",Toast.LENGTH_SHORT).show()
             } else if (pid == "") {
@@ -365,7 +364,7 @@ class MainActivity : AppCompatActivity() {
             val jobName = "${this.getString(R.string.app_name)} Document"
             // Start a print job, passing in a PrintDocumentAdapter implementation
             // to handle the generation of a print document
-        Log.d("printwifi","print")
+            Log.d("printwifi","print")
             printManager.print(jobName, MyPrintDocumentAdapter(this), null)
 
     }
@@ -418,6 +417,58 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun getPrintFormat(
+        passno: String, datetime: String, vno: String, vtype: String, slotno: String,
+        type: String, amount: String): String? {
+
+        val builder = java.lang.StringBuilder()
+        builder.append("!!Spotiz-Parking!!\n")
+        builder.append("\n")
+        builder.append("Date & Time: $datetime")
+        builder.append("\n")
+        builder.append("Vehicle No : $vno")
+        builder.append("\n")
+        builder.append("--------------------------------")
+        builder.append("\n")
+        builder.append("Pass No : $passno")
+        builder.append("\n")
+        builder.append("Parking Slot No : $slotno")
+        builder.append("\n")
+        builder.append("--------------------------------")
+        builder.append("\n")
+        when (vtype) {
+            "2" -> {
+                vtypes="Two Wheeler"
+            }
+            "3" -> {
+                vtypes="Three Wheeler"
+            }
+            "4"->{
+                vtypes="Four Wheeler"
+            }
+        }
+        builder.append("Vehicle Type : $vtypes ")
+        builder.append("\n")
+        when (type) {
+            "1" -> {
+                types="VIP User"
+            }
+            "2" -> {
+                types="Prepaid User"
+            }
+            "3"->{
+                types="Normal User"
+            }
+        }
+        builder.append("Customer Type : $types")
+        builder.append("\n")
+        builder.append("--------------------------------\n")
+        builder.append("Amount Paid : $amount")
+        builder.append("\n")
+        builder.append("\n")
+        return builder.toString()
+    }
+
     private fun checkInPrint()
     {
 
@@ -435,6 +486,29 @@ class MainActivity : AppCompatActivity() {
             Log.d("save",it.toString())
             Toast.makeText(applicationContext, it.msg,Toast.LENGTH_SHORT).show()
 
+            val cmd = ByteArray(3)
+            cmd[0] = 0x1b
+            cmd[1] = 'a'.code.toByte()
+            cmd[2] = 0x01
+            outputStream?.write(cmd)
+            outputStream?.write(getPrintFormat(it.pass_no,it.checked_in,it.vehicle_no, it.vehicle_type,it.slot_number,it.type,it.amount)!!.toByteArray())
+
+            Log.d("print","${getPrintFormat(it.pass_no,it.checked_in,it.vehicle_no, it.vehicle_type,it.slot_number,it.type,it.amount)}")
+
+            val imagecmd = ByteArray(7)
+            imagecmd[0] = 0x1B
+            imagecmd[1] = 0x5A
+            imagecmd[2] = 0x00
+            imagecmd[3] = 0x02
+            imagecmd[4] = 0x07
+            imagecmd[5] = 0x06
+            imagecmd[6] = 0x00
+            outputStream?.write(imagecmd)
+            outputStream?.write(("" + it.pass_no).toByteArray())
+
+            Log.d("print","${"" + it.pass_no}")
+           //mService.sendMessage("" + it.pass_no, "GBK")
+
             binding.vnumber.text.clear()
             binding.slotNo.text = "-"
             binding.prepaidcard.background =
@@ -444,6 +518,18 @@ class MainActivity : AppCompatActivity() {
             binding.normalcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
 
+            try {
+                if (ActivityCompat.checkSelfPermission(
+                        this@MainActivity,
+                        permission.CAMERA
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return@observe
+                }
+                cameraSource.start(binding.surfaceView.holder)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
 
         showMe.dismiss()
@@ -485,7 +571,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun lists()
     {
-
+        //TODO:call api price
         val showMe = ProgressDialog(this@MainActivity, AlertDialog.THEME_HOLO_LIGHT)
         showMe.setMessage("Please wait")
         showMe.setCancelable(true)
@@ -510,8 +596,6 @@ class MainActivity : AppCompatActivity() {
 
         showMe.dismiss()
 
-        //TODO:call api price
-
     }
 
     fun getData(pID: String, slot: String, slotsId: String, cardType: String, codes: String, vno: String) {
@@ -526,6 +610,51 @@ class MainActivity : AppCompatActivity() {
             viewModel.save(SaveParameters(vno,pID,slot,slotsId,cardType,codes))
             viewModel.saveData.observe(this){
                 Log.d("save",it.toString())
+
+                val cmd = ByteArray(3)
+                cmd[0] = 0x1b
+                cmd[1] = 'a'.code.toByte()
+                cmd[2] = 0x01
+                outputStream?.write(cmd)
+                outputStream?.write(getPrintFormat(it.pass_no,it.checked_in,it.vehicle_no, it.vehicle_type,it.slot_number,it.type,it.amount)!!.toByteArray())
+
+                Log.d("print","${getPrintFormat(it.pass_no,it.checked_in,it.vehicle_no, it.vehicle_type,it.slot_number,it.type,it.amount)}")
+
+                val imagecmd = ByteArray(7)
+                imagecmd[0] = 0x1B
+                imagecmd[1] = 0x5A
+                imagecmd[2] = 0x00
+                imagecmd[3] = 0x02
+                imagecmd[4] = 0x07
+                imagecmd[5] = 0x06
+                imagecmd[6] = 0x00
+                outputStream?.write(imagecmd)
+                outputStream?.write(("" + it.pass_no).toByteArray())
+
+                Log.d("print","${"" + it.pass_no}")
+                //mService.sendMessage("" + it.pass_no, "GBK")
+
+                binding.vnumber.text.clear()
+                binding.slotNo.text = "-"
+                binding.prepaidcard.background =
+                    ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+                binding.vipcard.background =
+                    ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+                binding.normalcard.background =
+                    ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+
+                /* try {
+                     if (ActivityCompat.checkSelfPermission(
+                             this@MainActivity,
+                             permission.CAMERA
+                         ) != PackageManager.PERMISSION_GRANTED
+                     ) {
+                         return@observe
+                     }
+                     cameraSource.start(binding.surfaceView.holder)
+                 } catch (e: IOException) {
+                     e.printStackTrace()
+                 }*/
             }
 
             showMe.dismiss()
