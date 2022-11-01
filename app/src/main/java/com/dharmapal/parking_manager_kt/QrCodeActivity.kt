@@ -38,6 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.util.*
 
 class QrCodeActivity : AppCompatActivity() {
 
@@ -76,6 +77,7 @@ class QrCodeActivity : AppCompatActivity() {
 
             binding.surfaceview.holder.addCallback(surfaceCallback)
         }
+
 //        detector.setProcessor(processor)
 
 //        lay = findViewById(R.id.relVhcle)
@@ -108,6 +110,7 @@ class QrCodeActivity : AppCompatActivity() {
 
             }
 
+            //todo:call api in manually typing
             override fun receiveDetections(detections: Detector.Detections<TextBlock?>) {
                 val items: SparseArray<TextBlock?>? = detections.detectedItems
                 if (items!!.size() != 0) {
@@ -129,10 +132,16 @@ class QrCodeActivity : AppCompatActivity() {
                             binding.cameraTxt.text = stringBuilder.toString()
                             val temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
                             playOnOffSound()
-                            binding.vNumber.setText(stringBuilder.toString().trim { it <= ' ' })
+                            binding.vNumber.setText(stringBuilder.toString().replace("\\s".toRegex(),""))
                             viewModel.arrivingVehicle(binding.vNumber.text.toString())
                             viewModel.arrivingVehicleData.observe(this@QrCodeActivity){
-                                binding.arrTime.text=it.response!!.checkinTime
+                                if (it.response!=null) {
+                                    binding.arrTime.text = it.response.checkinTime!!.subSequence(11,19)
+                                    binding.leavingTime.text=it.response.currentTime!!.subSequence(11,19)
+                                }
+                                else{
+
+                                }
                             }
                             cameraSource.stop()
                         }

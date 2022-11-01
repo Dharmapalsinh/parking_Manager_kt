@@ -307,7 +307,7 @@ class MainActivity : AppCompatActivity() {
                             binding.cameraTxt.text = stringBuilder.toString()
                             temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
                             playOnOffSound()
-                            binding.vnumber.setText(stringBuilder.toString().trim { it <= ' ' })
+                            binding.vnumber.setText(stringBuilder.toString().replace("\\s".toRegex(),""))
                             cameraSource.stop()
                         }
                         else{
