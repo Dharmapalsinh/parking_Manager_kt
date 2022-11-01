@@ -54,29 +54,29 @@ class DeviceListActivity : AppCompatActivity() {
         receiver = BluetoothReceiver()
 
 
-        val view: View = LayoutInflater.from(this).inflate(R.layout.item_dialog, null)
+//        val view: View = LayoutInflater.from(this).inflate(R.layout.item_dialog, null)
 
-        val alertDialog=AlertDialog.Builder(this)
-            .setTitle("Select Device Type")
-            .setView(view)
-            .create()
-        alertDialog.show()
-        val view1=view.findViewById<ConstraintLayout>(R.id.cv_bluetooth)
-        view1.setOnClickListener {
-            Toast.makeText(this,"Bluetooth",Toast.LENGTH_SHORT).show()
-            alertDialog.dismiss()
-            binding.buttonScan.isVisible=true
-            binding.buttonConnect.isVisible=false
-        }
-        val view2=view.findViewById<ConstraintLayout>(R.id.cv_wifi)
-        view2.setOnClickListener {
-            Toast.makeText(this,"Wifi",Toast.LENGTH_SHORT).show()
-            alertDialog.dismiss()
-            binding.buttonScan.isVisible=false
-            binding.buttonConnect.isVisible=true
-        }
-
-        wifiManager= applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+//        val alertDialog=AlertDialog.Builder(this)
+//            .setTitle("Select Device Type")
+//            .setView(view)
+//            .create()
+//        alertDialog.show()
+//        val view1=view.findViewById<ConstraintLayout>(R.id.cv_bluetooth)
+//        view1.setOnClickListener {
+//            Toast.makeText(this,"Bluetooth",Toast.LENGTH_SHORT).show()
+//            alertDialog.dismiss()
+//            binding.buttonScan.isVisible=true
+//            binding.buttonConnect.isVisible=false
+//        }
+//        val view2=view.findViewById<ConstraintLayout>(R.id.cv_wifi)
+//        view2.setOnClickListener {
+//            Toast.makeText(this,"Wifi",Toast.LENGTH_SHORT).show()
+//            alertDialog.dismiss()
+//            binding.buttonScan.isVisible=false
+//            binding.buttonConnect.isVisible=true
+//        }
+//
+//        wifiManager= applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (ActivityCompat.checkSelfPermission(
@@ -166,31 +166,17 @@ class DeviceListActivity : AppCompatActivity() {
             discoverDevice()
         }
 
-        binding.buttonConnect.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startActivity( Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
-            }
-            Log.d("wifidevices", wifiManager.scanResults.toString())
-        }
+//        binding.buttonConnect.setOnClickListener {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                startActivity( Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
+//            }
+//            Log.d("wifidevices", wifiManager.scanResults.toString())
+//        }
+
+
     }
 
-//    //connects to the given ssid
-//    private fun connectToWPAWiFi(ssid:String,pass:String){
-//        if(isConnectedTo(ssid)){ //see if we are already connected to the given ssid
-//            toast("Connected to"+ssid)
-//            return
-//        }
-//        val wm:WifiManager= applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-//        var wifiConfig=getWiFiConfig(ssid)
-//        if(wifiConfig==null){//if the given ssid is not present in the WiFiConfig, create a config for it
-//            createWPAProfile(ssid,pass)
-//            wifiConfig=getWiFiConfig(ssid)
-//        }
-//        wm.disconnect()
-//        wm.enableNetwork(wifiConfig!!.networkId,true)
-//        wm.reconnect()
-//        Log.d("wifi", "intiated connection to SSID$ssid");
-//    }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -282,7 +268,6 @@ class DeviceListActivity : AppCompatActivity() {
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_STARTED -> {
                     Log.d("DiscoverDevice2", "Discovery Started")
-
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> {
                     Log.d("DiscoverDevice3", "Discovery Finish")

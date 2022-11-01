@@ -64,4 +64,9 @@ interface API {
     fun checkout(
         @Query("vehicle_no") vehicle_no: String
     ) : Call<CheckoutResponse>
+
+    @POST("arrivingVehicle")
+    fun arrivingVehicle(
+        @Query("vehicle_no") vehicle_no: String
+    ):Call<ArrivingVehicleResponse>
 }

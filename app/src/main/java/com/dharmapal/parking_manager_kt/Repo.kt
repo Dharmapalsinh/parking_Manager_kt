@@ -29,4 +29,6 @@ class Repo constructor(private val retrofitService: RetrofitClientCopy)  {
     fun scan(pass_no: String)=retrofitService.instance.scan(pass_no)
 
     fun checkout(vehicle_no: String)=retrofitService.instance.checkout(vehicle_no)
+
+    fun arrivingVehicle(vehicle_no: String)=retrofitService.instance.arrivingVehicle(vehicle_no)
 }

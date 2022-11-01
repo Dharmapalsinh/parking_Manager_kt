@@ -28,6 +28,7 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
     val scanData=MutableLiveData<ScanResponse>()
     val checkoutData=MutableLiveData<CheckoutResponse>()
     val razorQrData=MutableLiveData<RazorQrResponse>()
+    val arrivingVehicleData=MutableLiveData<ArrivingVehicleResponse>()
 
 //    val authPayload = "rzp_test_CYmjPvZ9udBdjl:xGwUIty7DsvhNxNZj6sehVu5"
 //    val data = authPayload.toByteArray()
@@ -59,6 +60,22 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
             }
             override fun onFailure(call: Call<LogInResponse>, t: Throwable) {
                 errorMessage.postValue(t.message)
+            }
+        })
+    }
+
+    fun arrivingVehicle(vehicle_no: String){
+        val response=repository.arrivingVehicle(vehicle_no)
+        response.enqueue(object :Callback<ArrivingVehicleResponse>{
+            override fun onResponse(
+                call: Call<ArrivingVehicleResponse>,
+                response: Response<ArrivingVehicleResponse>
+            ) {
+                arrivingVehicleData.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<ArrivingVehicleResponse>, t: Throwable) {
+                Log.d("err",t.message.toString())
             }
         })
     }

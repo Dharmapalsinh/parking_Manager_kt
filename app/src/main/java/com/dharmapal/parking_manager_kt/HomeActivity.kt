@@ -186,7 +186,8 @@ class HomeActivity : AppCompatActivity() {
                 //Submit()
                 if (checkForInternet(context)){
                     dialogs.dismiss()
-//                    viewModel.submit()
+                    //todo below line
+                    viewModel.submit()
                 }
                 else{
 

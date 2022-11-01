@@ -304,7 +304,6 @@ class MainActivity : AppCompatActivity() {
 
                         Log.d("string",stringBuilder.toString())
                         if (stringBuilder.toString().contains(numPlate)){
-
                             binding.cameraTxt.text = stringBuilder.toString()
                             temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
                             playOnOffSound()
@@ -478,7 +477,6 @@ class MainActivity : AppCompatActivity() {
         showMe.setCanceledOnTouchOutside(false)
         showMe.show()
 
-        //TODO:call api save
 
         lists()
         viewModel.save(SaveParameters(binding.vnumber.text.toString(),pid,slots!!,slotid!!,cardtype!!,"0"))
