@@ -57,6 +57,7 @@ class QrCodeActivity : AppCompatActivity() {
     private lateinit var cameraSource: CameraSource
     var simpleDateFormat: SimpleDateFormat = SimpleDateFormat("hh:mm a")
 
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityQrCodeBinding.inflate(layoutInflater)
@@ -81,6 +82,17 @@ class QrCodeActivity : AppCompatActivity() {
 
             binding.surfaceview.holder.addCallback(surfaceCallback)
         }
+
+        binding.capture.setOnClickListener {
+            try {
+                cameraSource.start(binding.surfaceview.holder)
+                binding.vNumber.text.clear()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+
+
 
 //        detector.setProcessor(processor)
 
