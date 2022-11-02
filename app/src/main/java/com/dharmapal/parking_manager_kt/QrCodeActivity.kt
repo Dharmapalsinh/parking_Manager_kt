@@ -134,7 +134,6 @@ class QrCodeActivity : AppCompatActivity() {
 
             }
 
-            //todo:call api in manually typing
             override fun receiveDetections(detections: Detector.Detections<TextBlock?>) {
                 val items: SparseArray<TextBlock?>? = detections.detectedItems
                 if (items!!.size() != 0) {

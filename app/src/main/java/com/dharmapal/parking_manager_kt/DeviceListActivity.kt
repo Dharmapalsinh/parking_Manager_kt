@@ -123,6 +123,7 @@ class DeviceListActivity : AppCompatActivity() {
                 }
             }
 
+            //todo:denied permissions....
             when (ContextCompat.checkSelfPermission(
                 baseContext, Manifest.permission.ACCESS_FINE_LOCATION
             )) {

@@ -8,6 +8,7 @@ import android.app.Dialog
 import android.app.ProgressDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
@@ -52,6 +53,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.PrintStream
+import java.lang.reflect.Method
 
 @Suppress("DEPRECATED_IDENTITY_EQUALS")
 class MainActivity : AppCompatActivity() {
@@ -103,8 +105,9 @@ class MainActivity : AppCompatActivity() {
                 mBluetoothAdapter = bluetoothManager.adapter
                 if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
                     val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                        it.bondState==BluetoothDevice.BOND_BONDED
+                        isConnected(it)
                     }
+
                     if (connected_dv.isNotEmpty()){
                         binding.dvName.text=connected_dv[0].name
                     }
@@ -119,8 +122,9 @@ class MainActivity : AppCompatActivity() {
             mBluetoothAdapter = bluetoothManager.adapter
             if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
                 val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                    it.bondState==BluetoothDevice.BOND_BONDED
+                    isConnected(it)
                 }
+
                 if (connected_dv.isNotEmpty()){
                     binding.dvName.text=connected_dv[0].name
                 }
@@ -145,6 +149,7 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
+
 
 //        val serverIntent = Intent(applicationContext, DeviceListActivity::class.java)
 //        startActivityForResult(serverIntent, requestConnectDevice)
@@ -382,7 +387,7 @@ class MainActivity : AppCompatActivity() {
                     mBluetoothAdapter = bluetoothManager.adapter
                     if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
                         val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                            it.bondState==BluetoothDevice.BOND_BONDED
+                            isConnected(it)
                         }
                         if (connected_dv.isNotEmpty()){
                             binding.dvName.text=connected_dv[0].name
@@ -393,6 +398,15 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun isConnected(device: BluetoothDevice): Boolean {
+        return try {
+            val m: Method = device.javaClass.getMethod("isConnected")
+            m.invoke(device) as Boolean
+        } catch (e: Exception) {
+            throw IllegalStateException(e)
         }
     }
     private fun playOnOffSound() {
