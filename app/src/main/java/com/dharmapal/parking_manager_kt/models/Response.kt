@@ -9,5 +9,9 @@ data class Response(
     @SerializedName("CurrentTime")
     val currentTime: String?,
     @SerializedName("vehicle_no")
-    val vehicleNo: String?
+    val vehicleNo: String?,
+    @SerializedName("vehicle_type")
+    val vehicleType: String?,
+    @SerializedName("amount")
+    val amount: String?
 )

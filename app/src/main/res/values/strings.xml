@@ -44,7 +44,7 @@
     <string name="cash">Cash</string>
     <string name="upi">UPI / Online </string>
     <string name="print">Print &amp; Go</string>
-    <string name="time">Time For Two wheeler</string>
+    <string name="time">Time For Vehicle : </string>
     <string name="arriving_time">ARRIVING TIME</string>
     <string name="arriving_time_display">Today at 12 pm</string>
     <string name="leaving_time">LEAVING TIME</string>

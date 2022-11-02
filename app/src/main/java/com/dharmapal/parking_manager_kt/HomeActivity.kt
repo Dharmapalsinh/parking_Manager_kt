@@ -117,7 +117,7 @@ class HomeActivity : AppCompatActivity() {
                 binding.availabel.text = it.available.toString()
                 binding.prepaidusers.text = it.prepaidUser.toString()
                 binding.vip.text = it.vipUser.toString()
-//                binding.missingpasses.text = it.missingPass.toString()
+                binding.parkingEntry.text = it.totalVehicle.toString()
                 binding.collection.text = it.totalCol
                 binding.occupied.text = it.occupied.toString()
                 binding.circularProgressBar.progress = ints

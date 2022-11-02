@@ -40,6 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class QrCodeActivity : AppCompatActivity() {
@@ -54,6 +55,7 @@ class QrCodeActivity : AppCompatActivity() {
     private var lay: RelativeLayout? = null
 //    private lateinit var detector: BarcodeDetector
     private lateinit var cameraSource: CameraSource
+    var simpleDateFormat: SimpleDateFormat = SimpleDateFormat("hh:mm a")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,14 +114,33 @@ class QrCodeActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
                 viewModel.arrivingVehicle(binding.vNumber.text.toString())
                 viewModel.arrivingVehicleData.observe(this@QrCodeActivity){
                     if (it.response!=null) {
                         binding.arrTime.text = it.response.checkinTime!!.subSequence(11,19)
                         binding.leavingTime.text=it.response.currentTime!!.subSequence(11,19)
+
+                        var date1 = simpleDateFormat.parse(it.response.checkinTime!!.subSequence(11,19).toString())
+                        var date2 = simpleDateFormat.parse(it.response.currentTime!!.subSequence(11,19).toString())
+
+                        val difference: Long = date2.time - date1.time
+                        var days = (difference / (1000 * 60 * 60 * 24))
+                        var hours =
+                            ((difference - 1000 * 60 * 60 * 24 * days) / (1000 * 60 * 60))
+                        var min =
+                            (difference - 1000 * 60 * 60 * 24 * days - 1000 * 60 * 60 * hours)  / (1000*60)
+                        hours = if (hours < 0) -hours else hours
+                        var time = "$hours:$min"
+                        if (min<59 && hours.toInt()==0){
+                            binding.refund.text = it.response.amount + "" +".00 RS"
+                        }
+                       Log.i("Hours", "$hours:$min")
                     }
                     else{
-
+                        binding.arrTime.text = ""
+                        binding.leavingTime.text = ""
+                        binding.refund.text = "0.00 RS"
                     }
                 }
             }
@@ -165,7 +186,6 @@ class QrCodeActivity : AppCompatActivity() {
                 }
             }
         })
-
     }
 
     private fun playOnOffSound() {
@@ -237,6 +257,9 @@ class QrCodeActivity : AppCompatActivity() {
         viewModel.checkoutData.observe(this){
             Log.d("checkout", it.msg)
             Toast.makeText(applicationContext,it.msg,Toast.LENGTH_SHORT).show()
+
+            binding.vNumber.text.clear()
+            binding.arrTime.text = ""
         }
         viewModel.errorMessage.observe(this){
             Log.d("checkout",it.toString())
