@@ -6,113 +6,17 @@
     android:layout_height="match_parent"
     android:background="@drawable/bacgroundfull">
 
-    <!-- <LinearLayout
-         android:layout_marginTop="30dp"
-         android:orientation="vertical"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-         <ImageView
-             android:layout_gravity="center"
-             android:src="@drawable/logo"
-             android:layout_width="150dp"
-             android:layout_height="wrap_content" />
-
-         <TextView
-             android:id="@+id/head"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginLeft="30dp"
-             android:layout_marginTop="30dp"
-             android:fontFamily="@font/abel"
-             android:includeFontPadding="false"
-             android:text="Create\nYour Account"
-             android:textColor="#f97762"
-             android:textSize="27sp"
-             android:textStyle="bold" />
-
-         <TextView
-             android:textColor="#5B5B5B"
-             android:textSize="14sp"
-             android:layout_marginTop="10dp"
-             android:fontFamily="@font/abel"
-             android:includeFontPadding="false"
-             android:text="Enter your personal information and you\ncan start using application now "
-             android:layout_marginLeft="30dp"
-             android:layout_below="@+id/head"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content" />
-
-
-         <LinearLayout
-             android:layout_marginTop="30dp"
-             android:layout_marginLeft="30dp"
-             android:layout_marginRight="30dp"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
-
-             <EditText
-                 android:id="@+id/number"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:drawableLeft="@drawable/ic_user"
-                 android:drawableRight="@drawable/ic_check_mark1"
-                 android:drawablePadding="5dp"
-                 android:fontFamily="@font/abel"
-                 android:hint="Number"
-                 android:includeFontPadding="false"
-                 android:inputType="number"
-                 android:maxLength="10"
-                 android:minHeight="48dp"
-                 android:textSize="14sp"
-                 android:theme="@style/EditText.Green" />
-
-             <EditText
-                 android:id="@+id/pass"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="15dp"
-                 android:drawableLeft="@drawable/ic_lock"
-                 android:drawableRight="@drawable/ic_check_mark1"
-                 android:drawablePadding="5dp"
-                 android:fontFamily="@font/abel"
-                 android:hint="Password"
-                 android:includeFontPadding="false"
-                 android:inputType="numberPassword"
-                 android:minHeight="48dp"
-                 android:textSize="14sp"
-                 android:theme="@style/EditText.Green" />
-
-             <Button
-                 android:id="@+id/login"
-                 android:layout_marginTop="25dp"
-                 android:text="Login"
-                 android:textColor="#fff"
-                 android:textSize="22sp"
-                 android:fontFamily="@font/abel"
-                 android:includeFontPadding="false"
-                 android:background="@drawable/gradient"
-                 android:theme="@style/EditText.Green"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content" />
-
-
-             <TextView
-                 android:id="@+id/fpass"
-                 android:textColor="#FC5B6A"
-                 android:textSize="13sp"
-                 android:layout_gravity="center"
-                 android:layout_marginTop="10dp"
-                 android:fontFamily="@font/abel"
-                 android:text="Forgot Password ?"
-                 android:includeFontPadding="false"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content" />
-
-         </LinearLayout>
-
-     </LinearLayout>-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/imageView"
@@ -211,4 +115,7 @@
         app:layout_constraintStart_toStartOf="@+id/pass"
         app:layout_constraintTop_toBottomOf="@+id/fpass" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

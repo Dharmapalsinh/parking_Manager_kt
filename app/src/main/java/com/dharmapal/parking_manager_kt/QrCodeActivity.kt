@@ -144,10 +144,10 @@ class QrCodeActivity : AppCompatActivity() {
                             (difference - 1000 * 60 * 60 * 24 * days - 1000 * 60 * 60 * hours)  / (1000*60)
                         hours = if (hours < 0) -hours else hours
                         var time = "$hours:$min"
-                        if (min<59 && hours.toInt()==0){
+                        if (min<=59 && hours.toInt()==0){
                             binding.refund.text = it.response.amount + "" +".00 RS"
                         }
-                       Log.i("Hours", "$hours:$min")
+                       Log.i("Hours", "$time")
                     }
                     else{
                         binding.arrTime.text = ""
