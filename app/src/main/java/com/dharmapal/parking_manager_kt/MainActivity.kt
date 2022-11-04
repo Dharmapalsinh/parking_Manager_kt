@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         Log.d("lcycle","start")
 
+        //Todo: apply condition to below line permission
         requestPermission()
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -423,6 +424,10 @@ class MainActivity : AppCompatActivity() {
                                 )
                             )
                         )
+                    }
+                    else if (element==PackageManager.PERMISSION_GRANTED){
+                        Toast.makeText(applicationContext, "granted", Toast.LENGTH_LONG).show()
+                        cameraSource.start(binding.surfaceView.holder)
                     }
                 }
             }
