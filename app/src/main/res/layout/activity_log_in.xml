@@ -101,7 +101,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/pass"
         app:layout_constraintTop_toBottomOf="@+id/pass"
-        tools:text="@string/forgot_password" />
+        android:text="@string/forgot_password" />
 
     <Button
         android:id="@+id/login"

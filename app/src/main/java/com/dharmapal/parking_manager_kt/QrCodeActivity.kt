@@ -195,7 +195,7 @@ class QrCodeActivity : AppCompatActivity() {
                     ActivityCompat.requestPermissions(
                         this@QrCodeActivity,
                         arrayOf(Manifest.permission.CAMERA),
-                        1001
+                        requestCameraPermissionID
                     )
                     return
                 }

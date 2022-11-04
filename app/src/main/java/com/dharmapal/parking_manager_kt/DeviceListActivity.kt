@@ -3,31 +3,30 @@ package com.dharmapal.parking_manager_kt
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothManager
+import android.bluetooth.*
 import android.content.*
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_ACCESS_COARSE_LOCATION
+import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_ACCESS_FINE_LOCATION
+import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_BT_Connect
 import com.dharmapal.parking_manager_kt.adapters.DeviceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityDeviceListBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -45,38 +44,9 @@ class DeviceListActivity : AppCompatActivity() {
     lateinit var receiver: BluetoothReceiver
     lateinit var receiver2: Discoverability
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityDeviceListBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        bluetoothAdapter = bluetoothManager.adapter
-        receiver = BluetoothReceiver()
-
-
-//        val view: View = LayoutInflater.from(this).inflate(R.layout.item_dialog, null)
-
-//        val alertDialog=AlertDialog.Builder(this)
-//            .setTitle("Select Device Type")
-//            .setView(view)
-//            .create()
-//        alertDialog.show()
-//        val view1=view.findViewById<ConstraintLayout>(R.id.cv_bluetooth)
-//        view1.setOnClickListener {
-//            Toast.makeText(this,"Bluetooth",Toast.LENGTH_SHORT).show()
-//            alertDialog.dismiss()
-//            binding.buttonScan.isVisible=true
-//            binding.buttonConnect.isVisible=false
-//        }
-//        val view2=view.findViewById<ConstraintLayout>(R.id.cv_wifi)
-//        view2.setOnClickListener {
-//            Toast.makeText(this,"Wifi",Toast.LENGTH_SHORT).show()
-//            alertDialog.dismiss()
-//            binding.buttonScan.isVisible=false
-//            binding.buttonConnect.isVisible=true
-//        }
-//
-//        wifiManager= applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+    override fun onStart() {
+        super.onStart()
+        Log.d("lcd","start")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (ActivityCompat.checkSelfPermission(
@@ -88,7 +58,7 @@ class DeviceListActivity : AppCompatActivity() {
                     ActivityCompat.requestPermissions(
                         this,
                         arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                        103
+                        Permission_BT_Connect
                     )
                 }
                 else{
@@ -101,21 +71,21 @@ class DeviceListActivity : AppCompatActivity() {
                 getPairedDevice()
             }
             when (ContextCompat.checkSelfPermission(
-                baseContext, android.Manifest.permission.ACCESS_COARSE_LOCATION
+                baseContext, Manifest.permission.ACCESS_COARSE_LOCATION
             )) {
                 PackageManager.PERMISSION_DENIED ->
-                        if (ContextCompat.checkSelfPermission(
-                                baseContext,
-                                android.Manifest.permission.ACCESS_COARSE_LOCATION
-                            ) !=
-                            PackageManager.PERMISSION_GRANTED
-                        ) {
-                            ActivityCompat.requestPermissions(
-                                this,
-                                arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION),
-                                101
-                            )
-                        }
+                    if (ContextCompat.checkSelfPermission(
+                            baseContext,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) !=
+                        PackageManager.PERMISSION_GRANTED
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                            Permission_ACCESS_COARSE_LOCATION
+                        )
+                    }
                 //.findViewById<TextView>(R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
 
                 PackageManager.PERMISSION_GRANTED -> {
@@ -137,7 +107,7 @@ class DeviceListActivity : AppCompatActivity() {
                         ActivityCompat.requestPermissions(
                             this,
                             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                            102
+                            Permission_ACCESS_FINE_LOCATION
                         )
                     }
                 //.findViewById<TextView>(R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
@@ -147,11 +117,17 @@ class DeviceListActivity : AppCompatActivity() {
                 }
             }
 
-
         }
-        else{
 
-        }
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("lcd","create")
+        binding = ActivityDeviceListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        bluetoothAdapter = bluetoothManager.adapter
+        receiver = BluetoothReceiver()
 
         val  manager:LocationManager = getSystemService( Context.LOCATION_SERVICE ) as LocationManager
         if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
@@ -186,17 +162,40 @@ class DeviceListActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            103 -> {
-                enableBT()
-                getPairedDevice()
+            Permission_BT_Connect -> {
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                            "package:$packageName"
+                        )))
+                    }
+                    else if (element== PackageManager.PERMISSION_GRANTED){
+                        enableBT()
+                        getPairedDevice()
+                    }
+                }
             }
             104 -> {
                 discoverDevice()
             }
-            101 -> {
+            Permission_ACCESS_COARSE_LOCATION -> {
                 for (element in grantResults) {
                     if (element == PackageManager.PERMISSION_DENIED) {
                         Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                            "package:$packageName"
+                        )))
+                    }
+                }
+            }
+            Permission_ACCESS_FINE_LOCATION -> {
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                            "package:$packageName"
+                        )))
                     }
                 }
             }
@@ -210,8 +209,7 @@ class DeviceListActivity : AppCompatActivity() {
                 val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 startActivity(intent)
 
-                val intentFilter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
-                registerReceiver(receiver, intentFilter)
+
             }
     }
 
@@ -263,8 +261,6 @@ class DeviceListActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             var action = intent!!.action
 
-
-
             when (action) {
                 BluetoothAdapter.ACTION_STATE_CHANGED -> {
                     Log.d("DiscoverDevice1", "STATE CHANGED")
@@ -274,32 +270,26 @@ class DeviceListActivity : AppCompatActivity() {
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> {
                     Log.d("DiscoverDevice3", "Discovery Finish")
+                    discoverDevice()
                 }
+//                BluetoothAdapter.
                 BluetoothDevice.ACTION_FOUND -> {
-
+                    Log.d("bondedsize",bluetoothAdapter.bondedDevices.size.toString())
                     val device =
                         intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                     if (device != null) {
                         Log.d("DiscoverDevice4", "${device.name} ${device.address}")
                         if (device.name != null) {
                             list.add(device)
-                            if (device.name != null) {
-                                list.add(device)
-                                if (BluetoothDevice.ACTION_ACL_CONNECTED == action) {
-                                    Log.d("DiscoverDevice4", "Device is now Connected")
-                                    Toast.makeText(
-                                        baseContext,
-                                        "Device is now Connected",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED == action) {
-                                    Log.d("DiscoverDevice5", "Device is now disconnected")
-                                    Toast.makeText(
-                                        baseContext,
-                                        "Device is disconnected",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+
+                            when (device.bondState) {
+                                BluetoothDevice.BOND_BONDED -> {
+                                    Log.d("DiscoverDevice5", "bonded")
                                 }
+                                BluetoothDevice.BOND_BONDING -> {
+                                    Log.d("DiscoverDevice5", "bonding")
+                                }
+
                             }
                         }
                     }
@@ -317,13 +307,37 @@ class DeviceListActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_LONG).show()
                 it.createBond()
 
+//                do {
 
-
+//                }
+//                    while (it.bondState==BluetoothDevice.BOND_BONDED)
             }
             deviceAdapter.also { binding.newDevices.adapter = it }
         }
 
     }
+
+    @SuppressLint("MissingPermission")
+    private fun connectToDevice(device: BluetoothDevice) {
+        if (device.bondState == BluetoothDevice.BOND_NONE) {
+            if (!device.createBond()) {
+                throw RuntimeException("Bonding Failed")
+            }
+        }
+        device.connectGatt(this, true, object : BluetoothGattCallback() {
+            override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
+                runOnUiThread {
+                    Log.d("callbackbt","newstate $newState")
+                }
+//                if (newState == 2) {
+//                    gatt.discoverServices()
+//                }
+            }
+
+
+        })
+    }
+
 
 
     @SuppressLint("MissingPermission")
@@ -389,6 +403,9 @@ class BluetoothReceiver : BroadcastReceiver() {
                 }
                 BluetoothAdapter.STATE_TURNING_ON -> {
                     Log.d("message1", "Turning On")
+                }
+                BluetoothAdapter.STATE_CONNECTED->{
+                    Log.d("message1", "done!!")
                 }
             }
         }

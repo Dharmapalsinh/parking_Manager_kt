@@ -15,9 +15,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.print.PrintManager
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -35,6 +37,9 @@ import com.airbnb.lottie.LottieAnimationView
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.checkForInternet
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
+import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_BT_Connect
+import com.dharmapal.parking_manager_kt.Utills.Config.Companion.permissionRequestCode
+import com.dharmapal.parking_manager_kt.Utills.Config.Companion.requestCameraPermissionID
 import com.dharmapal.parking_manager_kt.adapters.PriceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityMainBinding
 import com.dharmapal.parking_manager_kt.models.PriceModel
@@ -62,7 +67,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     var smartCode: EditText? = null
     private lateinit var cameraSource: CameraSource
-    val requestCameraPermissionID = 1001
     var temp: String? = null
     private var bottomSheetDialog: BottomSheetDialog? = null
     private var pAdapter: PriceAdapter? = null
@@ -75,7 +79,6 @@ class MainActivity : AppCompatActivity() {
     private var pno: String? = null
     private var cardtype: String? = "3"
     var code: String? = null
-    private val permissionRequestCode = 200
     private val requestConnectDevice = 1
     var vtypes: String? = null
     var types: String? = null
@@ -88,16 +91,18 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         Log.d("lcycle","start")
+
+        requestPermission()
         if (ActivityCompat.checkSelfPermission(
                 this,
-                Manifest.permission.BLUETOOTH_CONNECT
+                permission.BLUETOOTH_CONNECT
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                    103
+                    arrayOf(permission.BLUETOOTH_CONNECT),
+                    Permission_BT_Connect
                 )
             }
             else{
@@ -154,7 +159,6 @@ class MainActivity : AppCompatActivity() {
 //        val serverIntent = Intent(applicationContext, DeviceListActivity::class.java)
 //        startActivityForResult(serverIntent, requestConnectDevice)
 
-        requestPermission()
 //        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 //
 //        if (mBluetoothAdapter == null) {
@@ -380,21 +384,45 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode==103 ){
-            for (element in grantResults) {
-                if (element == PackageManager.PERMISSION_GRANTED) {
-                    bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-                    mBluetoothAdapter = bluetoothManager.adapter
-                    if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-                        val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                            isConnected(it)
+        when (requestCode) {
+            Permission_BT_Connect -> {
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_GRANTED) {
+                        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+                        mBluetoothAdapter = bluetoothManager.adapter
+                        if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                            val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                                isConnected(it)
+                            }
+                            if (connected_dv.isNotEmpty()){
+                                binding.dvName.text=connected_dv[0].name
+                            }
+                            else{
+                                binding.dvName.text="No Device Connected"
+                            }
                         }
-                        if (connected_dv.isNotEmpty()){
-                            binding.dvName.text=connected_dv[0].name
-                        }
-                        else{
-                            binding.dvName.text="No Device Connected"
-                        }
+                    }
+                    else if (element==PackageManager.PERMISSION_DENIED){
+                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                        startActivity(Intent(
+                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                                "package:$packageName"
+                            )))
+                    }
+                }
+            }
+
+            permissionRequestCode->{
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext, "denied", Toast.LENGTH_LONG).show()
+                        startActivity(
+                            Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                                    "package:$packageName"
+                                )
+                            )
+                        )
                     }
                 }
             }
@@ -691,13 +719,13 @@ class MainActivity : AppCompatActivity() {
         showMe.dismiss()
     }
 
+    //todo: remove unwanted permissions in manifest
     private fun requestPermission() {
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
                 permission.CAMERA,
-                permission.WRITE_EXTERNAL_STORAGE,
-                permission.READ_EXTERNAL_STORAGE,
+                //todo:removed storage permissions
                 permission.BLUETOOTH
             ),
             permissionRequestCode
