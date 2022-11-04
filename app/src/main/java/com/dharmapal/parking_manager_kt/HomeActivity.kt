@@ -69,28 +69,10 @@ class HomeActivity : AppCompatActivity() {
             startActivity(i)
         }
 
-//        binding.logout.setOnClickListener {
-//            val builder = AlertDialog.Builder(this)
-//            builder.setMessage("Are you sure you want to Logout")
-//            builder.setPositiveButton(
-//                "Yes"
-//            ) { dialog, _ ->
-//                //sessionManager.logoutUser()
-//                val editor = sharedPreferences.edit()
-//                editor.clear()
-//                editor.putString("count","0")
-//                editor.apply()
-//                val i = Intent(this, LogInActivity::class.java)
-//                startActivity(i)
-//                dialog.dismiss()
-////                finish()
-//            }
-//            builder.setNegativeButton(
-//                "No"
-//            ) { dialog, _ -> dialog.dismiss() }
-//            val alertDialog = builder.create()
-//            alertDialog.show()
-//        }
+        binding.cardView.setOnClickListener {
+            val i = Intent(this, SettingActivity::class.java)
+            startActivity(i)
+        }
 
         submit()
 

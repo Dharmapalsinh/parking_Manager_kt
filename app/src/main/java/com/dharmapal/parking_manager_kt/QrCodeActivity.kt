@@ -6,7 +6,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.ProgressDialog
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -19,26 +18,17 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
-import androidx.core.util.isNotEmpty
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.networkDialog
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
-import com.dharmapal.parking_manager_kt.Utills.Config.scan
 import com.dharmapal.parking_manager_kt.databinding.ActivityQrCodeBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
-import com.google.android.gms.vision.barcode.Barcode
-import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,13 +38,10 @@ class QrCodeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityQrCodeBinding
     private lateinit var viewModel: MainViewModel
     private var vNumber: TextView? = null
-    private  var missing:TextView? = null
-    private var pass: EditText? = null
     private var objMediaPlayer: MediaPlayer? = null
     private var checkout: CardView? = null
-    private var lay: RelativeLayout? = null
-//    private lateinit var detector: BarcodeDetector
     private lateinit var cameraSource: CameraSource
+    @SuppressLint("SimpleDateFormat")
     var simpleDateFormat: SimpleDateFormat = SimpleDateFormat("hh:mm a")
 
     @SuppressLint("MissingPermission")
@@ -92,15 +79,8 @@ class QrCodeActivity : AppCompatActivity() {
             }
         }
 
-
-
-//        detector.setProcessor(processor)
-
-//        lay = findViewById(R.id.relVhcle)
-
         vNumber = findViewById(R.id.vnumber)
-//        missing = findViewById(R.id.missingpass1)
-//        pass = findViewById(R.id.passnoo)
+
         checkout = findViewById(R.id.btn_checkout)
 
         callNetworkConnection(application!!, this, this, viewModel)
@@ -114,17 +94,14 @@ class QrCodeActivity : AppCompatActivity() {
             }
 
         }
-//       binding.missingpass1.setOnClickListener {
-//            val i = Intent(this, CheckOutActivity::class.java)
-//            startActivity(i)
-//
-//       }
+
 
         binding.vNumber.addTextChangedListener(object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
+            @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
                 viewModel.arrivingVehicle(binding.vNumber.text.toString())
@@ -133,21 +110,21 @@ class QrCodeActivity : AppCompatActivity() {
                         binding.arrTime.text = it.response.checkinTime!!.subSequence(11,19)
                         binding.leavingTime.text=it.response.currentTime!!.subSequence(11,19)
 
-                        var date1 = simpleDateFormat.parse(it.response.checkinTime!!.subSequence(11,19).toString())
-                        var date2 = simpleDateFormat.parse(it.response.currentTime!!.subSequence(11,19).toString())
+                        val date1 = simpleDateFormat.parse(it.response.checkinTime.subSequence(11,19).toString())
+                        val date2 = simpleDateFormat.parse(it.response.currentTime.subSequence(11,19).toString())
 
-                        val difference: Long = date2.time - date1.time
-                        var days = (difference / (1000 * 60 * 60 * 24))
+                        val difference: Long = date2!!.time - date1!!.time
+                        val days = (difference / (1000 * 60 * 60 * 24))
                         var hours =
                             ((difference - 1000 * 60 * 60 * 24 * days) / (1000 * 60 * 60))
-                        var min =
+                        val min =
                             (difference - 1000 * 60 * 60 * 24 * days - 1000 * 60 * 60 * hours)  / (1000*60)
                         hours = if (hours < 0) -hours else hours
-                        var time = "$hours:$min"
+                        val time = "$hours:$min"
                         if (min<=59 && hours.toInt()==0){
                             binding.refund.text = it.response.amount + "" +".00 RS"
                         }
-                       Log.i("Hours", "$time")
+                       Log.i("Hours", time)
                     }
                     else{
                         binding.arrTime.text = ""
@@ -186,7 +163,7 @@ class QrCodeActivity : AppCompatActivity() {
                         Log.d("string",stringBuilder.toString())
                         if (stringBuilder.toString().contains(numPlate)){
                             binding.cameraTxt.text = stringBuilder.toString()
-                            val temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
+                            //val temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
                             playOnOffSound()
                             binding.vNumber.setText(stringBuilder.toString().replace("\\s".toRegex(),""))
                             cameraSource.stop()
@@ -238,7 +215,7 @@ class QrCodeActivity : AppCompatActivity() {
     }
 
 
-    fun scan(result: String) {
+/*    fun scan(result: String) {
 //        val showMe = ProgressDialog(this@QrCodeActivity, AlertDialog.THEME_HOLO_LIGHT)
 //        showMe.setMessage("Please wait")
 //        showMe.setCancelable(true)
@@ -254,7 +231,7 @@ class QrCodeActivity : AppCompatActivity() {
         viewModel.errorMessage.observe(this){
             Log.d("scan",it.toString())
         }
-    }
+    }*/
 
     private fun checkout(result: String) {
         val showMe = ProgressDialog(this@QrCodeActivity, AlertDialog.THEME_HOLO_LIGHT)

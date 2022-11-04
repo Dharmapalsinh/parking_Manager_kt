@@ -57,6 +57,15 @@
     <string name="try_again">Try Again</string>
     <string name="two_wheeler">Two Wheeler</string>
     <string name="connect">connect</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string name="setting">SETTINGS</string>
+    <string name="language">Language</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="privacy">Privacy</string>
+    <string name="info">Information</string>
+    <string name="logout">Log Out</string>
+    <string name="english">English</string>
 
 
 </resources>

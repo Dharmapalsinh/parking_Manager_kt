@@ -27,7 +27,8 @@
         app:layout_constraintDimensionRatio="2:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo1" />
+        app:srcCompat="@drawable/logo1"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/textView"
@@ -69,7 +70,8 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        android:autofillHints=""/>
 
     <EditText
         android:id="@+id/pass"
@@ -87,7 +89,8 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/number"
         app:layout_constraintStart_toStartOf="@id/number"
-        app:layout_constraintTop_toBottomOf="@+id/number" />
+        app:layout_constraintTop_toBottomOf="@+id/number"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/fpass"
