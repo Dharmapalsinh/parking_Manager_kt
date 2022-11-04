@@ -7,16 +7,19 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.PopupMenu
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
+import com.codemybrainsout.ratingdialog.RatingDialog
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.databinding.ActivitySettingBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 
-class SettingActivity : AppCompatActivity() {
+class  SettingActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingBinding
     private val sharedPref: String = "shared_prefs"
     var mypopupWindow: PopupWindow = PopupWindow()
@@ -54,6 +57,10 @@ class SettingActivity : AppCompatActivity() {
             alertDialog.show()
         }
 
+        binding.tvRate.setOnClickListener {
+            showDialog()
+        }
+
         binding.tvEnglish.setOnClickListener {
             val  inflater: LayoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val view = inflater.inflate(R.layout.custom_popup_menu, null)
@@ -75,5 +82,24 @@ class SettingActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun showDialog() {
+        val ratingDialog: RatingDialog = RatingDialog.Builder(this)
+            .threshold(3)
+            .session(1)
+            .ratingBarColor(R.color.colorPrimaryDark)
+            .onThresholdCleared { _, rating, thresholdCleared -> Log.i(TAG, "onThresholdCleared: $rating $thresholdCleared") }
+            .onThresholdFailed { _, rating, thresholdCleared -> Log.i(TAG, "onThresholdFailed: $rating $thresholdCleared") }
+            .onRatingChanged { rating, thresholdCleared -> Log.i(TAG, "onRatingChanged: $rating $thresholdCleared") }
+            .onRatingBarFormSubmit { feedback -> Log.i(TAG, "onRatingBarFormSubmit: $feedback") }
+            .build()
+
+        ratingDialog.show()
+    }
+
+
+    companion object {
+        private val TAG = MainActivity::class.java.simpleName
     }
 }

@@ -11,4 +11,20 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+   <!-- <color name="primaryTextColor">#D81B60</color>
+    <color name="secondaryTextColor">#D81B60</color>
+    <color name="feedbackTextColor">#D81B60</color>
+    <color name="ratingBarColor">#D81B60</color>
+-->
+    <color name="buttonBackgroundColor">#FFFFFF</color>
+    <color name="cardBackgroundColor">#FFFFFF</color>
+    <color name="contentBackgroundColor">#FFFFFF</color>
+    <color name="feedbackTextColor">#000000</color>
+    <color name="hintTextColor">#9E9E9E</color>
+    <color name="primaryTextColor">#FFFFFF</color>
+    <color name="ratingBarColor">#FFD600</color>
+    <color name="secondaryTextColor">#9E9E9E</color>
+    <color name="strokeColor">#9E9E9E</color>
+    <color name="textFieldColor">#0F0F0F</color>
 </resources>
