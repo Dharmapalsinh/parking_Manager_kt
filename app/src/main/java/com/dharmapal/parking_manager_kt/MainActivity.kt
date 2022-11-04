@@ -558,7 +558,7 @@ class MainActivity : AppCompatActivity() {
             binding.normalcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
 
-            try {
+            /*try {
                 if (ActivityCompat.checkSelfPermission(
                         this@MainActivity,
                         permission.CAMERA
@@ -569,7 +569,7 @@ class MainActivity : AppCompatActivity() {
                 cameraSource.start(binding.surfaceView.holder)
             } catch (e: IOException) {
                 e.printStackTrace()
-            }
+            }*/
         }
 
         showMe.dismiss()

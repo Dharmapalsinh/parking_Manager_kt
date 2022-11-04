@@ -295,14 +295,7 @@ class DeviceListActivity : AppCompatActivity() {
                     }
                 }
             }
-            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-                //Do something if connected
-                Toast.makeText(applicationContext, "BT Connected", Toast.LENGTH_SHORT).show();
-            }
-            else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                //Do something if disconnected
-                Toast.makeText(applicationContext, "BT Disconnected", Toast.LENGTH_SHORT).show();
-            }
+
             deviceAdapter = DeviceAdapter(list) {
                 Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_LONG).show()
                 it.createBond()
