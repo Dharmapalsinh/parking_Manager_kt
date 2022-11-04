@@ -263,8 +263,6 @@ class DeviceListActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             var action = intent!!.action
 
-
-
             when (action) {
                 BluetoothAdapter.ACTION_STATE_CHANGED -> {
                     Log.d("DiscoverDevice1", "STATE CHANGED")
@@ -283,48 +281,20 @@ class DeviceListActivity : AppCompatActivity() {
                         Log.d("DiscoverDevice4", "${device.name} ${device.address}")
                         if (device.name != null) {
                             list.add(device)
-                            if (device.name != null) {
-                                list.add(device)
-                                if (BluetoothDevice.ACTION_ACL_CONNECTED == action) {
-                                    Log.d("DiscoverDevice4", "Device is now Connected")
-                                    Toast.makeText(
-                                        baseContext,
-                                        "Device is now Connected",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED == action) {
-                                    Log.d("DiscoverDevice5", "Device is now disconnected")
-                                    Toast.makeText(
-                                        baseContext,
-                                        "Device is disconnected",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
                         }
                     }
                 }
             }
-            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-                //Do something if connected
-                Toast.makeText(applicationContext, "BT Connected", Toast.LENGTH_SHORT).show();
-            }
-            else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                //Do something if disconnected
-                Toast.makeText(applicationContext, "BT Disconnected", Toast.LENGTH_SHORT).show();
-            }
+
             deviceAdapter = DeviceAdapter(list) {
                 Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_LONG).show()
                 it.createBond()
-
-
 
             }
             deviceAdapter.also { binding.newDevices.adapter = it }
         }
 
     }
-
 
     @SuppressLint("MissingPermission")
     private fun getPairedDevice() {
