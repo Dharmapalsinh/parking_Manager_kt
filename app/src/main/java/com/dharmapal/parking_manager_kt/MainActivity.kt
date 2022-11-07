@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
     private var handler: Handler = Handler(Looper.getMainLooper())
     var runnable: Runnable? = null
     var delay = 1000
-    lateinit var textRecognizer:TextRecognizer
+    lateinit var  textRecognizer:TextRecognizer
 
     @SuppressLint("MissingPermission")
     override fun onResume() {
@@ -129,13 +129,13 @@ class MainActivity : AppCompatActivity() {
         Log.d("lcycle","start")
 
         //Todo: apply condition to below line permission
-        requestPermission()
+//        requestPermission()
         when {
             ActivityCompat.checkSelfPermission(
                 this,
                 permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+
                     ActivityCompat.requestPermissions(
                         this,
                         arrayOf(
@@ -144,25 +144,7 @@ class MainActivity : AppCompatActivity() {
                         ),
                         permissionRequestCode
                     )
-                }
-                else{
-                    cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
-                        .setFacing(CameraSource.CAMERA_FACING_BACK)
-                        .setRequestedPreviewSize(400, 480)
-                        .setAutoFocusEnabled(true)
-                        .setRequestedFps(2.0f)
-                        .build()
-                    cameraSource.start(binding.surfaceView.holder)
-                }
-            }
-            else -> {
-                cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
-                    .setFacing(CameraSource.CAMERA_FACING_BACK)
-                    .setRequestedPreviewSize(400, 480)
-                    .setAutoFocusEnabled(true)
-                    .setRequestedFps(2.0f)
-                    .build()
-                cameraSource.start(binding.surfaceView.holder)
+
             }
         }
         when {
@@ -493,12 +475,13 @@ class MainActivity : AppCompatActivity() {
                     }
                     else if (element==PackageManager.PERMISSION_GRANTED){
                         Toast.makeText(applicationContext, "granted", Toast.LENGTH_LONG).show()
-                        cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
-                            .setFacing(CameraSource.CAMERA_FACING_BACK)
-                            .setRequestedPreviewSize(400, 480)
-                            .setAutoFocusEnabled(true)
-                            .setRequestedFps(2.0f)
-                            .build()
+//                        val textRecognizer = TextRecognizer.Builder(applicationContext).build()
+//                        cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
+//                            .setFacing(CameraSource.CAMERA_FACING_BACK)
+//                            .setRequestedPreviewSize(400, 480)
+//                            .setAutoFocusEnabled(true)
+//                            .setRequestedFps(2.0f)
+//                            .build()
                         cameraSource.start(binding.surfaceView.holder)
                     }
                 }
