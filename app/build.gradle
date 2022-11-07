@@ -71,4 +71,8 @@ dependencies {
     //
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0"
     implementation 'com.codemybrainsout.rating:ratingdialog:2.0.0'
+
+    //
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

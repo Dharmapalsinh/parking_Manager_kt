@@ -156,18 +156,6 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
-
-//        val serverIntent = Intent(applicationContext, DeviceListActivity::class.java)
-//        startActivityForResult(serverIntent, requestConnectDevice)
-
-//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-//
-//        if (mBluetoothAdapter == null) {
-//            Log.d("tag", "enableDisableBT: Does not have BT capabilities.")
-//        } else if (!mBluetoothAdapter!!.isEnabled) {
-//            mBluetoothAdapter!!.enable()
-//        }
-
         callNetworkConnection(application!!, this, this, viewModel)
         binding.recyclerView.layoutManager=
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -616,7 +604,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun lists()
     {
-        //TODO:call api price
         val showMe = ProgressDialog(this@MainActivity, AlertDialog.THEME_HOLO_LIGHT)
         showMe.setMessage("Please wait")
         showMe.setCancelable(true)
@@ -730,8 +717,7 @@ class MainActivity : AppCompatActivity() {
             this,
             arrayOf(
                 permission.CAMERA,
-                //todo:removed storage permissions
-                permission.BLUETOOTH
+                //todo:removed storage & BT permissions
             ),
             permissionRequestCode
         )
@@ -741,7 +727,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(applicationContext,HomeActivity::class.java))
+//        this.finish()
 //        finish()
     }
 

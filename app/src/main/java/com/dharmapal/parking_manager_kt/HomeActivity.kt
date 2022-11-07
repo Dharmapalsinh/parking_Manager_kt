@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,29 +12,37 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.Utills.CheckNetworkConnection
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var viewModel: MainViewModel
-    //private val retrofitService = RetrofitService.getInstance()
     // creating constant keys for shared preferences.
     private val sharedPref: String = "shared_prefs"
-
+    private var handler: Handler = Handler(Looper.getMainLooper())
+    var runnable: Runnable? = null
+    var delay = 2000
     // variable for shared preferences.
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -46,6 +55,7 @@ class HomeActivity : AppCompatActivity() {
         super.onStart()
         Log.d("lc","start")
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityHomeBinding.inflate(layoutInflater)
@@ -79,14 +89,18 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun submit(){
-        val showMe = ProgressDialog(this, AlertDialog.THEME_HOLO_LIGHT)
-        showMe.setMessage("Please wait")
-        showMe.setCancelable(true)
-        showMe.setCanceledOnTouchOutside(false)
-        showMe.show()
+//        val showMe = ProgressDialog(this, AlertDialog.THEME_HOLO_LIGHT)
+//        showMe.setMessage("Please wait")
+//        showMe.setCancelable(true)
+//        showMe.setCanceledOnTouchOutside(false)
+//        showMe.show()
+        val animation=binding.animation
+        handler.postDelayed(Runnable {
+            handler.postDelayed(runnable!!, delay.toLong())
+            animation.playAnimation()
+        }.also { runnable = it }, delay.toLong())
 
         viewModel.submit()
-        showMe.dismiss()
         viewModel.dashboardData.observe(this){
             if(it==null ){
                 networkDialog(this,viewModel)
@@ -96,14 +110,28 @@ class HomeActivity : AppCompatActivity() {
 
                 val ints = ("" + it.occPer).toFloat().roundToInt()
 
-                binding.availabel.text = it.available.toString()
-                binding.prepaidusers.text = it.prepaidUser.toString()
-                binding.vip.text = it.vipUser.toString()
-                binding.parkingEntry.text = it.totalVehicle.toString()
-                binding.collection.text = it.totalCol
-                binding.occupied.text = it.occupied.toString()
-                binding.circularProgressBar.progress = ints
-                binding.progress.text = it.occPer.toString() + "%"
+
+                lifecycleScope.launch {
+
+                    delay(5000)
+                    binding.availabel.text = it.available.toString()
+                    binding.prepaidusers.text = it.prepaidUser.toString()
+                    binding.vip.text = it.vipUser.toString()
+                    binding.parkingEntry.text = it.totalVehicle.toString()
+                    binding.collection.text = it.totalCol
+                    binding.occupied.text = it.occupied.toString()
+                    binding.circularProgressBar.progress = ints
+                    binding.progress.text = it.occPer.toString() + "%"
+
+
+                    animation.cancelAnimation()
+                    handler.removeCallbacks(runnable!!)
+                    binding.animation.isVisible=false
+                }
+
+
+
+//                showMe.dismiss()
             }
         }
         viewModel.errorMessage.observe(this){

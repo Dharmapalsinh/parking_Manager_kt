@@ -14,6 +14,9 @@ import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
+import com.dharmapal.parking_manager_kt.HomeActivity.Companion.checkForInternet
+import com.dharmapal.parking_manager_kt.HomeActivity.Companion.networkDialog
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityLogInBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
@@ -48,6 +51,7 @@ class LogInActivity : AppCompatActivity() {
         viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
 
+        callNetworkConnection(application!!, this, this, viewModel)
         // getting the data which is stored in shared preferences.
         sharedPreferences = getSharedPreferences(sharedPref, Context.MODE_PRIVATE)
 
@@ -119,19 +123,33 @@ class LogInActivity : AppCompatActivity() {
                 toast(this, "Please Enter Password First!!!")
             } else {
 
-            login(number.text.toString(), password.text.toString())
+                if (checkForInternet(this)){
 
-            val editor = sharedPreferences.edit()
+                    login(number.text.toString(), password.text.toString())
 
-            editor.putString(emailKey, number.text.toString())
-            editor.putString(passwordKey, password.text.toString())
-            editor.putString("count", "1")
-            editor.apply()
+                    viewModel.loginData.observe(this){
+                        if (it.status=="200"){
+                            val i = Intent(this, HomeActivity::class.java)
+                            i.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
+                            startActivity(i)
+                            val editor = sharedPreferences.edit()
 
-            val i = Intent(this, HomeActivity::class.java)
-            i.flags =
-                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
-            startActivity(i)
+                            editor.putString(emailKey, number.text.toString())
+                            editor.putString(passwordKey, password.text.toString())
+                            editor.putString("count", "1")
+                            editor.apply()
+                        }
+                        else{
+                            Toast.makeText(applicationContext,"Invalid Username Or Password",Toast.LENGTH_SHORT).show()
+                            number.error="Invalid Username Or Password"
+                        }
+                    }
+
+                }
+                else{
+                    networkDialog(this,viewModel)
+                }
             }
         }
     }
@@ -158,7 +176,7 @@ class LogInActivity : AppCompatActivity() {
         viewModel.logIn(number,password)
         showMe.dismiss()
         viewModel.loginData.observe(this){
-            Log.d("tagged",it.id.toString())
+            Log.d("tagged",it.toString())
         }
         viewModel.errorMessage.observe(this){
             Log.d("tagged",it.toString())

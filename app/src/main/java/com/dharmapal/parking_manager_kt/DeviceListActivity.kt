@@ -53,13 +53,15 @@ class DeviceListActivity : AppCompatActivity() {
         Log.d("lcd","resume")
         handler.postDelayed(Runnable {
             handler.postDelayed(runnable!!, delay.toLong())
-
             val bondedlist=bluetoothAdapter.bondedDevices.filter {
                 it.bondState==BluetoothDevice.BOND_BONDED
             }
+            if (bondedlist.isNotEmpty()){
+                finish()
+            }
             Log.d("bondedsize",bondedlist.size.toString()+bondedlist.toString())
-            Toast.makeText(this@DeviceListActivity, "This method will run every 2 seconds", Toast.LENGTH_SHORT).show()
         }.also { runnable = it }, delay.toLong())
+
         super.onResume()
     }
     override fun onPause() {
@@ -132,11 +134,15 @@ class DeviceListActivity : AppCompatActivity() {
                             arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
                             Permission_ACCESS_COARSE_LOCATION
                         )
+
                     }
+                else{
+                    discoverDevice()
+                }
                 //.findViewById<TextView>(R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
 
                 PackageManager.PERMISSION_GRANTED -> {
-                    Log.d("DiscoverDevice", "Permission Granted")
+                    Log.d("DiscoverDevice", "Permission Granted coarseLocation")
                 }
             }
 
@@ -157,6 +163,9 @@ class DeviceListActivity : AppCompatActivity() {
                             Permission_ACCESS_FINE_LOCATION
                         )
                     }
+                else{
+                    discoverDevice()
+                }
                 //.findViewById<TextView>(R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
 
                 PackageManager.PERMISSION_GRANTED -> {
@@ -243,6 +252,9 @@ class DeviceListActivity : AppCompatActivity() {
                             "package:$packageName"
                         )))
                     }
+                    else if (element==PackageManager.PERMISSION_GRANTED){
+                        discoverDevice()
+                    }
                 }
             }
             Permission_ACCESS_FINE_LOCATION -> {
@@ -252,6 +264,9 @@ class DeviceListActivity : AppCompatActivity() {
                         startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
                             "package:$packageName"
                         )))
+                    }
+                    else if (element==PackageManager.PERMISSION_GRANTED){
+                        discoverDevice()
                     }
                 }
             }
@@ -381,6 +396,9 @@ class DeviceListActivity : AppCompatActivity() {
             Log.d("bondedDevice", device.name + "  " + device.address + "  " + device.bondState)
             device.removeBond()
         }
+        if(arr.isNotEmpty()){
+            Toast.makeText(this,"Your Device Already Saved.",Toast.LENGTH_LONG).show()
+        }
 
     }
 
@@ -390,6 +408,11 @@ class DeviceListActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("TAG", "Removing bond has been failed. ${e.message}")
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.finish()
     }
 
 }
@@ -454,7 +477,6 @@ class BluetoothReceiver : BroadcastReceiver() {
 //        val bluetoothManager: BluetoothManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            getSystemService(BluetoothManager::class.java)
 //        } else {
-//            TODO("VERSION.SDK_INT < M")
 //        }
 //        val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.adapter
 //
