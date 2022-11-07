@@ -18,6 +18,8 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.print.PrintManager
 import android.provider.Settings
 import android.text.Editable
@@ -88,6 +90,39 @@ class MainActivity : AppCompatActivity() {
     private val outputStream: OutputStream? = null
     private val inStream: InputStream? = null
 
+    private var handler: Handler = Handler(Looper.getMainLooper())
+    var runnable: Runnable? = null
+    var delay = 1000
+
+    @SuppressLint("MissingPermission")
+    override fun onResume() {
+        Log.d("lcd","resume")
+        handler.postDelayed(Runnable {
+            handler.postDelayed(runnable!!, delay.toLong())
+            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                    isConnected(it)
+                }
+
+                if (connected_dv.isNotEmpty()){
+                    binding.dvName.text=connected_dv[0].name
+                    binding.btnConnect.text="Change"
+                }
+                else{
+                    binding.dvName.text="No Device Connected"
+                    binding.btnConnect.text="Connect"
+                }
+            }
+
+        }.also { runnable = it }, delay.toLong())
+
+        super.onResume()
+    }
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacks(runnable!!)
+    }
+
     override fun onStart() {
         super.onStart()
         Log.d("lcycle","start")
@@ -116,9 +151,11 @@ class MainActivity : AppCompatActivity() {
 
                     if (connected_dv.isNotEmpty()){
                         binding.dvName.text=connected_dv[0].name
+                        binding.btnConnect.text="Change"
                     }
                     else{
                         binding.dvName.text="No Device Connected"
+                        binding.btnConnect.text="Connect"
                     }
                 }
             }
@@ -133,9 +170,11 @@ class MainActivity : AppCompatActivity() {
 
                 if (connected_dv.isNotEmpty()){
                     binding.dvName.text=connected_dv[0].name
+                    binding.btnConnect.text="Change"
                 }
                 else{
                     binding.dvName.text="No Device Connected"
+                    binding.btnConnect.text="Connect"
                 }
             }
         }
@@ -385,9 +424,11 @@ class MainActivity : AppCompatActivity() {
                             }
                             if (connected_dv.isNotEmpty()){
                                 binding.dvName.text=connected_dv[0].name
+                                binding.btnConnect.text="Change"
                             }
                             else{
                                 binding.dvName.text="No Device Connected"
+                                binding.btnConnect.text="Connect"
                             }
                         }
                     }

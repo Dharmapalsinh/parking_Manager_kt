@@ -29,6 +29,7 @@ import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_BLUET
 import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_BT_Connect
 import com.dharmapal.parking_manager_kt.adapters.DeviceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityDeviceListBinding
+import java.lang.reflect.Method
 
 
 class DeviceListActivity : AppCompatActivity() {
@@ -46,15 +47,23 @@ class DeviceListActivity : AppCompatActivity() {
     lateinit var receiver2: Discoverability
     private var handler: Handler =Handler(Looper.getMainLooper())
     var runnable: Runnable? = null
-    var delay = 2000
+    var delay = 1000
 
+    private fun isConnected(device: BluetoothDevice): Boolean {
+        return try {
+            val m: Method = device.javaClass.getMethod("isConnected")
+            m.invoke(device) as Boolean
+        } catch (e: Exception) {
+            throw IllegalStateException(e)
+        }
+    }
     @SuppressLint("MissingPermission")
     override fun onResume() {
         Log.d("lcd","resume")
         handler.postDelayed(Runnable {
             handler.postDelayed(runnable!!, delay.toLong())
             val bondedlist=bluetoothAdapter.bondedDevices.filter {
-                it.bondState==BluetoothDevice.BOND_BONDED
+                isConnected(it)
             }
             if (bondedlist.isNotEmpty()){
                 finish()

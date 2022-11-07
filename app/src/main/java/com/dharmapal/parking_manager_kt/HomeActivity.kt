@@ -51,10 +51,7 @@ class HomeActivity : AppCompatActivity() {
         this.finish()
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("lc","start")
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
