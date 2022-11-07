@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity() {
     private var handler: Handler = Handler(Looper.getMainLooper())
     var runnable: Runnable? = null
     var delay = 1000
+    lateinit var textRecognizer:TextRecognizer
 
     @SuppressLint("MissingPermission")
     override fun onResume() {
@@ -129,19 +130,73 @@ class MainActivity : AppCompatActivity() {
 
         //Todo: apply condition to below line permission
         requestPermission()
-        if (ActivityCompat.checkSelfPermission(
+        when {
+            ActivityCompat.checkSelfPermission(
+                this,
+                permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(
+                            permission.CAMERA,
+                            //todo:removed storage & BT permissions
+                        ),
+                        permissionRequestCode
+                    )
+                }
+                else{
+                    cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
+                        .setFacing(CameraSource.CAMERA_FACING_BACK)
+                        .setRequestedPreviewSize(400, 480)
+                        .setAutoFocusEnabled(true)
+                        .setRequestedFps(2.0f)
+                        .build()
+                    cameraSource.start(binding.surfaceView.holder)
+                }
+            }
+            else -> {
+                cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
+                    .setFacing(CameraSource.CAMERA_FACING_BACK)
+                    .setRequestedPreviewSize(400, 480)
+                    .setAutoFocusEnabled(true)
+                    .setRequestedFps(2.0f)
+                    .build()
+                cameraSource.start(binding.surfaceView.holder)
+            }
+        }
+        when {
+            ActivityCompat.checkSelfPermission(
                 this,
                 permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(permission.BLUETOOTH_CONNECT),
-                    Permission_BT_Connect
-                )
+            ) != PackageManager.PERMISSION_GRANTED -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(permission.BLUETOOTH_CONNECT),
+                        Permission_BT_Connect
+                    )
+                }
+                else{
+                    bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+                    mBluetoothAdapter = bluetoothManager.adapter
+                    if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                        val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                            isConnected(it)
+                        }
+
+                        if (connected_dv.isNotEmpty()){
+                            binding.dvName.text=connected_dv[0].name
+                            binding.btnConnect.text="Change"
+                        }
+                        else{
+                            binding.dvName.text="No Device Connected"
+                            binding.btnConnect.text="Connect"
+                        }
+                    }
+                }
             }
-            else{
+            else -> {
                 bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
                 mBluetoothAdapter = bluetoothManager.adapter
                 if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
@@ -157,24 +212,6 @@ class MainActivity : AppCompatActivity() {
                         binding.dvName.text="No Device Connected"
                         binding.btnConnect.text="Connect"
                     }
-                }
-            }
-        }
-        else{
-            bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-            mBluetoothAdapter = bluetoothManager.adapter
-            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                    isConnected(it)
-                }
-
-                if (connected_dv.isNotEmpty()){
-                    binding.dvName.text=connected_dv[0].name
-                    binding.btnConnect.text="Change"
-                }
-                else{
-                    binding.dvName.text="No Device Connected"
-                    binding.btnConnect.text="Connect"
                 }
             }
         }
@@ -270,7 +307,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val textRecognizer: TextRecognizer = TextRecognizer.Builder(applicationContext).build()
+        textRecognizer = TextRecognizer.Builder(applicationContext).build()
 
         if (!textRecognizer.isOperational) {
             Log.w("MainActivity", "Detector dependencies are not yet available.")
@@ -456,6 +493,12 @@ class MainActivity : AppCompatActivity() {
                     }
                     else if (element==PackageManager.PERMISSION_GRANTED){
                         Toast.makeText(applicationContext, "granted", Toast.LENGTH_LONG).show()
+                        cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
+                            .setFacing(CameraSource.CAMERA_FACING_BACK)
+                            .setRequestedPreviewSize(400, 480)
+                            .setAutoFocusEnabled(true)
+                            .setRequestedFps(2.0f)
+                            .build()
                         cameraSource.start(binding.surfaceView.holder)
                     }
                 }
