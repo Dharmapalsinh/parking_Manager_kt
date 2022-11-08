@@ -175,6 +175,25 @@ class MainActivity : AppCompatActivity() {
                         binding.btnConnect.text="Connect"
                     }
                 }
+
+                handler.postDelayed(Runnable {
+                    handler.postDelayed(runnable!!, delay.toLong())
+                    if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                        val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                            isConnected(it)
+                        }
+
+                        if (connected_dv.isNotEmpty()){
+                            binding.dvName.text=connected_dv[0].name
+                            binding.btnConnect.text="Change"
+                        }
+                        else{
+                            binding.dvName.text="No Device Connected"
+                            binding.btnConnect.text="Connect"
+                        }
+                    }
+
+                }.also { runnable = it }, delay.toLong())
             }
         }
 
@@ -194,26 +213,7 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
-        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        mBluetoothAdapter = bluetoothManager.adapter
-        handler.postDelayed(Runnable {
-            handler.postDelayed(runnable!!, delay.toLong())
-            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                    isConnected(it)
-                }
 
-                if (connected_dv.isNotEmpty()){
-                    binding.dvName.text=connected_dv[0].name
-                    binding.btnConnect.text="Change"
-                }
-                else{
-                    binding.dvName.text="No Device Connected"
-                    binding.btnConnect.text="Connect"
-                }
-            }
-
-        }.also { runnable = it }, delay.toLong())
 
         callNetworkConnection(application!!, this, this, viewModel)
         binding.recyclerView.layoutManager=
@@ -456,6 +456,26 @@ class MainActivity : AppCompatActivity() {
                                 binding.btnConnect.text="Connect"
                             }
                         }
+
+                        //Loop every 1 second
+                        handler.postDelayed(Runnable {
+                            handler.postDelayed(runnable!!, delay.toLong())
+                            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                                    isConnected(it)
+                                }
+
+                                if (connected_dv.isNotEmpty()){
+                                    binding.dvName.text=connected_dv[0].name
+                                    binding.btnConnect.text="Change"
+                                }
+                                else{
+                                    binding.dvName.text="No Device Connected"
+                                    binding.btnConnect.text="Connect"
+                                }
+                            }
+
+                        }.also { runnable = it }, delay.toLong())
                     }
                     else if (element==PackageManager.PERMISSION_DENIED){
                         Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
