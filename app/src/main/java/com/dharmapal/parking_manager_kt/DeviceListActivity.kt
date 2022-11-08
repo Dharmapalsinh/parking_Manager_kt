@@ -220,8 +220,8 @@ class DeviceListActivity : AppCompatActivity() {
         }
 
 
-//        enableBT()
-//        getPairedDevice()
+        enableBT()
+        getPairedDevice()
 
         binding.buttonScan.setOnClickListener {
             list.clear()
@@ -248,59 +248,69 @@ class DeviceListActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            Permission_BT_Connect -> {
-                for (element in grantResults) {
-                    if (element == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-                            "package:$packageName"
-                        )))
-                    }
-                    else if (element== PackageManager.PERMISSION_GRANTED){
-                        enableBT()
-                        getPairedDevice()
-                    }
-                }
-            }
-            Permission_BLUETOOTH_SCAN -> {
-                for (element in grantResults) {
-                    if (element == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-                            "package:$packageName"
-                        )))
-                    }
-                    else if (element== PackageManager.PERMISSION_GRANTED){
-                        discoverDevice()
-                    }
-                }
-            }
-            Permission_ACCESS_COARSE_LOCATION -> {
-                for (element in grantResults) {
-                    if (element == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-                            "package:$packageName"
-                        )))
-                    }
-                    else if (element==PackageManager.PERMISSION_GRANTED){
-                        discoverDevice()
-                    }
-                }
-            }
-            Permission_ACCESS_FINE_LOCATION -> {
-                for (element in grantResults) {
-                    if (element == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-                            "package:$packageName"
-                        )))
-                    }
-                    else if (element==PackageManager.PERMISSION_GRANTED){
-                        discoverDevice()
-                    }
-                }
-            }
+//            123->{
+//                for (element in grantResults) {
+//                    if (element == PackageManager.PERMISSION_DENIED) {
+//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+//                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+//                            "package:$packageName"
+//                        )))
+//                    }
+//                }
+//            }
+//            Permission_BT_Connect -> {
+//                for (element in grantResults) {
+//                    if (element == PackageManager.PERMISSION_DENIED) {
+//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+//                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+//                            "package:$packageName"
+//                        )))
+//                    }
+//                    else if (element== PackageManager.PERMISSION_GRANTED){
+//                        enableBT()
+//                        getPairedDevice()
+//                    }
+//                }
+//            }
+//            Permission_BLUETOOTH_SCAN -> {
+//                for (element in grantResults) {
+//                    if (element == PackageManager.PERMISSION_DENIED) {
+//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+//                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+//                            "package:$packageName"
+//                        )))
+//                    }
+//                    else if (element== PackageManager.PERMISSION_GRANTED){
+//                        discoverDevice()
+//                    }
+//                }
+//            }
+//            Permission_ACCESS_COARSE_LOCATION -> {
+//                for (element in grantResults) {
+//                    if (element == PackageManager.PERMISSION_DENIED) {
+//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+//                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+//                            "package:$packageName"
+//                        )))
+//                    }
+//                    else if (element==PackageManager.PERMISSION_GRANTED){
+//                        discoverDevice()
+//                    }
+//                }
+//            }
+//            Permission_ACCESS_FINE_LOCATION -> {
+//                for (element in grantResults) {
+//                    if (element == PackageManager.PERMISSION_DENIED) {
+//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+//                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+//                            "package:$packageName"
+//                        )))
+//                    }
+//                    else if (element==PackageManager.PERMISSION_GRANTED){
+//                        discoverDevice()
+//                    }
+//                }
+//            }
         }
     }
 
