@@ -18,7 +18,6 @@ class ManagePermissions(val activity: Activity, val list: List<String>, val code
         }
     }
 
-
     // Check permissions status
     private fun isPermissionsGranted(): Int {
         // PERMISSION_GRANTED : Constant Value: 0
@@ -40,25 +39,10 @@ class ManagePermissions(val activity: Activity, val list: List<String>, val code
         return ""
     }
 
-
-    // Show alert dialog to request permissions
-    private fun showAlert() {
-        val builder = AlertDialog.Builder(activity)
-        builder.setTitle("Need permission(s)")
-        builder.setMessage("Some permissions are required to do the task.")
-        builder.setPositiveButton("OK") { dialog, which -> requestPermissions() }
-        builder.setNeutralButton("Cancel", null)
-        val dialog = builder.create()
-        dialog.show()
-    }
-
-
     // Request the permissions at run time
     private fun requestPermissions() {
             ActivityCompat.requestPermissions(activity, list.toTypedArray(), code)
-
     }
-
 
     // Process permissions result
     fun processPermissionsResult(requestCode: Int, permissions: Array<String>,

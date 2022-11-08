@@ -36,7 +36,6 @@ import com.dharmapal.parking_manager_kt.Utills.ManagePermissions
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
-import com.google.android.gms.flags.impl.SharedPreferencesFactory.getSharedPreferences
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -79,42 +78,6 @@ class HomeActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             managePermissions.checkPermissions()
 
-//        when {
-//            ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.BLUETOOTH_CONNECT
-//            ) != PackageManager.PERMISSION_GRANTED -> {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//                    ActivityCompat.requestPermissions(
-//                        this,
-//                        arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-//                        Config.Permission_BT_Connect
-//                    )
-//                }
-//            }
-//
-//        }
-//
-//        when {
-//            ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.CAMERA
-//            ) != PackageManager.PERMISSION_GRANTED -> {
-//
-//                ActivityCompat.requestPermissions(
-//                    this,
-//                    arrayOf(
-//                        Manifest.permission.CAMERA,
-//                        //todo:removed storage & BT permissions
-//                    ),
-//                    Config.permissionRequestCode
-//                )
-//
-//            }
-//
-//
-//        }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,11 +113,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun submit(){
-//        val showMe = ProgressDialog(this, AlertDialog.THEME_HOLO_LIGHT)
-//        showMe.setMessage("Please wait")
-//        showMe.setCancelable(true)
-//        showMe.setCanceledOnTouchOutside(false)
-//        showMe.show()
+
+
         val animation=binding.animation
         handler.postDelayed(Runnable {
             handler.postDelayed(runnable!!, delay.toLong())
@@ -171,10 +131,6 @@ class HomeActivity : AppCompatActivity() {
 
                 val ints = ("" + it.occPer).toFloat().roundToInt()
 
-
-                lifecycleScope.launch {
-
-                    delay(5000)
                     binding.availabel.text = it.available.toString()
                     binding.prepaidusers.text = it.prepaidUser.toString()
                     binding.vip.text = it.vipUser.toString()
@@ -184,15 +140,10 @@ class HomeActivity : AppCompatActivity() {
                     binding.circularProgressBar.progress = ints
                     binding.progress.text = it.occPer.toString() + "%"
 
-
                     animation.cancelAnimation()
                     handler.removeCallbacks(runnable!!)
                     binding.animation.isVisible=false
-                }
 
-
-
-//                showMe.dismiss()
             }
         }
         viewModel.errorMessage.observe(this){

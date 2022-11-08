@@ -53,6 +53,7 @@
         <meta-data
             android:name="android.app.lib_name"
             android:value=""/>
+
         </activity>
         <activity
             android:name=".SplashScreen"
@@ -71,6 +72,9 @@
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="ocr" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".CheckOutActivity"

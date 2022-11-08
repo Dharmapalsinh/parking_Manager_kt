@@ -39,7 +39,8 @@
                     android:id="@+id/iv_profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/usericon" />
+                    android:src="@drawable/usericon"
+                    app:srcCompat="@drawable/user" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>

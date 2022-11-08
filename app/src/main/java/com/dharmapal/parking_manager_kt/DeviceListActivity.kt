@@ -48,7 +48,7 @@ class DeviceListActivity : AppCompatActivity() {
 //    private lateinit var wifiAdapter: wifiAdapter
     lateinit var receiver: BluetoothReceiver
     lateinit var receiver2: Discoverability
-    private var handler: Handler =Handler(Looper.getMainLooper())
+    private var handler: Handler = Handler(Looper.getMainLooper())
     var runnable: Runnable? = null
     var delay = 1000
 
@@ -213,12 +213,13 @@ class DeviceListActivity : AppCompatActivity() {
         binding = ActivityDeviceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        bluetoothAdapter = bluetoothManager.adapter
 
         val  manager:LocationManager = getSystemService( Context.LOCATION_SERVICE ) as LocationManager
         if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             buildAlertMessageNoGps()
         }
-
 
         enableBT()
         getPairedDevice()
@@ -248,74 +249,75 @@ class DeviceListActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-//            123->{
-//                for (element in grantResults) {
-//                    if (element == PackageManager.PERMISSION_DENIED) {
-//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-//                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-//                            "package:$packageName"
-//                        )))
-//                    }
-//                }
-//            }
-//            Permission_BT_Connect -> {
-//                for (element in grantResults) {
-//                    if (element == PackageManager.PERMISSION_DENIED) {
-//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-//                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-//                            "package:$packageName"
-//                        )))
-//                    }
-//                    else if (element== PackageManager.PERMISSION_GRANTED){
-//                        enableBT()
-//                        getPairedDevice()
-//                    }
-//                }
-//            }
-//            Permission_BLUETOOTH_SCAN -> {
-//                for (element in grantResults) {
-//                    if (element == PackageManager.PERMISSION_DENIED) {
-//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-//                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-//                            "package:$packageName"
-//                        )))
-//                    }
-//                    else if (element== PackageManager.PERMISSION_GRANTED){
-//                        discoverDevice()
-//                    }
-//                }
-//            }
-//            Permission_ACCESS_COARSE_LOCATION -> {
-//                for (element in grantResults) {
-//                    if (element == PackageManager.PERMISSION_DENIED) {
-//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-//                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-//                            "package:$packageName"
-//                        )))
-//                    }
-//                    else if (element==PackageManager.PERMISSION_GRANTED){
-//                        discoverDevice()
-//                    }
-//                }
-//            }
-//            Permission_ACCESS_FINE_LOCATION -> {
-//                for (element in grantResults) {
-//                    if (element == PackageManager.PERMISSION_DENIED) {
-//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-//                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-//                            "package:$packageName"
-//                        )))
-//                    }
-//                    else if (element==PackageManager.PERMISSION_GRANTED){
-//                        discoverDevice()
-//                    }
-//                }
-//            }
+            123->{
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                            "package:$packageName"
+                        )))
+                    }
+                }
+            }
+            /*Permission_BT_Connect -> {
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                            "package:$packageName"
+                        )))
+                    }
+                    else if (element== PackageManager.PERMISSION_GRANTED){
+                        enableBT()
+                        getPairedDevice()
+                    }
+                }
+            }
+            Permission_BLUETOOTH_SCAN -> {
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                            "package:$packageName"
+                        )))
+                    }
+                    else if (element== PackageManager.PERMISSION_GRANTED){
+                        discoverDevice()
+                    }
+                }
+            }
+            Permission_ACCESS_COARSE_LOCATION -> {
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                            "package:$packageName"
+                        )))
+                    }
+                    else if (element==PackageManager.PERMISSION_GRANTED){
+                        discoverDevice()
+                    }
+                }
+            }
+            Permission_ACCESS_FINE_LOCATION -> {
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                            "package:$packageName"
+                        )))
+                    }
+                    else if (element==PackageManager.PERMISSION_GRANTED){
+                        discoverDevice()
+                    }
+                }
+            }*/
         }
     }
 
     @SuppressLint("MissingPermission")
     private fun enableBT(){
+
 
             if (!bluetoothAdapter.isEnabled) {
                 bluetoothAdapter.enable()
