@@ -1,18 +1,19 @@
 package com.dharmapal.parking_manager_kt
 
-import android.Manifest
 import android.Manifest.permission
+import android.R.attr.bitmap
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
+import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.net.Uri
@@ -25,7 +26,6 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.util.Printer
 import android.util.SparseArray
 import android.view.*
 import android.widget.*
@@ -33,7 +33,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
@@ -50,17 +49,15 @@ import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
+import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.io.PrintStream
 import java.lang.reflect.Method
+
 
 @Suppress("DEPRECATED_IDENTITY_EQUALS")
 class MainActivity : AppCompatActivity() {
@@ -98,24 +95,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     override fun onResume() {
         Log.d("lcd","resume")
-        handler.postDelayed(Runnable {
-            handler.postDelayed(runnable!!, delay.toLong())
-            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                    isConnected(it)
-                }
 
-                if (connected_dv.isNotEmpty()){
-                    binding.dvName.text=connected_dv[0].name
-                    binding.btnConnect.text="Change"
-                }
-                else{
-                    binding.dvName.text="No Device Connected"
-                    binding.btnConnect.text="Connect"
-                }
-            }
-
-        }.also { runnable = it }, delay.toLong())
 
         super.onResume()
     }
@@ -214,6 +194,27 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
+        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        mBluetoothAdapter = bluetoothManager.adapter
+        handler.postDelayed(Runnable {
+            handler.postDelayed(runnable!!, delay.toLong())
+            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                    isConnected(it)
+                }
+
+                if (connected_dv.isNotEmpty()){
+                    binding.dvName.text=connected_dv[0].name
+                    binding.btnConnect.text="Change"
+                }
+                else{
+                    binding.dvName.text="No Device Connected"
+                    binding.btnConnect.text="Connect"
+                }
+            }
+
+        }.also { runnable = it }, delay.toLong())
+
         callNetworkConnection(application!!, this, this, viewModel)
         binding.recyclerView.layoutManager=
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -294,6 +295,7 @@ class MainActivity : AppCompatActivity() {
         if (!textRecognizer.isOperational) {
             Log.w("MainActivity", "Detector dependencies are not yet available.")
         } else {
+
             cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setRequestedPreviewSize(400, 480)
@@ -316,6 +318,8 @@ class MainActivity : AppCompatActivity() {
                             )
                             return
                         }
+
+
                         cameraSource.start(binding.surfaceView.holder)
                     } catch (e: IOException) {
                         e.printStackTrace()
@@ -343,6 +347,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun receiveDetections(detections: Detector.Detections<TextBlock?>) {
+
                 val items: SparseArray<TextBlock?>? = detections.detectedItems
                 if (items!!.size() != 0) {
                     binding.cameraTxt.post {
@@ -410,6 +415,7 @@ class MainActivity : AppCompatActivity() {
 
         lists()
     }
+
 
     private fun doPrint() {
 
