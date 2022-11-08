@@ -28,6 +28,7 @@ import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_ACCES
 import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_ACCESS_FINE_LOCATION
 import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_BLUETOOTH_SCAN
 import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_BT_Connect
+import com.dharmapal.parking_manager_kt.Utills.ManagePermissions
 import com.dharmapal.parking_manager_kt.adapters.DeviceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityDeviceListBinding
 import java.lang.reflect.Method
@@ -42,6 +43,7 @@ class DeviceListActivity : AppCompatActivity() {
     private lateinit var bluetoothManager: BluetoothManager
     private lateinit var bluetoothAdapter: BluetoothAdapter
 
+    private lateinit var managePermissions: ManagePermissions
     private lateinit var wifiManager: WifiManager
 //    private lateinit var wifiAdapter: wifiAdapter
     lateinit var receiver: BluetoothReceiver
@@ -87,103 +89,122 @@ class DeviceListActivity : AppCompatActivity() {
         bluetoothAdapter = bluetoothManager.adapter
         receiver = BluetoothReceiver()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            when {
-                ActivityCompat.checkSelfPermission(
-                    this,
+        val list =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                listOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.BLUETOOTH_SCAN
-                ) != PackageManager.PERMISSION_GRANTED -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(Manifest.permission.BLUETOOTH_SCAN),
-                            Permission_BLUETOOTH_SCAN
-                        )
-                    } else{
-//                        bluetoothAdapter.startDiscovery()
-                    }
-                }
-                else -> {
-//                    bluetoothAdapter.startDiscovery()
-                }
-            }
-            when {
-                ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                            Permission_BT_Connect
-                        )
-                    } else{
-                        enableBT()
-                        getPairedDevice()
-                    }
-                }
-                else -> {
-                    enableBT()
-                    getPairedDevice()
-                }
-            }
-            when (ContextCompat.checkSelfPermission(
-                baseContext, Manifest.permission.ACCESS_COARSE_LOCATION
-            )) {
-                PackageManager.PERMISSION_DENIED ->
-                    if (ContextCompat.checkSelfPermission(
-                            baseContext,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        ) !=
-                        PackageManager.PERMISSION_GRANTED
-                    ) {
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                            Permission_ACCESS_COARSE_LOCATION
-                        )
-
-                    }
-                else{
-                    discoverDevice()
-                }
-                //.findViewById<TextView>(R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
-
-                PackageManager.PERMISSION_GRANTED -> {
-                    Log.d("DiscoverDevice", "Permission Granted coarseLocation")
-                }
+                )
+            } else {
+                listOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
             }
 
-            //todo:denied permissions....
-            when (ContextCompat.checkSelfPermission(
-                baseContext, Manifest.permission.ACCESS_FINE_LOCATION
-            )) {
-                PackageManager.PERMISSION_DENIED ->
-                    if (ContextCompat.checkSelfPermission(
-                            baseContext,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) !=
-                        PackageManager.PERMISSION_GRANTED
-                    ) {
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                            Permission_ACCESS_FINE_LOCATION
-                        )
-                    }
-                else{
-                    discoverDevice()
-                }
-                //.findViewById<TextView>(R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
+        // Initialize a new instance of ManagePermissions class
+        managePermissions = ManagePermissions(this,list,123)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            managePermissions.checkPermissions()
 
-                PackageManager.PERMISSION_GRANTED -> {
-                    Log.d("DiscoverDevice", "Permission Granted")
-                }
-            }
-
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//
+//            when {
+//                ActivityCompat.checkSelfPermission(
+//                    this,
+//                    Manifest.permission.BLUETOOTH_SCAN
+//                ) != PackageManager.PERMISSION_GRANTED -> {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//                        ActivityCompat.requestPermissions(
+//                            this,
+//                            arrayOf(Manifest.permission.BLUETOOTH_SCAN),
+//                            Permission_BLUETOOTH_SCAN
+//                        )
+//                    } else{
+////                        bluetoothAdapter.startDiscovery()
+//                    }
+//                }
+//                else -> {
+////                    bluetoothAdapter.startDiscovery()
+//                }
+//            }
+//            when {
+//                ActivityCompat.checkSelfPermission(
+//                    this,
+//                    Manifest.permission.BLUETOOTH_CONNECT
+//                ) != PackageManager.PERMISSION_GRANTED -> {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//                        ActivityCompat.requestPermissions(
+//                            this,
+//                            arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+//                            Permission_BT_Connect
+//                        )
+//                    } else{
+//                        enableBT()
+//                        getPairedDevice()
+//                    }
+//                }
+//                else -> {
+//                    enableBT()
+//                    getPairedDevice()
+//                }
+//            }
+//            when (ContextCompat.checkSelfPermission(
+//                baseContext, Manifest.permission.ACCESS_COARSE_LOCATION
+//            )) {
+//                PackageManager.PERMISSION_DENIED ->
+//                    if (ContextCompat.checkSelfPermission(
+//                            baseContext,
+//                            Manifest.permission.ACCESS_COARSE_LOCATION
+//                        ) !=
+//                        PackageManager.PERMISSION_GRANTED
+//                    ) {
+//                        ActivityCompat.requestPermissions(
+//                            this,
+//                            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+//                            Permission_ACCESS_COARSE_LOCATION
+//                        )
+//
+//                    }
+//                else{
+//                    discoverDevice()
+//                }
+//                //.findViewById<TextView>(R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
+//
+//                PackageManager.PERMISSION_GRANTED -> {
+//                    Log.d("DiscoverDevice", "Permission Granted coarseLocation")
+//                }
+//            }
+//
+//            //todo:denied permissions....
+//            when (ContextCompat.checkSelfPermission(
+//                baseContext, Manifest.permission.ACCESS_FINE_LOCATION
+//            )) {
+//                PackageManager.PERMISSION_DENIED ->
+//                    if (ContextCompat.checkSelfPermission(
+//                            baseContext,
+//                            Manifest.permission.ACCESS_FINE_LOCATION
+//                        ) !=
+//                        PackageManager.PERMISSION_GRANTED
+//                    ) {
+//                        ActivityCompat.requestPermissions(
+//                            this,
+//                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+//                            Permission_ACCESS_FINE_LOCATION
+//                        )
+//                    }
+//                else{
+//                    discoverDevice()
+//                }
+//                //.findViewById<TextView>(R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
+//
+//                PackageManager.PERMISSION_GRANTED -> {
+//                    Log.d("DiscoverDevice", "Permission Granted")
+//                }
+//            }
+//
+//        }
 
     }
     override fun onCreate(savedInstanceState: Bundle?) {
