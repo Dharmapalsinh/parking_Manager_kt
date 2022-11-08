@@ -19,6 +19,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.webkit.PermissionRequest
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -281,6 +282,7 @@ class DeviceListActivity : AppCompatActivity() {
             }
         }
     }
+
     @SuppressLint("MissingPermission")
     private fun enableBT(){
 

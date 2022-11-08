@@ -6,9 +6,12 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -22,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.networkDialog
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
+import com.dharmapal.parking_manager_kt.Utills.Config
 import com.dharmapal.parking_manager_kt.Utills.Config.Companion.requestCameraPermissionID
 import com.dharmapal.parking_manager_kt.databinding.ActivityQrCodeBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
@@ -44,6 +48,7 @@ class QrCodeActivity : AppCompatActivity() {
     private lateinit var cameraSource: CameraSource
     @SuppressLint("SimpleDateFormat")
     var simpleDateFormat: SimpleDateFormat = SimpleDateFormat("hh:mm a")
+
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +78,7 @@ class QrCodeActivity : AppCompatActivity() {
 
         binding.capture.setOnClickListener {
             try {
+
                 cameraSource.start(binding.surfaceview.holder)
                 binding.vNumber.text.clear()
             } catch (e: IOException) {
@@ -215,7 +221,90 @@ class QrCodeActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+//            Permission_BT_Connect -> {
+//                for (element in grantResults) {
+//                    if (element == PackageManager.PERMISSION_GRANTED) {
+//                        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+//                        mBluetoothAdapter = bluetoothManager.adapter
+//                        if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+//                            val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+//                                isConnected(it)
+//                            }
+//                            if (connected_dv.isNotEmpty()){
+//                                binding.dvName.text=connected_dv[0].name
+//                                binding.btnConnect.text="Change"
+//                            }
+//                            else{
+//                                binding.dvName.text="No Device Connected"
+//                                binding.btnConnect.text="Connect"
+//                            }
+//                        }
+//
+//                        //Loop every 1 second
+//                        handler.postDelayed(Runnable {
+//                            handler.postDelayed(runnable!!, delay.toLong())
+//                            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+//                                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+//                                    isConnected(it)
+//                                }
+//
+//                                if (connected_dv.isNotEmpty()){
+//                                    binding.dvName.text=connected_dv[0].name
+//                                    binding.btnConnect.text="Change"
+//                                }
+//                                else{
+//                                    binding.dvName.text="No Device Connected"
+//                                    binding.btnConnect.text="Connect"
+//                                }
+//                            }
+//
+//                        }.also { runnable = it }, delay.toLong())
+//                    }
+//                    else if (element==PackageManager.PERMISSION_DENIED){
+//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+//                        startActivity(Intent(
+//                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+//                                "package:$packageName"
+//                            )))
+//                    }
+//                }
+//            }
 
+            Config.permissionRequestCode ->{
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext, "denied", Toast.LENGTH_LONG).show()
+                        startActivity(
+                            Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                                    "package:$packageName"
+                                )
+                            )
+                        )
+                    }
+                    else if (element==PackageManager.PERMISSION_GRANTED){
+                        Toast.makeText(applicationContext, "granted", Toast.LENGTH_LONG).show()
+//                        val textRecognizer = TextRecognizer.Builder(applicationContext).build()
+//                        cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
+//                            .setFacing(CameraSource.CAMERA_FACING_BACK)
+//                            .setRequestedPreviewSize(400, 480)
+//                            .setAutoFocusEnabled(true)
+//                            .setRequestedFps(2.0f)
+//                            .build()
+                        cameraSource.start(binding.surfaceview.holder)
+                    }
+                }
+            }
+        }
+    }
 /*    fun scan(result: String) {
 //        val showMe = ProgressDialog(this@QrCodeActivity, AlertDialog.THEME_HOLO_LIGHT)
 //        showMe.setMessage("Please wait")

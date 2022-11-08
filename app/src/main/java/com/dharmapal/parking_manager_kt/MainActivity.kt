@@ -451,14 +451,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    @SuppressLint("MissingPermission")
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when (requestCode) {
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
 //            Permission_BT_Connect -> {
 //                for (element in grantResults) {
 //                    if (element == PackageManager.PERMISSION_GRANTED) {
@@ -507,34 +507,34 @@ class MainActivity : AppCompatActivity() {
 //                    }
 //                }
 //            }
-//
-//            permissionRequestCode->{
-//                for (element in grantResults) {
-//                    if (element == PackageManager.PERMISSION_DENIED) {
-//                        Toast.makeText(applicationContext, "denied", Toast.LENGTH_LONG).show()
-//                        startActivity(
-//                            Intent(
-//                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-//                                    "package:$packageName"
-//                                )
-//                            )
-//                        )
-//                    }
-//                    else if (element==PackageManager.PERMISSION_GRANTED){
-//                        Toast.makeText(applicationContext, "granted", Toast.LENGTH_LONG).show()
-////                        val textRecognizer = TextRecognizer.Builder(applicationContext).build()
-////                        cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
-////                            .setFacing(CameraSource.CAMERA_FACING_BACK)
-////                            .setRequestedPreviewSize(400, 480)
-////                            .setAutoFocusEnabled(true)
-////                            .setRequestedFps(2.0f)
-////                            .build()
-//                        cameraSource.start(binding.surfaceView.holder)
-//                    }
-//                }
-//            }
-//        }
-//    }
+
+            permissionRequestCode->{
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext, "denied", Toast.LENGTH_LONG).show()
+                        startActivity(
+                            Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                                    "package:$packageName"
+                                )
+                            )
+                        )
+                    }
+                    else if (element==PackageManager.PERMISSION_GRANTED){
+                        Toast.makeText(applicationContext, "granted", Toast.LENGTH_LONG).show()
+//                        val textRecognizer = TextRecognizer.Builder(applicationContext).build()
+//                        cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
+//                            .setFacing(CameraSource.CAMERA_FACING_BACK)
+//                            .setRequestedPreviewSize(400, 480)
+//                            .setAutoFocusEnabled(true)
+//                            .setRequestedFps(2.0f)
+//                            .build()
+                        cameraSource.start(binding.surfaceView.holder)
+                    }
+                }
+            }
+        }
+    }
 
     private fun isConnected(device: BluetoothDevice): Boolean {
         return try {

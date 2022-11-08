@@ -32,9 +32,11 @@ import androidx.lifecycle.lifecycleScope
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.Utills.CheckNetworkConnection
 import com.dharmapal.parking_manager_kt.Utills.Config
+import com.dharmapal.parking_manager_kt.Utills.ManagePermissions
 import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
+import com.google.android.gms.flags.impl.SharedPreferencesFactory.getSharedPreferences
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -48,6 +50,7 @@ class HomeActivity : AppCompatActivity() {
     private var handler: Handler = Handler(Looper.getMainLooper())
     var runnable: Runnable? = null
     var delay = 2000
+    private lateinit var managePermissions: ManagePermissions
     // variable for shared preferences.
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -58,38 +61,60 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        when {
-            ActivityCompat.checkSelfPermission(
-                this,
+
+        val list =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            listOf(
+                Manifest.permission.CAMERA,
                 Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                        Config.Permission_BT_Connect
-                    )
-                }
-            }
-        }
-
-        when {
-            ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED -> {
-
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(
-                        Manifest.permission.CAMERA,
-                        //todo:removed storage & BT permissions
-                    ),
-                    Config.permissionRequestCode
+            )
+        } else {
+                listOf(
+                    Manifest.permission.CAMERA
                 )
-
-            }
         }
+
+        // Initialize a new instance of ManagePermissions class
+        managePermissions = ManagePermissions(this,list,123)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            managePermissions.checkPermissions()
+
+//        when {
+//            ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.BLUETOOTH_CONNECT
+//            ) != PackageManager.PERMISSION_GRANTED -> {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//                    ActivityCompat.requestPermissions(
+//                        this,
+//                        arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+//                        Config.Permission_BT_Connect
+//                    )
+//                }
+//            }
+//
+//        }
+//
+//        when {
+//            ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.CAMERA
+//            ) != PackageManager.PERMISSION_GRANTED -> {
+//
+//                ActivityCompat.requestPermissions(
+//                    this,
+//                    arrayOf(
+//                        Manifest.permission.CAMERA,
+//                        //todo:removed storage & BT permissions
+//                    ),
+//                    Config.permissionRequestCode
+//                )
+//
+//            }
+//
+//
+//        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
