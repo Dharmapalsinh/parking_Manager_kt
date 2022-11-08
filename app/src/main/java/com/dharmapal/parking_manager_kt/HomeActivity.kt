@@ -1,6 +1,7 @@
 package com.dharmapal.parking_manager_kt
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
@@ -13,10 +14,12 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -110,6 +113,31 @@ class HomeActivity : AppCompatActivity() {
 
         submit()
 
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            123 -> {
+                for (element in grantResults) {
+                    if (element == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(applicationContext, "denied", Toast.LENGTH_LONG).show()
+                        startActivity(
+                            Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                                    "package:$packageName"
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun submit(){
