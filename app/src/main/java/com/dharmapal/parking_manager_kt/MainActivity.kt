@@ -32,6 +32,8 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
@@ -96,7 +98,25 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         Log.d("lcd","resume")
 
+//Loop every 1 second
+        handler.postDelayed(Runnable {
+            handler.postDelayed(runnable!!, delay.toLong())
+            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+                    isConnected(it)
+                }
 
+                if (connected_dv.isNotEmpty()){
+                    binding.dvName.text=connected_dv[0].name
+                    binding.btnConnect.text="Change"
+                }
+                else{
+                    binding.dvName.text="No Device Connected"
+                    binding.btnConnect.text="Connect"
+                }
+            }
+
+        }.also { runnable = it }, delay.toLong())
         super.onResume()
     }
     override fun onPause() {
@@ -107,95 +127,96 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         Log.d("lcycle","start")
-
+        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        mBluetoothAdapter = bluetoothManager.adapter
         //Todo: apply condition to below line permission
 //        requestPermission()
-        when {
-            ActivityCompat.checkSelfPermission(
-                this,
-                permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED -> {
-
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(
-                            permission.CAMERA,
-                            //todo:removed storage & BT permissions
-                        ),
-                        permissionRequestCode
-                    )
-
-            }
-        }
-        when {
-            ActivityCompat.checkSelfPermission(
-                this,
-                permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(permission.BLUETOOTH_CONNECT),
-                        Permission_BT_Connect
-                    )
-                }
-                else{
-                    bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-                    mBluetoothAdapter = bluetoothManager.adapter
-                    if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-                        val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                            isConnected(it)
-                        }
-
-                        if (connected_dv.isNotEmpty()){
-                            binding.dvName.text=connected_dv[0].name
-                            binding.btnConnect.text="Change"
-                        }
-                        else{
-                            binding.dvName.text="No Device Connected"
-                            binding.btnConnect.text="Connect"
-                        }
-                    }
-                }
-            }
-            else -> {
-                bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-                mBluetoothAdapter = bluetoothManager.adapter
-                if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-                    val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                        isConnected(it)
-                    }
-
-                    if (connected_dv.isNotEmpty()){
-                        binding.dvName.text=connected_dv[0].name
-                        binding.btnConnect.text="Change"
-                    }
-                    else{
-                        binding.dvName.text="No Device Connected"
-                        binding.btnConnect.text="Connect"
-                    }
-                }
-
-                handler.postDelayed(Runnable {
-                    handler.postDelayed(runnable!!, delay.toLong())
-                    if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-                        val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                            isConnected(it)
-                        }
-
-                        if (connected_dv.isNotEmpty()){
-                            binding.dvName.text=connected_dv[0].name
-                            binding.btnConnect.text="Change"
-                        }
-                        else{
-                            binding.dvName.text="No Device Connected"
-                            binding.btnConnect.text="Connect"
-                        }
-                    }
-
-                }.also { runnable = it }, delay.toLong())
-            }
-        }
+//        when {
+//            ActivityCompat.checkSelfPermission(
+//                this,
+//                permission.CAMERA
+//            ) != PackageManager.PERMISSION_GRANTED -> {
+//
+//                    ActivityCompat.requestPermissions(
+//                        this,
+//                        arrayOf(
+//                            permission.CAMERA,
+//                            //todo:removed storage & BT permissions
+//                        ),
+//                        permissionRequestCode
+//                    )
+//
+//            }
+//        }
+//        when {
+//            ActivityCompat.checkSelfPermission(
+//                this,
+//                permission.BLUETOOTH_CONNECT
+//            ) != PackageManager.PERMISSION_GRANTED -> {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//                    ActivityCompat.requestPermissions(
+//                        this,
+//                        arrayOf(permission.BLUETOOTH_CONNECT),
+//                        Permission_BT_Connect
+//                    )
+//                }
+//                else{
+//                    bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+//                    mBluetoothAdapter = bluetoothManager.adapter
+//                    if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+//                        val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+//                            isConnected(it)
+//                        }
+//
+//                        if (connected_dv.isNotEmpty()){
+//                            binding.dvName.text=connected_dv[0].name
+//                            binding.btnConnect.text="Change"
+//                        }
+//                        else{
+//                            binding.dvName.text="No Device Connected"
+//                            binding.btnConnect.text="Connect"
+//                        }
+//                    }
+//                }
+//            }
+//            else -> {
+//                bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+//                mBluetoothAdapter = bluetoothManager.adapter
+//                if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+//                    val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+//                        isConnected(it)
+//                    }
+//
+//                    if (connected_dv.isNotEmpty()){
+//                        binding.dvName.text=connected_dv[0].name
+//                        binding.btnConnect.text="Change"
+//                    }
+//                    else{
+//                        binding.dvName.text="No Device Connected"
+//                        binding.btnConnect.text="Connect"
+//                    }
+//                }
+//
+//                handler.postDelayed(Runnable {
+//                    handler.postDelayed(runnable!!, delay.toLong())
+//                    if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+//                        val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+//                            isConnected(it)
+//                        }
+//
+//                        if (connected_dv.isNotEmpty()){
+//                            binding.dvName.text=connected_dv[0].name
+//                            binding.btnConnect.text="Change"
+//                        }
+//                        else{
+//                            binding.dvName.text="No Device Connected"
+//                            binding.btnConnect.text="Connect"
+//                        }
+//                    }
+//
+//                }.also { runnable = it }, delay.toLong())
+//            }
+//        }
 
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -430,90 +451,90 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            Permission_BT_Connect -> {
-                for (element in grantResults) {
-                    if (element == PackageManager.PERMISSION_GRANTED) {
-                        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-                        mBluetoothAdapter = bluetoothManager.adapter
-                        if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-                            val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                                isConnected(it)
-                            }
-                            if (connected_dv.isNotEmpty()){
-                                binding.dvName.text=connected_dv[0].name
-                                binding.btnConnect.text="Change"
-                            }
-                            else{
-                                binding.dvName.text="No Device Connected"
-                                binding.btnConnect.text="Connect"
-                            }
-                        }
-
-                        //Loop every 1 second
-                        handler.postDelayed(Runnable {
-                            handler.postDelayed(runnable!!, delay.toLong())
-                            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-                                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-                                    isConnected(it)
-                                }
-
-                                if (connected_dv.isNotEmpty()){
-                                    binding.dvName.text=connected_dv[0].name
-                                    binding.btnConnect.text="Change"
-                                }
-                                else{
-                                    binding.dvName.text="No Device Connected"
-                                    binding.btnConnect.text="Connect"
-                                }
-                            }
-
-                        }.also { runnable = it }, delay.toLong())
-                    }
-                    else if (element==PackageManager.PERMISSION_DENIED){
-                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-                        startActivity(Intent(
-                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-                                "package:$packageName"
-                            )))
-                    }
-                }
-            }
-
-            permissionRequestCode->{
-                for (element in grantResults) {
-                    if (element == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(applicationContext, "denied", Toast.LENGTH_LONG).show()
-                        startActivity(
-                            Intent(
-                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-                                    "package:$packageName"
-                                )
-                            )
-                        )
-                    }
-                    else if (element==PackageManager.PERMISSION_GRANTED){
-                        Toast.makeText(applicationContext, "granted", Toast.LENGTH_LONG).show()
-//                        val textRecognizer = TextRecognizer.Builder(applicationContext).build()
-//                        cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
-//                            .setFacing(CameraSource.CAMERA_FACING_BACK)
-//                            .setRequestedPreviewSize(400, 480)
-//                            .setAutoFocusEnabled(true)
-//                            .setRequestedFps(2.0f)
-//                            .build()
-                        cameraSource.start(binding.surfaceView.holder)
-                    }
-                }
-            }
-        }
-    }
+//    @SuppressLint("MissingPermission")
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        when (requestCode) {
+//            Permission_BT_Connect -> {
+//                for (element in grantResults) {
+//                    if (element == PackageManager.PERMISSION_GRANTED) {
+//                        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+//                        mBluetoothAdapter = bluetoothManager.adapter
+//                        if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+//                            val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+//                                isConnected(it)
+//                            }
+//                            if (connected_dv.isNotEmpty()){
+//                                binding.dvName.text=connected_dv[0].name
+//                                binding.btnConnect.text="Change"
+//                            }
+//                            else{
+//                                binding.dvName.text="No Device Connected"
+//                                binding.btnConnect.text="Connect"
+//                            }
+//                        }
+//
+//                        //Loop every 1 second
+//                        handler.postDelayed(Runnable {
+//                            handler.postDelayed(runnable!!, delay.toLong())
+//                            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
+//                                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
+//                                    isConnected(it)
+//                                }
+//
+//                                if (connected_dv.isNotEmpty()){
+//                                    binding.dvName.text=connected_dv[0].name
+//                                    binding.btnConnect.text="Change"
+//                                }
+//                                else{
+//                                    binding.dvName.text="No Device Connected"
+//                                    binding.btnConnect.text="Connect"
+//                                }
+//                            }
+//
+//                        }.also { runnable = it }, delay.toLong())
+//                    }
+//                    else if (element==PackageManager.PERMISSION_DENIED){
+//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+//                        startActivity(Intent(
+//                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+//                                "package:$packageName"
+//                            )))
+//                    }
+//                }
+//            }
+//
+//            permissionRequestCode->{
+//                for (element in grantResults) {
+//                    if (element == PackageManager.PERMISSION_DENIED) {
+//                        Toast.makeText(applicationContext, "denied", Toast.LENGTH_LONG).show()
+//                        startActivity(
+//                            Intent(
+//                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+//                                    "package:$packageName"
+//                                )
+//                            )
+//                        )
+//                    }
+//                    else if (element==PackageManager.PERMISSION_GRANTED){
+//                        Toast.makeText(applicationContext, "granted", Toast.LENGTH_LONG).show()
+////                        val textRecognizer = TextRecognizer.Builder(applicationContext).build()
+////                        cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
+////                            .setFacing(CameraSource.CAMERA_FACING_BACK)
+////                            .setRequestedPreviewSize(400, 480)
+////                            .setAutoFocusEnabled(true)
+////                            .setRequestedFps(2.0f)
+////                            .build()
+//                        cameraSource.start(binding.surfaceView.holder)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private fun isConnected(device: BluetoothDevice): Boolean {
         return try {
