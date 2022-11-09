@@ -76,5 +76,7 @@
     <string name="rating_dialog_submit">Submit</string>
     <string name="rating_dialog_suggestions">Suggest us what went wrong and we\'ll work on it!</string>
     <string name="submit_feedback">Feedback</string>
+    <string name="change">Change</string>
+    <string name="Nodevice">No Device Connected</string>
 
 </resources>
