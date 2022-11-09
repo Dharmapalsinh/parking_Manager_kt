@@ -21,7 +21,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.networkDialog
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
@@ -34,6 +36,8 @@ import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -91,6 +95,42 @@ class QrCodeActivity : AppCompatActivity() {
         checkout = findViewById(R.id.btn_checkout)
 
         callNetworkConnection(application!!, this, this, viewModel)
+
+        viewModel.checkoutData.observe(this@QrCodeActivity) {
+            if (it.status == "200") {
+                lifecycleScope.launch {
+                    Log.d("checkout", it.msg)
+                    val animation = binding.animationSubmit
+                    binding.animationSubmit.isVisible = true
+                    animation.playAnimation()
+
+                    Toast.makeText(applicationContext, it.msg, Toast.LENGTH_SHORT).show()
+
+                    binding.vNumber.text.clear()
+                    binding.arrTime.text = ""
+
+                    delay(2000)
+                    animation.cancelAnimation()
+                    binding.animationSubmit.isVisible = false
+                }
+            } else {
+
+                lifecycleScope.launch {
+                    val animation = binding.animationInvalid
+                    binding.animationInvalid.isVisible = true
+                    animation.playAnimation()
+
+                    Toast.makeText(applicationContext, it.msg, Toast.LENGTH_SHORT).show()
+
+                    binding.vNumber.text.clear()
+                    binding.arrTime.text = ""
+
+                    delay(2000)
+                    animation.cancelAnimation()
+                    binding.animationInvalid.isVisible = false
+                }
+            }
+        }
 
         binding.btnCheckout.setOnClickListener{
             if(HomeActivity.checkForInternet(this)){
@@ -170,13 +210,12 @@ class QrCodeActivity : AppCompatActivity() {
                         Log.d("string",stringBuilder.toString())
                         if (stringBuilder.toString().contains(numPlate)){
                             binding.cameraTxt.text = stringBuilder.toString()
-                            //val temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
                             playOnOffSound()
                             binding.vNumber.setText(stringBuilder.toString().replace("\\s".toRegex(),""))
                             cameraSource.stop()
                         }
                         else{
-//                            Toast.makeText(applicationContext,"try again",Toast.LENGTH_SHORT).show()
+
                         }
                     }
                 }
@@ -324,22 +363,8 @@ class QrCodeActivity : AppCompatActivity() {
     }*/
 
     private fun checkout(result: String) {
-        val showMe = ProgressDialog(this@QrCodeActivity, AlertDialog.THEME_HOLO_LIGHT)
-        showMe.setMessage("Please wait")
-        showMe.setCancelable(true)
-        showMe.setCanceledOnTouchOutside(false)
-        showMe.show()
-
-        Log.d("tagged",result)
         viewModel.checkout(result)
-        showMe.dismiss()
-        viewModel.checkoutData.observe(this){
-            Log.d("checkout", it.msg)
-            Toast.makeText(applicationContext,it.msg,Toast.LENGTH_SHORT).show()
 
-            binding.vNumber.text.clear()
-            binding.arrTime.text = ""
-        }
         viewModel.errorMessage.observe(this){
             Log.d("checkout",it.toString())
         }

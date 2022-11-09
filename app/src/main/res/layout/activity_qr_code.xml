@@ -131,6 +131,28 @@
                     app:layout_constraintTop_toBottomOf="@+id/txt_passnum" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_submit"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#3EFFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="10dp"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/checkout" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_invalid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#3EFFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="10dp"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/invalid" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"

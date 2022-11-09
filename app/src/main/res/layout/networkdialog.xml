@@ -13,22 +13,21 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintDimensionRatio="3"
         app:lottie_rawRes="@raw/loading2" />-->
 
-    <ImageView
-        android:id="@+id/sadface"
-        android:src="@drawable/noconnection"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="100dp"
+        app:lottie_rawRes="@raw/nointernet"/>
 
     <TextView
         android:id="@+id/oops"
         android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/sadface"
+        android:layout_below="@id/animation"
         android:textColor="#FFFFFF"
         android:gravity="center"
         android:textSize="16sp"

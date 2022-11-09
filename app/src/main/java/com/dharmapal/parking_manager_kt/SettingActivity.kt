@@ -84,6 +84,7 @@ class  SettingActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("ResourceType")
     private fun showDialog() {
         val ratingDialog: RatingDialog = RatingDialog.Builder(this)
             .threshold(3)

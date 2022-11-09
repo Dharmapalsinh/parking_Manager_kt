@@ -31,6 +31,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
+//todo:progressbar
 class LogInActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLogInBinding
     private lateinit var viewModel: MainViewModel
@@ -157,6 +158,7 @@ class LogInActivity : AppCompatActivity() {
             else {
                 Toast.makeText(applicationContext, "Invalid Username Or Password", Toast.LENGTH_SHORT).show()
                 number.error = "Invalid Username Or Password"
+                password.error ="Invalid Username Or Password"
             }
         }
 

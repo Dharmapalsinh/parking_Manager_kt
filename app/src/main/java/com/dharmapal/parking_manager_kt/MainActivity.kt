@@ -373,7 +373,7 @@ class MainActivity : AppCompatActivity() {
                         val stringBuilder = StringBuilder()
 
                         val numPlate:Regex =
-                            "^[A-Z]{1,2}\\s?[0-9]{1,2}\\s?[A-Z]{1,2}\\s?[0-9]{4}\$".toRegex()
+                            "^[A-Z]{2}\\s?[0-9]{2}\\s?[A-Z]{1,2}\\s?[0-9]{4}\$".toRegex()
 
 
                             for (i in 0 until items.size()) {

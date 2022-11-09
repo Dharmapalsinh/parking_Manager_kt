@@ -32,6 +32,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.airbnb.lottie.LottieAnimationView
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.Utills.CheckNetworkConnection
 import com.dharmapal.parking_manager_kt.Utills.Config
@@ -142,7 +143,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun submit(){
 
-
         val animation=binding.animation
         handler.postDelayed(Runnable {
             handler.postDelayed(runnable!!, delay.toLong())
@@ -178,7 +178,6 @@ class HomeActivity : AppCompatActivity() {
             Log.d("error",it.toString())
 
         }
-
 
     }
 
@@ -227,15 +226,29 @@ class HomeActivity : AppCompatActivity() {
         }
 
          fun networkDialog(context: Context,viewModel: MainViewModel) {
+             var handler: Handler = Handler(Looper.getMainLooper())
+             var runnable: Runnable? = null
+             var delay = 2000
             val dialogs = Dialog(context)
             dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialogs.setContentView(R.layout.networkdialog)
             dialogs.setCanceledOnTouchOutside(false)
             val done = dialogs.findViewById<View>(R.id.done) as Button
+            val animation_internet = dialogs.findViewById<View>(R.id.animation) as LottieAnimationView
+
+             val animation=animation_internet
+             handler.postDelayed(Runnable {
+                 handler.postDelayed(runnable!!, delay.toLong())
+                 animation.playAnimation()
+             }.also { runnable = it }, delay.toLong())
+
             done.setOnClickListener {
-                //Submit()
+
                 if (checkForInternet(context)){
                     dialogs.dismiss()
+                    animation.cancelAnimation()
+                    handler.removeCallbacks(runnable!!)
+                    animation_internet.isVisible=false
                     //todo below line
                     viewModel.submit()
                 }
