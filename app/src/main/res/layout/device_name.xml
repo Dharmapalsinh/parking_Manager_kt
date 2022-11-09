@@ -4,8 +4,8 @@
     android:id="@+id/dvName"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:fontFamily="@font/alata"
-    android:padding="15dp"
+    android:fontFamily="@font/lato"
+    android:padding="16dp"
     android:textColor="@color/black"
     android:textSize="20sp"
     tools:text="aasdsafcfdc" />

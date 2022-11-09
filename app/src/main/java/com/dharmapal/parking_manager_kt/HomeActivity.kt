@@ -126,7 +126,7 @@ class HomeActivity : AppCompatActivity() {
             123 -> {
                 for (element in grantResults) {
                     if (element == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(applicationContext, "denied", Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext, "Please Allow All Required Permissions.", Toast.LENGTH_LONG).show()
                         startActivity(
                             Intent(
                                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(

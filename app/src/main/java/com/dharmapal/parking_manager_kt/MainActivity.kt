@@ -129,7 +129,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("lcycle","start")
         bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         mBluetoothAdapter = bluetoothManager.adapter
-        //Todo: apply condition to below line permission
 //        requestPermission()
 //        when {
 //            ActivityCompat.checkSelfPermission(
@@ -140,8 +139,7 @@ class MainActivity : AppCompatActivity() {
 //                    ActivityCompat.requestPermissions(
 //                        this,
 //                        arrayOf(
-//                            permission.CAMERA,
-//                            //todo:removed storage & BT permissions
+//                            permission.CAMERA
 //                        ),
 //                        permissionRequestCode
 //                    )

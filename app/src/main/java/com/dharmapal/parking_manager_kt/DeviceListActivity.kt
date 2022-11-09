@@ -37,15 +37,11 @@ import java.lang.reflect.Method
 class DeviceListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDeviceListBinding
-
     private var deviceAdapter: DeviceAdapter? = null
     var list = ArrayList<BluetoothDevice>()
     private lateinit var bluetoothManager: BluetoothManager
     private lateinit var bluetoothAdapter: BluetoothAdapter
-
     private lateinit var managePermissions: ManagePermissions
-    private lateinit var wifiManager: WifiManager
-//    private lateinit var wifiAdapter: wifiAdapter
     lateinit var receiver: BluetoothReceiver
     lateinit var receiver2: Discoverability
     private var handler: Handler = Handler(Looper.getMainLooper())
@@ -177,7 +173,6 @@ class DeviceListActivity : AppCompatActivity() {
 //                }
 //            }
 //
-//            //todo:denied permissions....
 //            when (ContextCompat.checkSelfPermission(
 //                baseContext, Manifest.permission.ACCESS_FINE_LOCATION
 //            )) {
@@ -229,14 +224,6 @@ class DeviceListActivity : AppCompatActivity() {
             discoverDevice()
         }
 
-//        binding.buttonConnect.setOnClickListener {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//                startActivity( Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
-//            }
-//            Log.d("wifidevices", wifiManager.scanResults.toString())
-//        }
-
-
     }
 
 
@@ -252,7 +239,7 @@ class DeviceListActivity : AppCompatActivity() {
             123->{
                 for (element in grantResults) {
                     if (element == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext,"Please Allow All Required Permissions.",Toast.LENGTH_LONG).show()
                         startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
                             "package:$packageName"
                         )))
@@ -376,7 +363,7 @@ class DeviceListActivity : AppCompatActivity() {
                         intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                     if (device != null) {
                         Log.d("DiscoverDevice4", "${device.name} ${device.address}")
-                        if (device.name != null) {
+                        if (device.name != null && !list.contains(device)) {
                             list.add(device)
 
                             when (device.bondState) {

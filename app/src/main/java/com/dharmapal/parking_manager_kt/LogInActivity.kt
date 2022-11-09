@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -23,13 +24,13 @@ import com.dharmapal.parking_manager_kt.HomeActivity.Companion.checkForInternet
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.networkDialog
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityLogInBinding
+import com.dharmapal.parking_manager_kt.models.LogInResponse
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-//todo:progressbar
 class LogInActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLogInBinding
     private lateinit var viewModel: MainViewModel
@@ -123,6 +124,42 @@ class LogInActivity : AppCompatActivity() {
             }
         })
 
+        viewModel.loginData.observe(this@LogInActivity){
+            if (it.status=="200") {
+
+                lifecycleScope.launch {
+                    val animation=binding.animation
+                    binding.animation.isVisible = true
+                    handler.postDelayed(Runnable {
+                        handler.postDelayed(runnable!!, delay.toLong())
+                        animation.playAnimation()
+                    }.also { runnable = it }, delay.toLong())
+
+                    delay(3000)
+
+                    val i = Intent(this@LogInActivity, HomeActivity::class.java)
+                    i.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
+                    startActivity(i)
+                    val editor = sharedPreferences.edit()
+
+                    editor.putString(emailKey, number.text.toString())
+                    editor.putString(passwordKey, password.text.toString())
+                    editor.putString("count", "1")
+                    editor.apply()
+
+                    animation.cancelAnimation()
+                    handler.removeCallbacks(runnable!!)
+                    binding.animation.isVisible = false
+
+                }
+            }
+            else {
+                Toast.makeText(applicationContext, "Invalid Username Or Password", Toast.LENGTH_SHORT).show()
+                number.error = "Invalid Username Or Password"
+            }
+        }
+
         binding.login.setOnClickListener {
 
             if (number.text.toString() == "") {
@@ -132,50 +169,12 @@ class LogInActivity : AppCompatActivity() {
             } else if (password.text.toString() == "") {
                 toast(this, "Please Enter Password First!!!")
             } else {
+                if (checkForInternet(this@LogInActivity)){
+
+                    login(number.text.toString(), password.text.toString())
 
 
-                    if (checkForInternet(this@LogInActivity)){
-
-                        login(number.text.toString(), password.text.toString())
-
-
-                        viewModel.loginData.observe(this@LogInActivity){
-                            if (it.status=="200") {
-
-                                lifecycleScope.launch {
-                                    val animation=binding.animation
-                                    binding.animation.isVisible = true
-                                    handler.postDelayed(Runnable {
-                                        handler.postDelayed(runnable!!, delay.toLong())
-                                        animation.playAnimation()
-                                    }.also { runnable = it }, delay.toLong())
-
-                                    delay(3000)
-
-                                    val i = Intent(this@LogInActivity, HomeActivity::class.java)
-                                    i.flags =
-                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
-                                    startActivity(i)
-                                    val editor = sharedPreferences.edit()
-
-                                    editor.putString(emailKey, number.text.toString())
-                                    editor.putString(passwordKey, password.text.toString())
-                                    editor.putString("count", "1")
-                                    editor.apply()
-
-                                    animation.cancelAnimation()
-                                    handler.removeCallbacks(runnable!!)
-                                    binding.animation.isVisible = false
-
-                                }
-                            }
-                            else {
-                                    Toast.makeText(applicationContext, "Invalid Username Or Password", Toast.LENGTH_SHORT).show()
-                                    number.error = "Invalid Username Or Password"
-                            }
-                        }
-
-                    }
+                }
                     else{
                         networkDialog(this@LogInActivity,viewModel)
                     }
@@ -184,6 +183,13 @@ class LogInActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+//        binding.animation.cancelAnimation()
+//        handler.removeCallbacks(runnable!!)
+//        binding.animation.isVisible = false
     }
 
     override fun onStart() {
