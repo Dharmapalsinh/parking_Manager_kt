@@ -232,8 +232,6 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
-
-
         callNetworkConnection(application!!, this, this, viewModel)
         binding.recyclerView.layoutManager=
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -408,15 +406,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.printPass.setOnClickListener {
-            /*val outputStream:OutputStream? =null
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO){
-//                    outputStream!!.write("First Testing".toByteArray())
-                    doPrint()
-                }
-            }*/
-//            checkInPrint()
-//             Submit();
+
             if (binding.vnumber.text.toString() == "") {
                 Toast.makeText(this@MainActivity, "Please Scan Vehicle or Enter Vehicle Number!!!",Toast.LENGTH_SHORT).show()
             } else if (pid == "") {

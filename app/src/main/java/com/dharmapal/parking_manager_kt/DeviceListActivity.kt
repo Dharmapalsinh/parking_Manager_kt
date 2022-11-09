@@ -24,6 +24,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_ACCESS_COARSE_LOCATION
 import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_ACCESS_FINE_LOCATION
 import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_BLUETOOTH_SCAN
@@ -31,6 +32,7 @@ import com.dharmapal.parking_manager_kt.Utills.Config.Companion.Permission_BT_Co
 import com.dharmapal.parking_manager_kt.Utills.ManagePermissions
 import com.dharmapal.parking_manager_kt.adapters.DeviceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityDeviceListBinding
+import kotlinx.coroutines.delay
 import java.lang.reflect.Method
 
 
@@ -352,6 +354,9 @@ class DeviceListActivity : AppCompatActivity() {
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_STARTED -> {
                     Log.d("DiscoverDevice2", "Discovery Started")
+                    val animation = binding.animationBluetooth
+                    binding.animationBluetooth.isVisible = true
+                    animation.playAnimation()
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> {
                     Log.d("DiscoverDevice3", "Discovery Finish")
@@ -364,6 +369,10 @@ class DeviceListActivity : AppCompatActivity() {
                     if (device != null) {
                         Log.d("DiscoverDevice4", "${device.name} ${device.address}")
                         if (device.name != null && !list.contains(device)) {
+
+                            binding.animationBluetooth.cancelAnimation()
+                            binding.animationBluetooth.isVisible = false
+
                             list.add(device)
 
                             when (device.bondState) {
