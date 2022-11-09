@@ -356,7 +356,10 @@ class DeviceListActivity : AppCompatActivity() {
                     Log.d("DiscoverDevice2", "Discovery Started")
                     val animation = binding.animationBluetooth
                     binding.animationBluetooth.isVisible = true
-                    animation.playAnimation()
+                    handler.postDelayed(Runnable {
+                        handler.postDelayed(runnable!!, delay.toLong())
+                        animation.playAnimation()
+                    }.also { runnable = it }, delay.toLong())
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> {
                     Log.d("DiscoverDevice3", "Discovery Finish")
@@ -371,6 +374,7 @@ class DeviceListActivity : AppCompatActivity() {
                         if (device.name != null && !list.contains(device)) {
 
                             binding.animationBluetooth.cancelAnimation()
+                            handler.removeCallbacks(runnable!!)
                             binding.animationBluetooth.isVisible = false
 
                             list.add(device)
