@@ -626,7 +626,7 @@ class MainActivity : AppCompatActivity() {
 
 
         lists()
-        viewModel.save(SaveParameters(binding.vnumber.text.toString(),pid,slots!!,slotid!!,cardtype!!,"0"))
+        viewModel.save(SaveParameters(binding.vnumber.text.toString().replace("\\s".toRegex(),"").uppercase(),pid,slots!!,slotid!!,cardtype!!,"0"))
         viewModel.saveData.observe(this){
             Log.d("save",it.toString())
             Toast.makeText(applicationContext, it.msg,Toast.LENGTH_SHORT).show()

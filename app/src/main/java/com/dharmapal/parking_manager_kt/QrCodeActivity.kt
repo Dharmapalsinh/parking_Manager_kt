@@ -134,7 +134,7 @@ class QrCodeActivity : AppCompatActivity() {
 
         binding.btnCheckout.setOnClickListener{
             if(HomeActivity.checkForInternet(this)){
-                checkout(binding.vNumber.text.toString())
+                checkout(binding.vNumber.text.toString().replace("\\s".toRegex(),"").uppercase())
             }
             else{
                 networkDialog(this,viewModel)
@@ -151,7 +151,7 @@ class QrCodeActivity : AppCompatActivity() {
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                viewModel.arrivingVehicle(binding.vNumber.text.toString())
+                viewModel.arrivingVehicle(binding.vNumber.text.toString().replace("\\s".toRegex(),"").uppercase())
                 viewModel.arrivingVehicleData.observe(this@QrCodeActivity){
                     if (it.response!=null) {
                         binding.arrTime.text = it.response.checkinTime!!.subSequence(11,19)
