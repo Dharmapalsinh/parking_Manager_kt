@@ -83,6 +83,12 @@ class DeviceListActivity : AppCompatActivity() {
         super.onStart()
         Log.d("lcd","start")
 
+        val  manager:LocationManager = getSystemService( Context.LOCATION_SERVICE ) as LocationManager
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            buildAlertMessageNoGps()
+        }
+
+
         bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothAdapter = bluetoothManager.adapter
         receiver = BluetoothReceiver()
@@ -213,10 +219,6 @@ class DeviceListActivity : AppCompatActivity() {
         bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothAdapter = bluetoothManager.adapter
 
-        val  manager:LocationManager = getSystemService( Context.LOCATION_SERVICE ) as LocationManager
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-            buildAlertMessageNoGps()
-        }
 
         enableBT()
         getPairedDevice()
@@ -323,8 +325,6 @@ class DeviceListActivity : AppCompatActivity() {
             .setCancelable(false)
             .setPositiveButton("Yes"
             ) { dialog, id -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-            .setNegativeButton("No"
-            ) { dialog, id -> dialog.cancel() }
         val alert: AlertDialog = builder.create()
         alert.show()
     }
