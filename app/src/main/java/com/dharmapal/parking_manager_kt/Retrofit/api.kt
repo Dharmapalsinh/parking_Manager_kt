@@ -1,7 +1,5 @@
 package com.dharmapal.parking_manager_kt.Retrofit
 
-import android.util.Base64.NO_WRAP
-import android.util.Base64.encodeToString
 import com.dharmapal.parking_manager_kt.models.*
 import retrofit2.Call
 import retrofit2.http.*

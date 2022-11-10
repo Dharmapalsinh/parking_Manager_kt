@@ -4,8 +4,6 @@ package com.dharmapal.parking_manager_kt
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
@@ -214,9 +212,7 @@ class QrCodeActivity : AppCompatActivity() {
                             binding.vNumber.setText(stringBuilder.toString().replace("\\s".toRegex(),""))
                             cameraSource.stop()
                         }
-                        else{
 
-                        }
                     }
                 }
             }

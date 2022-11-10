@@ -1,28 +1,31 @@
 package com.dharmapal.parking_manager_kt
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.PopupMenu
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
+import com.airbnb.lottie.LottieAnimationView
 import com.codemybrainsout.ratingdialog.RatingDialog
-import com.dharmapal.parking_manager_kt.databinding.ActivityHomeBinding
 import com.dharmapal.parking_manager_kt.databinding.ActivitySettingBinding
-import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 
 class  SettingActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingBinding
     private val sharedPref: String = "shared_prefs"
-    var mypopupWindow: PopupWindow = PopupWindow()
+    private var myPopupWindow: PopupWindow = PopupWindow()
 
     // variable for shared preferences.
     private lateinit var sharedPreferences: SharedPreferences
@@ -35,26 +38,7 @@ class  SettingActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences(sharedPref, Context.MODE_PRIVATE)
 
         binding.tvLogout.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage("Are you sure you want to Logout")
-            builder.setPositiveButton(
-                "Yes"
-            ) { dialog, _ ->
-                //sessionManager.logoutUser()
-                val editor = sharedPreferences.edit()
-                editor.clear()
-                editor.putString("count","0")
-                editor.apply()
-                val i = Intent(this, LogInActivity::class.java)
-                startActivity(i)
-                dialog.dismiss()
-                finish()
-            }
-            builder.setNegativeButton(
-                "No"
-            ) { dialog, _ -> dialog.dismiss() }
-            val alertDialog = builder.create()
-            alertDialog.show()
+            customExitDialog()
         }
 
         binding.tvRate.setOnClickListener {
@@ -68,21 +52,59 @@ class  SettingActivity : AppCompatActivity() {
             val english=view.findViewById<TextView>(R.id.tv_English)
             val french=view.findViewById<TextView>(R.id.tv_french)
 
-            mypopupWindow =  PopupWindow(view,500, 250, true)
-            mypopupWindow.showAsDropDown(binding.tvEnglish)
+            myPopupWindow =  PopupWindow(view,500, 250, true)
+            myPopupWindow.showAsDropDown(binding.tvEnglish)
 
             english.setOnClickListener {
                 Toast.makeText(this,"English",Toast.LENGTH_SHORT).show()
-                mypopupWindow.dismiss()
+                myPopupWindow.dismiss()
             }
 
             french.setOnClickListener {
                 Toast.makeText(this,"French",Toast.LENGTH_SHORT).show()
-                mypopupWindow.dismiss()
+                myPopupWindow.dismiss()
             }
         }
-
     }
+
+    private fun customExitDialog() {
+        val handler = Handler(Looper.getMainLooper())
+        var runnable: Runnable? = null
+        val delay = 1000
+
+        val dialog = Dialog(this@SettingActivity)
+
+        dialog.setContentView(R.layout.custom_exit_dialog)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val dialogButtonYes = dialog.findViewById(R.id.textViewYes) as TextView
+        val dialogButtonNo = dialog.findViewById(R.id.textViewNo) as TextView
+        val animationLogout = dialog.findViewById<View>(R.id.animation_logout) as LottieAnimationView
+
+        handler.postDelayed(Runnable {
+            handler.postDelayed(runnable!!, delay.toLong())
+            animationLogout.playAnimation()
+        }.also { runnable = it }, delay.toLong())
+
+        dialogButtonNo.setOnClickListener { // dismiss the dialog
+            dialog.dismiss()
+        }
+        dialogButtonYes.setOnClickListener { // dismiss the dialog and exit the exit
+            val editor = sharedPreferences.edit()
+            editor.clear()
+            editor.putString("count","0")
+            editor.apply()
+            val i = Intent(this, LogInActivity::class.java)
+            startActivity(i)
+            dialog.dismiss()
+            animationLogout.cancelAnimation()
+            handler.removeCallbacks(runnable!!)
+            animationLogout.isVisible = false
+            finish()
+        }
+        dialog.show()
+    }
+
 
     @SuppressLint("ResourceType")
     private fun showDialog() {

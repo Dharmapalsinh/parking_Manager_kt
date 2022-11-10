@@ -3,10 +3,9 @@ package com.dharmapal.parking_manager_kt
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.models.ForgotPasswordReq
 import com.dharmapal.parking_manager_kt.models.SaveParameters
-import retrofit2.http.Header
 
 class Repo2 constructor(private val retrofitService: RetrofitClientCopy){
-    fun QRtest() =retrofitService.instance2.tempQR()
+    fun qrTest() =retrofitService.instance2.tempQR()
 
 }
 

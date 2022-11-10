@@ -1,7 +1,5 @@
 package com.dharmapal.parking_manager_kt.Retrofit
 
-
-import android.util.Base64
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -84,9 +82,6 @@ class RetrofitInterceptor: Interceptor {
 class RetrofitInterceptor2: Interceptor {
 
     private var credentials: String = Credentials.basic("rzp_test_CYmjPvZ9udBdjl", "xGwUIty7DsvhNxNZj6sehVu5")
-//    val authPayload = "rzp_test_CYmjPvZ9udBdjl:xGwUIty7DsvhNxNZj6sehVu5"
-//    val data = authPayload.toByteArray()
-//    val base64 = Base64.encodeToString(data, Base64.NO_WRAP)
 
     override fun intercept(chain: Interceptor.Chain): Response {
         try {

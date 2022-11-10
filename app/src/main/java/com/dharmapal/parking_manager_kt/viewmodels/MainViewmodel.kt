@@ -19,23 +19,18 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
 
     val errorMessage = MutableLiveData<String>()
     val loginData=MutableLiveData<LogInResponse>()
-    val forgotpassData=MutableLiveData<String>()
+    val forgotPassData=MutableLiveData<String>()
     val dashboardData=MutableLiveData<DashResponse>()
     val saveData=MutableLiveData<SaveResponse>()
     val slotData=MutableLiveData<SlotResponse>()
     val priceData=MutableLiveData<PriceResponse>()
     val missingData=MutableLiveData<MissingResponse>()
-    val scanData=MutableLiveData<ScanResponse>()
     val checkoutData=MutableLiveData<CheckoutResponse>()
     val razorQrData=MutableLiveData<RazorQrResponse>()
     val arrivingVehicleData=MutableLiveData<ArrivingVehicleResponse>()
 
-//    val authPayload = "rzp_test_CYmjPvZ9udBdjl:xGwUIty7DsvhNxNZj6sehVu5"
-//    val data = authPayload.toByteArray()
-//    val base64 = Base64.encodeToString(data, Base64.NO_WRAP)
-
-    fun testqr(repository: Repo2){
-        val response=repository.QRtest()
+    fun testQr(repository: Repo2){
+        val response=repository.qrTest()
         response.enqueue(object :Callback<RazorQrResponse>{
             override fun onResponse(
                 call: Call<RazorQrResponse>,
@@ -103,8 +98,8 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
                 response: Response<ForgotPasswordResponse>
             ) {
                 Log.d("FPass",response.body()!!.msg.toString())
-                forgotpassData.postValue(response.body()!!.msg)
-                Log.d("fpass",response.body()!!.msg.toString())
+                forgotPassData.postValue(response.body()!!.msg)
+                Log.d("fPass",response.body()!!.msg.toString())
             }
 
             override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
@@ -169,19 +164,6 @@ class MainViewModel constructor(private val repository: Repo)  : ViewModel() {
                 missingData.postValue(response.body())
             }
             override fun onFailure(call: Call<MissingResponse>, t: Throwable) {
-                errorMessage.postValue(t.message)
-            }
-        })
-    }
-
-    fun scan(pass_no: String){
-        val response=repository.scan(pass_no)
-        response.enqueue(object :Callback<ScanResponse>{
-            override fun onResponse(call: Call<ScanResponse>, response: Response<ScanResponse>) {
-                Log.d("tagged",response.body().toString())
-                scanData.postValue(response.body())
-            }
-            override fun onFailure(call: Call<ScanResponse>, t: Throwable) {
                 errorMessage.postValue(t.message)
             }
         })

@@ -12,7 +12,7 @@ import com.dharmapal.parking_manager_kt.models.ForgotPasswordReq
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 
-class ForgotPassword_Activity : AppCompatActivity() {
+class ForgotPasswordActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityForgotPasswordBinding
     private lateinit var viewModel: MainViewModel
@@ -29,10 +29,10 @@ class ForgotPassword_Activity : AppCompatActivity() {
         val email=binding.email
 
         binding.send.setOnClickListener {
-            val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
-            if (!email.text.contains(EMAIL_REGEX.toRegex())) {
+            val emailRegex = "^[A-Za-z](.*)([@])(.+)(\\.)(.+)"
+            if (!email.text.contains(emailRegex.toRegex())) {
                 val toast = Toast.makeText(
-                    this@ForgotPassword_Activity,
+                    this@ForgotPasswordActivity,
                     "Please Enter Valid Email Address",
                     Toast.LENGTH_SHORT
                 )
@@ -52,7 +52,7 @@ class ForgotPassword_Activity : AppCompatActivity() {
 //        showMe.setCanceledOnTouchOutside(false)
 //        showMe.show()
         viewModel.forgotPassword(ForgotPasswordReq(""))
-        viewModel.forgotpassData.observe(this){
+        viewModel.forgotPassData.observe(this){
             Toast.makeText(applicationContext,it,Toast.LENGTH_SHORT).show()
         }
     }

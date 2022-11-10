@@ -13,11 +13,7 @@ class Config {
     //    public static final String missing="https://manage.spotiz.app/api/missing";
 
     companion object{
-        const val Permission_BT_Connect=103
-        const val Permission_ACCESS_FINE_LOCATION=102
-        const val Permission_ACCESS_COARSE_LOCATION=101
         const val requestCameraPermissionID = 1001
         const val permissionRequestCode = 200
-        const val Permission_BLUETOOTH_SCAN=104
     }
 }

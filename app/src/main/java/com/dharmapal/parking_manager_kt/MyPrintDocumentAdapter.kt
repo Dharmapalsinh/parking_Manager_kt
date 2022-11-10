@@ -16,7 +16,7 @@ import java.io.FileOutputStream
 
 class MyPrintDocumentAdapter(val context: Context) : PrintDocumentAdapter() {
 
-    lateinit var myPdfDocument:PrintedPdfDocument
+    private lateinit var myPdfDocument:PrintedPdfDocument
     override fun onLayout(
         p0: PrintAttributes?,
         p1: PrintAttributes?,
@@ -46,8 +46,6 @@ class MyPrintDocumentAdapter(val context: Context) : PrintDocumentAdapter() {
         val page = myPdfDocument.startPage(newPage)
         drawPage(page)
         myPdfDocument.finishPage(page)
-
-
 
         myPdfDocument.writeTo(FileOutputStream(p1!!.fileDescriptor))
 

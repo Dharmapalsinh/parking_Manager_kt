@@ -1,8 +1,5 @@
 package com.dharmapal.parking_manager_kt
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -15,7 +12,6 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +20,6 @@ import com.dharmapal.parking_manager_kt.HomeActivity.Companion.checkForInternet
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.networkDialog
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.databinding.ActivityLogInBinding
-import com.dharmapal.parking_manager_kt.models.LogInResponse
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModel
 import com.dharmapal.parking_manager_kt.viewmodels.MainViewModelFactory
 import kotlinx.coroutines.delay
@@ -35,23 +30,19 @@ import kotlinx.coroutines.launch
 class LogInActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLogInBinding
     private lateinit var viewModel: MainViewModel
-
     // creating constant keys for shared preferences.
     private val sharedPref = "shared_prefs"
-
     // key for storing email.
     private val emailKey = "email_key"
-
     // key for storing password.
     private val passwordKey = "password_key"
-
     // variable for shared preferences.
     private lateinit var sharedPreferences: SharedPreferences
     private  var email: String? =null
     private  var password: String? =null
     private var handler: Handler = Handler(Looper.getMainLooper())
-    var runnable: Runnable? = null
-    var delay = 2000
+    private var runnable: Runnable? = null
+    private var delay = 2000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,22 +52,17 @@ class LogInActivity : AppCompatActivity() {
         val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
         viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
-
         callNetworkConnection(application!!, this, this, viewModel)
         // getting the data which is stored in shared preferences.
         sharedPreferences = getSharedPreferences(sharedPref, Context.MODE_PRIVATE)
 
-        // in shared prefs inside het string method
-        // we are passing key value as EMAIL_KEY and
-        // default value is
-        // set to null if not present.
         email = sharedPreferences.getString("EMAIL_KEY", null).toString()
         password = sharedPreferences.getString("PASSWORD_KEY", null).toString()
 
         val number=binding.number
         val password=binding.pass
         binding.fpass.setOnClickListener {
-            val intent=Intent(applicationContext,ForgotPassword_Activity::class.java)
+            val intent=Intent(applicationContext,ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
 
@@ -129,12 +115,12 @@ class LogInActivity : AppCompatActivity() {
             if (it.status=="200") {
 
                 lifecycleScope.launch {
-                    val animation=binding.animation
-                    binding.animation.isVisible = true
+                    val animation=binding.animationLogin
+                    binding.animationLogin.isVisible = true
                     handler.postDelayed(Runnable {
                         handler.postDelayed(runnable!!, delay.toLong())
                         animation.playAnimation()
-                    }.also { runnable = it }, delay.toLong())
+                    }.also { it1 -> runnable = it1 }, delay.toLong())
 
                     delay(3000)
 
@@ -151,7 +137,7 @@ class LogInActivity : AppCompatActivity() {
 
                     animation.cancelAnimation()
                     handler.removeCallbacks(runnable!!)
-                    binding.animation.isVisible = false
+                    binding.animationLogin.isVisible = false
 
                 }
             }
@@ -165,33 +151,21 @@ class LogInActivity : AppCompatActivity() {
         binding.login.setOnClickListener {
 
             if (number.text.toString() == "") {
-                toast(this, "Please Enter Number First!!!")
+                toast("Please Enter Number First!!!")
             } else if (number.text.toString().length < 10) {
-                toast(this, "Please Enter Correct Number!!!")
+                toast("Please Enter Correct Number!!!")
             } else if (password.text.toString() == "") {
-                toast(this, "Please Enter Password First!!!")
+                toast("Please Enter Password First!!!")
             } else {
                 if (checkForInternet(this@LogInActivity)){
 
                     login(number.text.toString(), password.text.toString())
-
-
                 }
                     else{
                         networkDialog(this@LogInActivity,viewModel)
                     }
-
-
-
             }
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-//        binding.animation.cancelAnimation()
-//        handler.removeCallbacks(runnable!!)
-//        binding.animation.isVisible = false
     }
 
     override fun onStart() {
@@ -202,28 +176,20 @@ class LogInActivity : AppCompatActivity() {
             startActivity(i)
             finish()
         }
-
     }
 
     private fun login(number:String, password:String){
-        val showMe = ProgressDialog(this, AlertDialog.THEME_HOLO_LIGHT)
-        showMe.setMessage("Please wait")
-        showMe.setCancelable(true)
-        showMe.setCanceledOnTouchOutside(false)
-        showMe.show()
 
         Log.d("tagged",password)
         viewModel.logIn(number,password)
-        showMe.dismiss()
         viewModel.loginData.observe(this){
             Log.d("tagged",it.toString())
         }
         viewModel.errorMessage.observe(this){
             Log.d("tagged",it.toString())
         }
-
     }
-    private fun toast(activity: Activity?, Message: String?) {
+    private fun toast(Message: String?) {
         val toast = Toast.makeText(this, Message, Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()
