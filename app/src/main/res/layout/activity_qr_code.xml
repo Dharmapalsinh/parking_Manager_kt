@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/ib_back"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -41,18 +41,18 @@
         app:srcCompat="@drawable/back"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/back"
-        android:textSize="16sp"
-        android:layout_marginStart="5dp"
-        android:paddingHorizontal="5dp"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toTopOf="@+id/imageButton" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView3"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/back"-->
+<!--        android:textSize="16sp"-->
+<!--        android:layout_marginStart="5dp"-->
+<!--        android:paddingHorizontal="5dp"-->
+<!--        android:textColor="@color/white"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/ib_back"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/ib_back"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/ib_back" />-->
 
     <TextView
         android:id="@+id/camera_txt"

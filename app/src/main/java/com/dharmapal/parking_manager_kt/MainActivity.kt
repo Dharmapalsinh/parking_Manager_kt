@@ -23,6 +23,8 @@ import android.util.SparseArray
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -104,6 +106,7 @@ class MainActivity : AppCompatActivity() {
         }.also { runnable = it }, delay.toLong())
         super.onResume()
     }
+
     override fun onPause() {
         super.onPause()
         handler.removeCallbacks(runnable!!)
@@ -119,6 +122,9 @@ class MainActivity : AppCompatActivity() {
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.ibBackButton.setOnClickListener {
+            finish()
+        }
 
         val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
         viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
@@ -277,6 +283,9 @@ class MainActivity : AppCompatActivity() {
                             playOnOffSound()
                             binding.vnumber.setText(stringBuilder.toString().replace("\\s".toRegex(),""))
                             cameraSource.stop()
+//                            binding.constSurface.layoutParams =
+//                                ConstraintLayout.LayoutParams(LayoutParams.MATCH_PARENT, 280)
+
                         }
                     }
                 }
@@ -427,6 +436,7 @@ class MainActivity : AppCompatActivity() {
         return builder.toString()
     }
 
+    @SuppressLint("MissingPermission")
     private fun checkInPrint()
     {
 
@@ -477,6 +487,7 @@ class MainActivity : AppCompatActivity() {
 
             binding.vnumber.text.clear()
             binding.slotNo.text = "-"
+            cameraSource.start(binding.surfaceView.holder)
             binding.prepaidcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
             binding.vipcard.background =
@@ -539,6 +550,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     fun getData(pID: String, slot: String, slotsId: String, cardType: String, codes: String, vno: String) {
 
             lists()
@@ -582,6 +594,7 @@ class MainActivity : AppCompatActivity() {
 
                 binding.vnumber.text.clear()
                 binding.slotNo.text = "-"
+                cameraSource.start(binding.surfaceView.holder)
                 binding.prepaidcard.background =
                     ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
                 binding.vipcard.background =

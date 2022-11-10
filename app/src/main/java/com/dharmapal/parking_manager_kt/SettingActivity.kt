@@ -74,7 +74,7 @@ class  SettingActivity : AppCompatActivity() {
 
         val dialog = Dialog(this@SettingActivity)
 
-        dialog.setContentView(R.layout.custom_exit_dialog)
+        dialog.setContentView(R.layout.custom_logout_dialog)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val dialogButtonYes = dialog.findViewById(R.id.textViewYes) as TextView

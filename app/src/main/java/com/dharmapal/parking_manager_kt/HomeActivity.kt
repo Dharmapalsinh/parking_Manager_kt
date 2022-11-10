@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -20,6 +22,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -48,8 +51,23 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        this.finish()
+
+        val dialog = Dialog(this@HomeActivity)
+
+        dialog.setContentView(R.layout.exit_dialog)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val dialogButtonYes = dialog.findViewById(R.id.tv_yes) as TextView
+        val dialogButtonNo = dialog.findViewById(R.id.tv_no) as TextView
+
+        dialogButtonNo.setOnClickListener { // dismiss the dialog
+            dialog.dismiss()
+        }
+        dialogButtonYes.setOnClickListener { // dismiss the dialog and exit the exit
+            super.onBackPressed()
+        }
+        dialog.show()
+
     }
 
     override fun onStart() {

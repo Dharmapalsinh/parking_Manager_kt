@@ -58,6 +58,10 @@ class QrCodeActivity : AppCompatActivity() {
         binding= ActivityQrCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.ibBack.setOnClickListener {
+            finish()
+        }
+
         val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
         viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
@@ -106,6 +110,7 @@ class QrCodeActivity : AppCompatActivity() {
 
                     binding.vNumber.text.clear()
                     binding.arrTime.text = ""
+                    cameraSource.start(binding.surfaceview.holder)
 
                     delay(2000)
                     animation.cancelAnimation()
@@ -264,55 +269,6 @@ class QrCodeActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-//            Permission_BT_Connect -> {
-//                for (element in grantResults) {
-//                    if (element == PackageManager.PERMISSION_GRANTED) {
-//                        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-//                        mBluetoothAdapter = bluetoothManager.adapter
-//                        if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-//                            val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-//                                isConnected(it)
-//                            }
-//                            if (connected_dv.isNotEmpty()){
-//                                binding.dvName.text=connected_dv[0].name
-//                                binding.btnConnect.text="Change"
-//                            }
-//                            else{
-//                                binding.dvName.text="No Device Connected"
-//                                binding.btnConnect.text="Connect"
-//                            }
-//                        }
-//
-//                        //Loop every 1 second
-//                        handler.postDelayed(Runnable {
-//                            handler.postDelayed(runnable!!, delay.toLong())
-//                            if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
-//                                val connected_dv= mBluetoothAdapter!!.bondedDevices.filter {
-//                                    isConnected(it)
-//                                }
-//
-//                                if (connected_dv.isNotEmpty()){
-//                                    binding.dvName.text=connected_dv[0].name
-//                                    binding.btnConnect.text="Change"
-//                                }
-//                                else{
-//                                    binding.dvName.text="No Device Connected"
-//                                    binding.btnConnect.text="Connect"
-//                                }
-//                            }
-//
-//                        }.also { runnable = it }, delay.toLong())
-//                    }
-//                    else if (element==PackageManager.PERMISSION_DENIED){
-//                        Toast.makeText(applicationContext,"denied",Toast.LENGTH_LONG).show()
-//                        startActivity(Intent(
-//                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-//                                "package:$packageName"
-//                            )))
-//                    }
-//                }
-//            }
-
             Config.permissionRequestCode ->{
                 for (element in grantResults) {
                     if (element == PackageManager.PERMISSION_DENIED) {
@@ -327,36 +283,14 @@ class QrCodeActivity : AppCompatActivity() {
                     }
                     else if (element==PackageManager.PERMISSION_GRANTED){
                         Toast.makeText(applicationContext, "granted", Toast.LENGTH_LONG).show()
-//                        val textRecognizer = TextRecognizer.Builder(applicationContext).build()
-//                        cameraSource = CameraSource.Builder(applicationContext, textRecognizer)
-//                            .setFacing(CameraSource.CAMERA_FACING_BACK)
-//                            .setRequestedPreviewSize(400, 480)
-//                            .setAutoFocusEnabled(true)
-//                            .setRequestedFps(2.0f)
-//                            .build()
                         cameraSource.start(binding.surfaceview.holder)
                     }
                 }
             }
         }
     }
-/*    fun scan(result: String) {
-//        val showMe = ProgressDialog(this@QrCodeActivity, AlertDialog.THEME_HOLO_LIGHT)
-//        showMe.setMessage("Please wait")
-//        showMe.setCancelable(true)
-//        showMe.setCanceledOnTouchOutside(false)
-//        showMe.show()
 
-        Log.d("tagged",result)
-        viewModel.scan(result)
-//        showMe.dismiss()
-        viewModel.scanData.observe(this){
-            Log.d("scan", it.msg)
-        }
-        viewModel.errorMessage.observe(this){
-            Log.d("scan",it.toString())
-        }
-    }*/
+
 
     private fun checkout(result: String) {
         viewModel.checkout(result)
@@ -365,5 +299,7 @@ class QrCodeActivity : AppCompatActivity() {
             Log.d("checkout",it.toString())
         }
     }
+
+
 
 }
