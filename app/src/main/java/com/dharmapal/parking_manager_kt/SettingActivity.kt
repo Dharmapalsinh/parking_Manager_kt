@@ -7,25 +7,28 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.PopupWindow
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.airbnb.lottie.LottieAnimationView
 import com.codemybrainsout.ratingdialog.RatingDialog
+import com.dharmapal.parking_manager_kt.BottomFragment.BottomSheetChangePasswordFragment
+import com.dharmapal.parking_manager_kt.BottomFragment.BottomSheetLanguageFragment
+import com.dharmapal.parking_manager_kt.BottomFragment.BottomSheetSupportFragment
 import com.dharmapal.parking_manager_kt.databinding.ActivitySettingBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class  SettingActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingBinding
     private val sharedPref: String = "shared_prefs"
-    private var myPopupWindow: PopupWindow = PopupWindow()
 
     // variable for shared preferences.
     private lateinit var sharedPreferences: SharedPreferences
@@ -37,34 +40,47 @@ class  SettingActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences(sharedPref, Context.MODE_PRIVATE)
 
-        binding.tvLogout.setOnClickListener {
+        binding.ibBackSetting.setOnClickListener {
+            finish()
+        }
+
+        binding.cvPrinterSetting.setOnClickListener {
+            val intent = Intent(this, PrinterListActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.cvLanguage.setOnClickListener {
+            BottomSheetLanguageFragment().apply {
+                show(supportFragmentManager, "BottomSheetLanguageFragment")
+            }
+        }
+
+        binding.cvChangePassword.setOnClickListener {
+            BottomSheetChangePasswordFragment().apply {
+                show(supportFragmentManager, "BottomSheetChangePasswordFragment")
+            }
+        }
+
+        binding.cvSupport.setOnClickListener {
+            BottomSheetSupportFragment().apply {
+                show(supportFragmentManager, "BottomSheetSupportFragment")
+            }
+        }
+
+        binding.cvLegal.setOnClickListener {
+            val intent = Intent(this, PrivacyActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.cvWebsite.setOnClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://spotiz.com/"))
+            startActivity(browserIntent)
+        }
+
+        binding.cvLogout.setOnClickListener {
             customExitDialog()
         }
 
-        binding.tvRate.setOnClickListener {
-            showDialog()
-        }
-
-        binding.tvEnglish.setOnClickListener {
-            val  inflater: LayoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val view = inflater.inflate(R.layout.custom_popup_menu, null)
-
-            val english=view.findViewById<TextView>(R.id.tv_English)
-            val french=view.findViewById<TextView>(R.id.tv_french)
-
-            myPopupWindow =  PopupWindow(view,500, 250, true)
-            myPopupWindow.showAsDropDown(binding.tvEnglish)
-
-            english.setOnClickListener {
-                Toast.makeText(this,"English",Toast.LENGTH_SHORT).show()
-                myPopupWindow.dismiss()
-            }
-
-            french.setOnClickListener {
-                Toast.makeText(this,"French",Toast.LENGTH_SHORT).show()
-                myPopupWindow.dismiss()
-            }
-        }
     }
 
     private fun customExitDialog() {
@@ -121,8 +137,13 @@ class  SettingActivity : AppCompatActivity() {
         ratingDialog.show()
     }
 
-
+//    override fun onBackPressed() {
+//        val i = Intent(this, HomeActivity::class.java)
+//        startActivity(i)
+//        finish()
+//    }
     companion object {
         private val TAG = MainActivity::class.java.simpleName
     }
+
 }

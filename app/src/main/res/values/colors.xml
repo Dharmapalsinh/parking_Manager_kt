@@ -11,6 +11,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#F81F1F</color>
 
    <!-- <color name="primaryTextColor">#D81B60</color>
     <color name="secondaryTextColor">#D81B60</color>
@@ -27,4 +28,6 @@
     <color name="secondaryTextColor">#9E9E9E</color>
     <color name="strokeColor">#9E9E9E</color>
     <color name="textFieldColor">#0F0F0F</color>
+
+
 </resources>

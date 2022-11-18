@@ -1,41 +1,40 @@
 package com.dharmapal.parking_manager_kt
 
-import android.Manifest.permission
+import android.animation.LayoutTransition
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
+import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.DisplayMetrics
 import android.util.Log
 import android.util.SparseArray
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
+import com.dharmapal.parking_manager_kt.DeviceListActivity.Companion.isAPrinter
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.checkForInternet
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
-import com.dharmapal.parking_manager_kt.Utills.Config.Companion.permissionRequestCode
-import com.dharmapal.parking_manager_kt.Utills.Config.Companion.requestCameraPermissionID
 import com.dharmapal.parking_manager_kt.adapters.PriceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityMainBinding
 import com.dharmapal.parking_manager_kt.models.PriceModel
@@ -47,9 +46,13 @@ import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.io.OutputStream
 import java.lang.reflect.Method
+import java.util.*
+import javax.xml.datatype.DatatypeConstants.DURATION
 
 
 @Suppress("DEPRECATED_IDENTITY_EQUALS")
@@ -75,11 +78,12 @@ class MainActivity : AppCompatActivity() {
     private var types: String? = null
     private lateinit var bluetoothManager: BluetoothManager
     private var mBluetoothAdapter: BluetoothAdapter? = null
-    private val outputStream: OutputStream? = null
+    private var outputStream: OutputStream? = null
     private var handler: Handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable? = null
     private var delay = 1000
     private lateinit var  textRecognizer:TextRecognizer
+    private var bluetoothSocket : BluetoothSocket?=null
 
     @SuppressLint("MissingPermission")
     override fun onResume() {
@@ -90,7 +94,8 @@ class MainActivity : AppCompatActivity() {
             handler.postDelayed(runnable!!, delay.toLong())
             if (mBluetoothAdapter!!.bondedDevices.isNotEmpty()){
                 val connectedDv= mBluetoothAdapter!!.bondedDevices.filter {
-                    isConnected(it)
+                    isAPrinter(it)
+//                    isConnected(it)
                 }
 
                 if (connectedDv.isNotEmpty()){
@@ -100,7 +105,16 @@ class MainActivity : AppCompatActivity() {
                 else{
                     binding.dvName.text=getString(R.string.Nodevice)
                     binding.btnConnect.text=getString(R.string.connect)
+                    /*Toast.makeText(this,"No Device Connected",Toast.LENGTH_SHORT).show()
+                    val intent=Intent(applicationContext,PrinterListActivity::class.java)
+                    startActivity(intent)*/
                 }
+            }
+            else
+            {
+                /*Toast.makeText(this,"No Device Connected",Toast.LENGTH_SHORT).show()
+                val intent=Intent(applicationContext,PrinterListActivity::class.java)
+                startActivity(intent)*/
             }
 
         }.also { runnable = it }, delay.toLong())
@@ -117,6 +131,7 @@ class MainActivity : AppCompatActivity() {
         bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         mBluetoothAdapter = bluetoothManager.adapter
     }
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
@@ -125,6 +140,11 @@ class MainActivity : AppCompatActivity() {
         binding.ibBackButton.setOnClickListener {
             finish()
         }
+
+        cardType="3"
+        binding.normalCard.background =
+            ContextCompat.getDrawable(this@MainActivity, R.drawable.selectedbordercategory)
+
 
         val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
         viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
@@ -140,7 +160,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.recyclerView.adapter=pAdapter
 
-        binding.prepaidcard.setOnClickListener {
+        binding.prepaidCards.setOnClickListener {
             cardType = "2"
 
             if (binding.vnumber.text.toString() == "") {
@@ -151,11 +171,11 @@ class MainActivity : AppCompatActivity() {
                 bottomSheet(pid, slots, slotId, pno, cardType)
             }
 
-            binding.prepaidcard.background =
+            binding.prepaidCards.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.selectedbordercategory)
             binding.vipcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
-            binding.normalcard.background =
+            binding.normalCard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
         }
 
@@ -163,17 +183,17 @@ class MainActivity : AppCompatActivity() {
             cardType = "1"
             binding.vipcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.selectedbordercategory)
-            binding.prepaidcard.background =
+            binding.prepaidCards.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
-            binding.normalcard.background =
+            binding.normalCard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
         }
 
-        binding.normalcard.setOnClickListener {
+        binding.normalCard.setOnClickListener {
             cardType = "3"
-            binding.normalcard.background =
+            binding.normalCard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.selectedbordercategory)
-            binding.prepaidcard.background =
+            binding.prepaidCards.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
             binding.vipcard.background =
                 ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
@@ -198,10 +218,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnConnect.setOnClickListener {
+       /* binding.btnConnect.setOnClickListener {
             val intent=Intent(applicationContext,DeviceListActivity::class.java)
             startActivity(intent)
-        }
+        }*/
 
         textRecognizer = TextRecognizer.Builder(applicationContext).build()
 
@@ -217,26 +237,9 @@ class MainActivity : AppCompatActivity() {
                 .build()
 
             binding.surfaceView.holder.addCallback(object : SurfaceHolder.Callback {
+                @SuppressLint("MissingPermission")
                 override fun surfaceCreated(holder: SurfaceHolder) {
-                    try {
-                        if (ActivityCompat.checkSelfPermission(
-                                applicationContext,
-                                permission.CAMERA
-                            ) !== PackageManager.PERMISSION_GRANTED
-                        ) {
-                            ActivityCompat.requestPermissions(
-                                this@MainActivity,
-                                arrayOf(permission.CAMERA),
-                                requestCameraPermissionID
-                            )
-                            return
-                        }
-
-
                         cameraSource.start(binding.surfaceView.holder)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
                 }
 
                 override fun surfaceChanged(
@@ -267,7 +270,7 @@ class MainActivity : AppCompatActivity() {
                         val stringBuilder = StringBuilder()
 
                         val numPlate:Regex =
-                            "^[A-Z]{2}\\s?[0-9]{2}\\s?[A-Z]{1,2}\\s?[0-9]{4}\$".toRegex()
+                            "^[A-Z]{2}\\s?[0-9]{1,2}\\s?[A-Z]{1,2}\\s?[0-9]{4}\$".toRegex()
 
 
                             for (i in 0 until items.size()) {
@@ -282,10 +285,10 @@ class MainActivity : AppCompatActivity() {
                             temp = binding.cameraTxt.text.toString().trim { it <= ' ' }
                             playOnOffSound()
                             binding.vnumber.setText(stringBuilder.toString().replace("\\s".toRegex(),""))
+                            binding.capture.isVisible = true
                             cameraSource.stop()
-//                            binding.constSurface.layoutParams =
-//                                ConstraintLayout.LayoutParams(LayoutParams.MATCH_PARENT, 280)
-
+                            decreaseViewSize(binding.constSurface)
+                            //binding.constSurface.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 300)
                         }
                     }
                 }
@@ -296,10 +299,32 @@ class MainActivity : AppCompatActivity() {
             try {
                 cameraSource.start(binding.surfaceView.holder)
                 binding.vnumber.text.clear()
+                increaseViewSize(binding.constSurface)
+                binding.capture.isVisible = false
+
             } catch (e: IOException) {
                 e.printStackTrace()
             }
         }
+
+        binding.vnumber.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val numPlate:Regex =
+                    "^[A-Z]{2}\\s?[0-9]{1,2}\\s?[A-Z]{1,2}\\s?[0-9]{4}\$".toRegex()
+                if (s!!.matches(numPlate)){
+                    decreaseViewSize(binding.constSurface)
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
 
         binding.printPass.setOnClickListener {
 
@@ -309,7 +334,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Please Select Vehicle Type!!!",Toast.LENGTH_SHORT).show()
             }
             //todo:below condition
-//            else if (binding.dvName.text == getString(R.string.Nodevice)) {
+//            else if (binding.dvName.text == getString(R.string.noDevice)) {
 //                Toast.makeText(this@MainActivity, "Please Select Bluetooth Device!!",Toast.LENGTH_SHORT).show()
 //            }
             else {
@@ -326,32 +351,31 @@ class MainActivity : AppCompatActivity() {
         lists()
     }
 
-    @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            permissionRequestCode->{
-                for (element in grantResults) {
-                    if (element == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(applicationContext, "denied", Toast.LENGTH_LONG).show()
-                        startActivity(
-                            Intent(
-                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
-                                    "package:$packageName"
-                                )
-                            )
-                        )
-                    }
-                    else if (element==PackageManager.PERMISSION_GRANTED){
-                        Toast.makeText(applicationContext, "granted", Toast.LENGTH_LONG).show()
-                        cameraSource.start(binding.surfaceView.holder)
-                    }
-                }
+    companion object{
+
+        fun decreaseViewSize(view: View) {
+            val displayMetrics = DisplayMetrics()
+            val valueAnimator = ValueAnimator.ofInt(view.measuredHeight, view.measuredHeight + (displayMetrics.heightPixels - 800))
+            valueAnimator.duration = 800L
+            valueAnimator.addUpdateListener {
+                val animatedValue = valueAnimator.animatedValue as Int
+                val layoutParams = view.layoutParams
+                layoutParams.height = animatedValue
+                view.layoutParams = layoutParams
             }
+            valueAnimator.start()
+        }
+        fun increaseViewSize(view: View) {
+            val displayMetrics = DisplayMetrics()
+            val valueAnimator = ValueAnimator.ofInt(view.measuredHeight, view.measuredHeight + (displayMetrics.heightPixels + 800))
+            valueAnimator.duration = 500L
+            valueAnimator.addUpdateListener {
+                val animatedValue = valueAnimator.animatedValue as Int
+                val layoutParams = view.layoutParams
+                layoutParams.height = animatedValue
+                view.layoutParams = layoutParams
+            }
+            valueAnimator.start()
         }
     }
 
@@ -388,10 +412,10 @@ class MainActivity : AppCompatActivity() {
         passNo: String, datetime: String, vno: String, vType: String, slotNo: String,
         type: String, amount: String): String {
 
-        val builder = java.lang.StringBuilder()
+        val builder = StringBuilder()
         builder.append("!!Spotiz-Parking!!\n")
         builder.append("\n")
-        builder.append("Date & Time: $datetime")
+        builder.append("Date & Time : $datetime")
         builder.append("\n")
         builder.append("Vehicle No : $vno")
         builder.append("\n")
@@ -433,69 +457,89 @@ class MainActivity : AppCompatActivity() {
         builder.append("Amount Paid : $amount")
         builder.append("\n")
         builder.append("\n")
+        builder.append("--------------------------------\n")
         return builder.toString()
     }
 
     @SuppressLint("MissingPermission")
     private fun checkInPrint()
     {
-
         lists()
         viewModel.save(SaveParameters(binding.vnumber.text.toString().replace("\\s".toRegex(),"").uppercase(),pid,slots!!,slotId!!,cardType!!,"0"))
-        viewModel.saveData.observe(this){
+        viewModel.saveData.observe(this){it1->
             //todo:animation below
-//            if (it.status=="200"){
-//                binding.animationview.isVisible = true
-//                binding.animationview.playAnimation()
-//            }
-            Log.d("save",it.toString())
-            Toast.makeText(applicationContext, it.msg,Toast.LENGTH_SHORT).show()
+            if (it1.status=="200"){
+                lifecycleScope.launch {
+                    binding.animationview.isVisible = true
+                    binding.animationview.playAnimation()
 
-            val cmd = ByteArray(3)
-            cmd[0] = 0x1b
-            cmd[1] = 'a'.code.toByte()
-            cmd[2] = 0x01
-            outputStream?.write(cmd)
-            outputStream?.write(
-                getPrintFormat(
-                    it.pass_no,
-                    it.checked_in,
-                    it.vehicle_no,
-                    it.vehicle_type,
-                    it.slot_number,
-                    it.type,
-                    it.amount
-                ).toByteArray())
+                    Log.d("save", it1.toString())
+                    Toast.makeText(applicationContext, it1.msg, Toast.LENGTH_SHORT).show()
 
-            Log.d("print",
-                getPrintFormat(it.pass_no,it.checked_in,it.vehicle_no, it.vehicle_type,it.slot_number,it.type,it.amount)
-            )
+//                    Log.d("print", getPrintFormat(it1.pass_no, it1.checked_in, it1.vehicle_no, it1.vehicle_type, it1.slot_number, it1.type, it1.amount))
 
-            val imageCmd = ByteArray(7)
-            imageCmd[0] = 0x1B
-            imageCmd[1] = 0x5A
-            imageCmd[2] = 0x00
-            imageCmd[3] = 0x02
-            imageCmd[4] = 0x07
-            imageCmd[5] = 0x06
-            imageCmd[6] = 0x00
-            outputStream?.write(imageCmd)
-            outputStream?.write(("" + it.pass_no).toByteArray())
+                    /*printCustom("!!Spotiz-Parking!!\n",3,1)
+                       printCustom("\n",0,0)
+                       printCustom("Date & Time :",1,0)
+                       printCustom(it1.checked_in,1,2)
+                       printCustom("Vehicle No :",1,0)
+                       printCustom(it1.vehicle_no,1,2)
+                       printCustom("-------------------------------",1,1)
+                       printCustom("Pass No :",1,0)
+                       printCustom(it1.pass_no,1,2)
+                       printCustom("Parking Slot No :",1,0)
+                       printCustom(it1.slot_number,1,2)
+                       printCustom("-------------------------------",1,1)*/
 
-            Log.d("print", "" + it.pass_no)
-           //mService.sendMessage("" + it.pass_no, "GBK")
+//                    printCustom(getPrintFormat(it1.pass_no, it1.checked_in, it1.vehicle_no, it1.vehicle_type, it1.slot_number, it1.type, it1.amount), 1, 1)
 
-            binding.vnumber.text.clear()
-            binding.slotNo.text = "-"
-            cameraSource.start(binding.surfaceView.holder)
-            binding.prepaidcard.background =
-                ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
-            binding.vipcard.background =
-                ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
-            binding.normalcard.background =
-                ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+//                    val imageCmd = ByteArray(7)
+//                    imageCmd[0] = 0x1B
+//                    imageCmd[1] = 0x5A
+//                    imageCmd[2] = 0x00
+//                    imageCmd[3] = 0x02
+//                    imageCmd[4] = 0x07
+//                    imageCmd[5] = 0x06
+//                    imageCmd[6] = 0x00
+//                    outputStream!!.write(imageCmd)
+//                    outputStream!!.write(("" + it1.pass_no).toByteArray())
+//                    outputStream!!.flush()
 
+                    binding.vnumber.text.clear()
+                    binding.slotNo.text = "-"
+                    increaseViewSize(binding.constSurface)
+                    cameraSource.start(binding.surfaceView.holder)
+                    binding.prepaidCards.background =
+                        ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+                    binding.vipcard.background =
+                        ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+                    binding.normalCard.background =
+                        ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
+
+                    delay(2000)
+                    binding.animationview.cancelAnimation()
+                    binding.animationview.isVisible = false
+
+                }
+            }
         }
+//        mBluetoothAdapter!!.bondedDevices.forEach {
+//            try {
+//                val uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
+//                val socket = it.createRfcommSocketToServiceRecord(uuid)
+//                bluetoothSocket = socket
+//                socket.connect()
+//                outputStream = socket.outputStream
+//                outputStream = bluetoothSocket!!.outputStream
+//                val printFormat = byteArrayOf(0x1B, 0x21, 0x03)
+//                outputStream!!.write(printFormat)
+//
+//
+//            } catch (_: Exception) {
+//                Toast.makeText(this@MainActivity,"Printer is off",Toast.LENGTH_LONG).show()
+//            }
+//
+//        }
     }
 
         private fun bottomSheet(
@@ -531,6 +575,34 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun printCustom(msg: String, size: Int, align: Int) {
+        //Print config "mode"
+        val normal = byteArrayOf(0x1B, 0x21, 0x03) // 0- normal size text
+        val bold = byteArrayOf(0x1B, 0x21, 0x08) // 1- only bold text
+        val boldMedium = byteArrayOf(0x1B, 0x21, 0x20) // 2- bold with medium text
+        val boldLarge = byteArrayOf(0x1B, 0x21, 0x10) // 3- bold with large text
+        try {
+            when (size) {
+                0 -> outputStream!!.write(normal)
+                1 -> outputStream!!.write(bold)
+                2 -> outputStream!!.write(boldMedium)
+                3 -> outputStream!!.write(boldLarge)
+            }
+            when (align) {
+                0 ->                     //left align
+                    outputStream!!.write(byteArrayOf(0x1b, 'a'.code.toByte(), 0x00))
+                1 ->                     //center align
+                    outputStream!!.write(byteArrayOf(0x1b, 'a'.code.toByte(), 0x01))
+                2 ->                     //right align
+                    outputStream!!.write(byteArrayOf(0x1b, 'a'.code.toByte(), 0x02))
+            }
+            outputStream!!.write(msg.toByteArray())
+            outputStream!!.write(0x0A)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
     private fun lists()
     {
         viewModel.price()
@@ -558,10 +630,10 @@ class MainActivity : AppCompatActivity() {
             viewModel.saveData.observe(this){
                 Log.d("save",it.toString())
 
-                val cmd = ByteArray(3)
-                cmd[0] = 0x1b
-                cmd[1] = 'a'.code.toByte()
-                cmd[2] = 0x01
+                val cmd = byteArrayOf(27, 33, 0)
+                cmd[0] = 0x1B
+                cmd[1] = 0x21
+                cmd[2] = 0x08
                 outputStream?.write(cmd)
                 outputStream?.write(
                     getPrintFormat(
@@ -594,12 +666,13 @@ class MainActivity : AppCompatActivity() {
 
                 binding.vnumber.text.clear()
                 binding.slotNo.text = "-"
+                increaseViewSize(binding.constSurface)
                 cameraSource.start(binding.surfaceView.holder)
-                binding.prepaidcard.background =
+                binding.prepaidCards.background =
                     ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
                 binding.vipcard.background =
                     ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
-                binding.normalcard.background =
+                binding.normalCard.background =
                     ContextCompat.getDrawable(this@MainActivity, R.drawable.bordercategory)
             }
     }
@@ -614,6 +687,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
     //todo: remove unwanted permissions in manifest
+
+    override fun onBackPressed() {
+        val i = Intent(this, HomeActivity::class.java)
+        startActivity(i)
+        finish()
+    }
 }
 
 

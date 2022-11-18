@@ -7,26 +7,53 @@
     android:background="@drawable/bacgroundfull"
     tools:context=".SettingActivity">
 
+
+    <ImageButton
+        android:id="@+id/ib_back_setting"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@null"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:letterSpacing="0.1"
+        android:text="@string/back"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ib_back_setting"
+        app:layout_constraintStart_toEndOf="@+id/ib_back_setting"
+        app:layout_constraintTop_toTopOf="@+id/ib_back_setting" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cons_middle"
+        android:id="@+id/cv_profile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="28dp"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/backcardmain"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/back_setting"
         android:elevation="10dp"
+        android:paddingVertical="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/ib_back_setting">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="65dp"
             android:layout_height="65dp"
+            android:layout_margin="16dp"
             app:cardCornerRadius="30dp"
-            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -39,37 +66,33 @@
                     android:id="@+id/iv_profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/user"
-                    app:srcCompat="@drawable/user" />
+                    android:src="@drawable/usericon" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="12dp"
-            android:text="Name"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:text="Spotiz SA"
+            android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/cardView" />
 
         <TextView
             android:id="@+id/tv_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="Email"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginVertical="2dp"
+            android:text="+91 9998873404"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/tv_name"
             app:layout_constraintStart_toStartOf="@+id/tv_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
@@ -77,134 +100,516 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cons_middle">
+        android:id="@+id/cv_printer_setting"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/cv_profile"
+        app:layout_constraintStart_toStartOf="@+id/cv_profile"
+        app:layout_constraintTop_toBottomOf="@+id/cv_profile">
 
-        <TextView
-            android:id="@+id/tv_setting"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_printer"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16sp"
-            android:background="@color/white"
-            android:padding="8dp"
-            android:paddingStart="15dp"
-            android:letterSpacing="0.09"
-            android:text="@string/setting"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginVertical="8dp"
+            android:padding="5dp"
+            android:src="@drawable/printer_setting"
+            app:layout_constraintEnd_toStartOf="@+id/tv_printer_setting"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@drawable/back_setting"
+        <TextView
+            android:id="@+id/tv_printer_setting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/printer_setting"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/iv_language_arrow"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_printer"
+            app:layout_constraintTop_toTopOf="@+id/iv_printer" />
+
+        <TextView
+            android:id="@+id/tv_printer_setting_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/printer_setting_desc"
+            android:textColor="@color/white"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_printer_setting"
+            app:layout_constraintStart_toStartOf="@+id/tv_printer_setting"
+            app:layout_constraintTop_toBottomOf="@+id/tv_printer_setting" />
+
+        <ImageView
+            android:id="@+id/iv_language_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginVertical="8dp"
+            android:src="@drawable/ico_rightarrow"
+            app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_setting">
-
-            <TextView
-                android:id="@+id/tv_language"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/translation"
-                android:drawablePadding="10dp"
-                android:padding="10dp"
-                android:text="@string/language"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/tv_english"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_english"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
-                android:drawablePadding="4dp"
-                android:padding="10dp"
-                android:text="English"
-                android:textColor="#737373"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_rate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/rate"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
-                android:drawablePadding="10dp"
-                android:padding="10dp"
-                android:text="@string/rate_us"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_language" />
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="4dp"
-                android:background="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_rate" />
-
-            <TextView
-                android:id="@+id/tv_privacy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/privacy"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
-                android:drawablePadding="10dp"
-                android:padding="10dp"
-                android:text="@string/privacy"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view" />
-
-            <TextView
-                android:id="@+id/tv_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/info"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
-                android:drawablePadding="10dp"
-                android:padding="10dp"
-                android:text="@string/info"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_privacy" />
-
-            <TextView
-                android:id="@+id/tv_logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_baseline_logout_24"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
-                android:drawablePadding="10dp"
-                android:padding="10dp"
-                android:text="@string/logout"
-                android:textColor="#FF0000"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_info" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_printer_setting"
+            app:layout_constraintTop_toTopOf="@+id/tv_printer_setting" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/v_printer"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#E673D3F4"
+        app:layout_constraintEnd_toEndOf="@+id/cv_printer_setting"
+        app:layout_constraintStart_toStartOf="@+id/cv_printer_setting"
+        app:layout_constraintTop_toBottomOf="@+id/cv_printer_setting" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_language"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/v_printer"
+        app:layout_constraintStart_toStartOf="@+id/v_printer"
+        app:layout_constraintTop_toBottomOf="@+id/v_printer">
+
+        <ImageView
+            android:id="@+id/iv_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginVertical="4dp"
+            android:padding="5dp"
+            android:src="@drawable/ico_language"
+            app:layout_constraintEnd_toStartOf="@+id/tv_language"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_language"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/language"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/iv_printer_arrow"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_language"
+            app:layout_constraintTop_toTopOf="@+id/iv_language" />
+
+        <TextView
+            android:id="@+id/tv_language_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/language_desc"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_language"
+            app:layout_constraintStart_toStartOf="@+id/tv_language"
+            app:layout_constraintTop_toBottomOf="@+id/tv_language" />
+
+        <ImageView
+            android:id="@+id/iv_printer_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginVertical="8dp"
+            android:src="@drawable/ico_rightarrow"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_language"
+            app:layout_constraintTop_toTopOf="@+id/tv_language" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/v_language"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#E673D3F4"
+        app:layout_constraintEnd_toEndOf="@+id/cv_language"
+        app:layout_constraintStart_toStartOf="@+id/cv_language"
+        app:layout_constraintTop_toBottomOf="@+id/cv_language" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_change_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/v_language"
+        app:layout_constraintStart_toStartOf="@+id/v_language"
+        app:layout_constraintTop_toBottomOf="@+id/v_language">
+
+        <ImageView
+            android:id="@+id/iv_change_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:padding="5dp"
+            android:layout_marginVertical="4dp"
+            android:src="@drawable/group_643"
+            app:layout_constraintEnd_toStartOf="@+id/tv_change_password"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_change_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/change_password"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/iv_change_password_arrow"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_change_password"
+            app:layout_constraintTop_toTopOf="@+id/iv_change_password" />
+
+        <TextView
+            android:id="@+id/tv_change_password_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/change_password_desc"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_change_password"
+            app:layout_constraintStart_toStartOf="@+id/tv_change_password"
+            app:layout_constraintTop_toBottomOf="@+id/tv_change_password" />
+
+        <ImageView
+            android:id="@+id/iv_change_password_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginVertical="8dp"
+            android:src="@drawable/ico_rightarrow"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_change_password"
+            app:layout_constraintTop_toTopOf="@+id/tv_change_password" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/v_change_password"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#E673D3F4"
+        app:layout_constraintEnd_toEndOf="@+id/cv_change_password"
+        app:layout_constraintStart_toStartOf="@+id/cv_change_password"
+        app:layout_constraintTop_toBottomOf="@+id/cv_change_password" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_support"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/v_change_password"
+        app:layout_constraintStart_toStartOf="@+id/v_change_password"
+        app:layout_constraintTop_toBottomOf="@+id/v_change_password">
+
+        <ImageView
+            android:id="@+id/iv_support"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:padding="5dp"
+            android:layout_marginVertical="4dp"
+            android:src="@drawable/ico_support"
+            app:layout_constraintEnd_toStartOf="@+id/tv_support"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_support"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/support"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/iv_support_arrow"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_support"
+            app:layout_constraintTop_toTopOf="@+id/iv_support" />
+
+        <TextView
+            android:id="@+id/tv_change_support_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/support_desc"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_support"
+            app:layout_constraintStart_toStartOf="@+id/tv_support"
+            app:layout_constraintTop_toBottomOf="@+id/tv_support" />
+
+        <ImageView
+            android:id="@+id/iv_support_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginVertical="8dp"
+            android:src="@drawable/ico_rightarrow"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_support"
+            app:layout_constraintTop_toTopOf="@+id/tv_support" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/v_support"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#E673D3F4"
+        app:layout_constraintEnd_toEndOf="@+id/cv_support"
+        app:layout_constraintStart_toStartOf="@+id/cv_support"
+        app:layout_constraintTop_toBottomOf="@+id/cv_support" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_legal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/v_support"
+        app:layout_constraintStart_toStartOf="@+id/v_support"
+        app:layout_constraintTop_toBottomOf="@+id/v_support">
+
+        <ImageView
+            android:id="@+id/iv_legal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:padding="5dp"
+            android:layout_marginVertical="4dp"
+            android:src="@drawable/ico_legal"
+            app:layout_constraintEnd_toStartOf="@+id/tv_legal"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_legal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/legal"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/iv_legal_arrow"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_legal"
+            app:layout_constraintTop_toTopOf="@+id/iv_legal" />
+
+        <TextView
+            android:id="@+id/tv_change_legal_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/legal_desc"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_legal"
+            app:layout_constraintStart_toStartOf="@+id/tv_legal"
+            app:layout_constraintTop_toBottomOf="@+id/tv_legal" />
+
+        <ImageView
+            android:id="@+id/iv_legal_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginVertical="8dp"
+            android:src="@drawable/ico_rightarrow"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_legal"
+            app:layout_constraintTop_toTopOf="@+id/tv_legal" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/v_legal"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#E673D3F4"
+        app:layout_constraintEnd_toEndOf="@+id/cv_legal"
+        app:layout_constraintStart_toStartOf="@+id/cv_legal"
+        app:layout_constraintTop_toBottomOf="@+id/cv_legal" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_website"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/v_legal"
+        app:layout_constraintStart_toStartOf="@+id/v_legal"
+        app:layout_constraintTop_toBottomOf="@+id/v_legal">
+
+        <ImageView
+            android:id="@+id/iv_website"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:padding="5dp"
+            android:layout_marginVertical="4dp"
+            android:src="@drawable/ico_web"
+            app:layout_constraintEnd_toStartOf="@+id/tv_website"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_website"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/visit_website"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/iv_website_arrow"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_website"
+            app:layout_constraintTop_toTopOf="@+id/iv_website" />
+
+        <TextView
+            android:id="@+id/tv_website_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/visit_website_desc"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_website"
+            app:layout_constraintStart_toStartOf="@+id/tv_website"
+            app:layout_constraintTop_toBottomOf="@+id/tv_website" />
+
+        <ImageView
+            android:id="@+id/iv_website_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginVertical="8dp"
+            android:src="@drawable/ico_rightarrow"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_website"
+            app:layout_constraintTop_toTopOf="@+id/tv_website" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/v_website"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#E673D3F4"
+        app:layout_constraintEnd_toEndOf="@+id/cv_website"
+        app:layout_constraintStart_toStartOf="@+id/cv_website"
+        app:layout_constraintTop_toBottomOf="@+id/cv_website" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_logout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/v_website"
+        app:layout_constraintStart_toStartOf="@+id/v_website"
+        app:layout_constraintTop_toBottomOf="@+id/v_website">
+
+        <ImageView
+            android:id="@+id/iv_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:padding="5dp"
+            android:layout_marginVertical="4dp"
+            android:src="@drawable/ico_logout"
+            app:layout_constraintEnd_toStartOf="@+id/tv_logout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_logout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/logout"
+            android:textColor="@color/red"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/iv_logout_arrow"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_logout"
+            app:layout_constraintTop_toTopOf="@+id/iv_logout" />
+
+        <TextView
+            android:id="@+id/tv_logout_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/logout_desc"
+            android:textColor="@color/red"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_logout"
+            app:layout_constraintStart_toStartOf="@+id/tv_logout"
+            app:layout_constraintTop_toBottomOf="@+id/tv_logout" />
+
+        <ImageView
+            android:id="@+id/iv_logout_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginVertical="8dp"
+            android:src="@drawable/ico_logout_arrow"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_logout"
+            app:layout_constraintTop_toTopOf="@+id/tv_logout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/v_logout"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#E673D3F4"
+        app:layout_constraintEnd_toEndOf="@+id/cv_logout"
+        app:layout_constraintStart_toStartOf="@+id/cv_logout"
+        app:layout_constraintTop_toBottomOf="@+id/cv_logout" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@
 package com.dharmapal.parking_manager_kt
 
 import android.Manifest
+import android.animation.LayoutTransition
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,12 +19,16 @@ import android.view.SurfaceHolder
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.callNetworkConnection
 import com.dharmapal.parking_manager_kt.HomeActivity.Companion.networkDialog
+import com.dharmapal.parking_manager_kt.MainActivity.Companion.decreaseViewSize
+import com.dharmapal.parking_manager_kt.MainActivity.Companion.increaseViewSize
 import com.dharmapal.parking_manager_kt.Retrofit.RetrofitClientCopy
 import com.dharmapal.parking_manager_kt.Utills.Config
 import com.dharmapal.parking_manager_kt.Utills.Config.Companion.requestCameraPermissionID
@@ -87,6 +92,9 @@ class QrCodeActivity : AppCompatActivity() {
 
                 cameraSource.start(binding.surfaceview.holder)
                 binding.vNumber.text.clear()
+                increaseViewSize(binding.constSurfaceView)
+                binding.capture.isVisible = false
+
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -110,6 +118,7 @@ class QrCodeActivity : AppCompatActivity() {
 
                     binding.vNumber.text.clear()
                     binding.arrTime.text = ""
+                    increaseViewSize(binding.constSurfaceView)
                     cameraSource.start(binding.surfaceview.holder)
 
                     delay(2000)
@@ -127,6 +136,9 @@ class QrCodeActivity : AppCompatActivity() {
 
                     binding.vNumber.text.clear()
                     binding.arrTime.text = ""
+                    increaseViewSize(binding.constSurfaceView)
+                    cameraSource.start(binding.surfaceview.holder)
+
 
                     delay(2000)
                     animation.cancelAnimation()
@@ -153,7 +165,11 @@ class QrCodeActivity : AppCompatActivity() {
 
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+                val numPlate:Regex =
+                    "^[A-Z]{2}\\s?[0-9]{1,2}\\s?[A-Z]{1,2}\\s?[0-9]{4}\$".toRegex()
+                if (p0!!.matches(numPlate)){
+                    decreaseViewSize(binding.constSurfaceView)
+                }
                 viewModel.arrivingVehicle(binding.vNumber.text.toString().replace("\\s".toRegex(),"").uppercase())
                 viewModel.arrivingVehicleData.observe(this@QrCodeActivity){
                     if (it.response!=null) {
@@ -174,6 +190,7 @@ class QrCodeActivity : AppCompatActivity() {
                         if (min<=59 && hours.toInt()==0){
                             binding.refund.text = it.response.amount + "" +".00 RS"
                         }
+
                        Log.i("Hours", time)
                     }
                     else{
@@ -215,7 +232,11 @@ class QrCodeActivity : AppCompatActivity() {
                             binding.cameraTxt.text = stringBuilder.toString()
                             playOnOffSound()
                             binding.vNumber.setText(stringBuilder.toString().replace("\\s".toRegex(),""))
+                            binding.capture.isVisible = true
                             cameraSource.stop()
+                            decreaseViewSize(binding.constSurfaceView)
+                            //binding.constSurfaceView.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 280)
+
                         }
 
                     }
@@ -233,23 +254,7 @@ class QrCodeActivity : AppCompatActivity() {
     private val surfaceCallback= object :SurfaceHolder.Callback{
         @SuppressLint("MissingPermission")
         override fun surfaceCreated(p0: SurfaceHolder) {
-            try {
-                if (ActivityCompat.checkSelfPermission(
-                        applicationContext,
-                        Manifest.permission.CAMERA
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    ActivityCompat.requestPermissions(
-                        this@QrCodeActivity,
-                        arrayOf(Manifest.permission.CAMERA),
-                        requestCameraPermissionID
-                    )
-                    return
-                }
                 cameraSource.start(binding.surfaceview.holder)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
         }
 
         override fun surfaceChanged(p0: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
@@ -257,7 +262,7 @@ class QrCodeActivity : AppCompatActivity() {
         }
 
         override fun surfaceDestroyed(p0: SurfaceHolder) {
-
+            cameraSource.stop()
         }
     }
 
@@ -291,7 +296,6 @@ class QrCodeActivity : AppCompatActivity() {
     }
 
 
-
     private fun checkout(result: String) {
         viewModel.checkout(result)
 
@@ -300,6 +304,11 @@ class QrCodeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        val i = Intent(this, HomeActivity::class.java)
+        startActivity(i)
+        finish()
+    }
 
 
 }

@@ -6,10 +6,15 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.ImageSpan
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -59,20 +64,20 @@ class LogInActivity : AppCompatActivity() {
         email = sharedPreferences.getString("EMAIL_KEY", null).toString()
         password = sharedPreferences.getString("PASSWORD_KEY", null).toString()
 
-        val number=binding.number
+        val email=binding.emailMobile
         val password=binding.pass
         binding.fpass.setOnClickListener {
             val intent=Intent(applicationContext,ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
 
-        binding.number.addTextChangedListener(object : TextWatcher {
+        /*binding.number.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 binding.number.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_user,
                     0,
-                    R.drawable.ic_check_mark,
+                    0,
                     0
                 )
             }
@@ -81,20 +86,20 @@ class LogInActivity : AppCompatActivity() {
                     binding.number.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_user,
                         0,
-                        R.drawable.ic_check_mark1,
+                        0,
                         0
                     )
                 }
             }
-        })
+        })*/
 
-        password.addTextChangedListener(object : TextWatcher {
+       /* binding.pass.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 password.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_lock,
                     0,
-                    R.drawable.ic_check_mark,
+                    0,
                     0
                 )
             }
@@ -104,25 +109,26 @@ class LogInActivity : AppCompatActivity() {
                     password.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_lock,
                         0,
-                        R.drawable.ic_check_mark1,
+                       0,
                         0
                     )
                 }
             }
-        })
+        })*/
 
         viewModel.loginData.observe(this@LogInActivity){
             if (it.status=="200") {
 
-                lifecycleScope.launch {
+               /* lifecycleScope.launch {
                     val animation=binding.animationLogin
                     binding.animationLogin.isVisible = true
+
                     handler.postDelayed(Runnable {
                         handler.postDelayed(runnable!!, delay.toLong())
                         animation.playAnimation()
                     }.also { it1 -> runnable = it1 }, delay.toLong())
 
-                    delay(3000)
+                    delay(3500)*/
 
                     val i = Intent(this@LogInActivity, HomeActivity::class.java)
                     i.flags =
@@ -130,36 +136,36 @@ class LogInActivity : AppCompatActivity() {
                     startActivity(i)
                     val editor = sharedPreferences.edit()
 
-                    editor.putString(emailKey, number.text.toString())
+                    editor.putString(emailKey, email.text.toString())
                     editor.putString(passwordKey, password.text.toString())
                     editor.putString("count", "1")
                     editor.apply()
 
-                    animation.cancelAnimation()
+                   /* animation.cancelAnimation()
                     handler.removeCallbacks(runnable!!)
                     binding.animationLogin.isVisible = false
 
-                }
+                }*/
             }
             else {
-                Toast.makeText(applicationContext, "Invalid Username Or Password", Toast.LENGTH_SHORT).show()
-                number.error = "Invalid Username Or Password"
-                password.error ="Invalid Username Or Password"
+                //Toast.makeText(applicationContext, "Invalid Username Or Password", Toast.LENGTH_SHORT).show()
+
+                binding.passwordContainer.helperText = "Invalid Username Or Password"
             }
         }
 
-        binding.login.setOnClickListener {
+        binding.login.setSafeOnClickListener {
 
-            if (number.text.toString() == "") {
+            if (email.text.toString() == "") {
                 toast("Please Enter Number First!!!")
-            } else if (number.text.toString().length < 10) {
+            } else if (email.text.toString().length < 10) {
                 toast("Please Enter Correct Number!!!")
             } else if (password.text.toString() == "") {
                 toast("Please Enter Password First!!!")
             } else {
                 if (checkForInternet(this@LogInActivity)){
 
-                    login(number.text.toString(), password.text.toString())
+                    login(email.text.toString(), password.text.toString())
                 }
                     else{
                         networkDialog(this@LogInActivity,viewModel)
@@ -193,5 +199,26 @@ class LogInActivity : AppCompatActivity() {
         val toast = Toast.makeText(this, Message, Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()
+    }
+
+    class SafeClickListener(
+        private var defaultInterval: Int = 1000,
+        private val onSafeCLick: (View) -> Unit
+    ) : View.OnClickListener {
+        private var lastTimeClicked: Long = 0
+        override fun onClick(v: View) {
+            if (SystemClock.elapsedRealtime() - lastTimeClicked < defaultInterval) {
+                return
+            }
+            lastTimeClicked = SystemClock.elapsedRealtime()
+            onSafeCLick(v)
+        }
+    }
+
+    private fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
+        val safeClickListener = SafeClickListener {
+            onSafeClick(it)
+        }
+        setOnClickListener(safeClickListener)
     }
 }

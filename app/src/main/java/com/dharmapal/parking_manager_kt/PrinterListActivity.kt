@@ -3,33 +3,31 @@ package com.dharmapal.parking_manager_kt
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.bluetooth.*
-import android.content.BroadcastReceiver
-import android.content.ContentValues.TAG
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothManager
+import android.content.*
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.dharmapal.parking_manager_kt.Utills.ManagePermissions
 import com.dharmapal.parking_manager_kt.adapters.DeviceAdapter
 import com.dharmapal.parking_manager_kt.databinding.ActivityDeviceListBinding
+import com.dharmapal.parking_manager_kt.databinding.ActivityPrinterListBinding
+import com.dharmapal.parking_manager_kt.databinding.ActivityPrivacyBinding
 import java.lang.reflect.Method
 
-
-class DeviceListActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityDeviceListBinding
+class PrinterListActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityPrinterListBinding
     private var deviceAdapter: DeviceAdapter? = null
     var list = ArrayList<BluetoothDevice>()
     private lateinit var bluetoothManager: BluetoothManager
@@ -54,7 +52,7 @@ class DeviceListActivity : AppCompatActivity() {
         handler.postDelayed(Runnable {
             handler.postDelayed(runnable!!, delay.toLong())
             val bondedList=bluetoothAdapter.bondedDevices.filter {
-                isAPrinter(it)
+                DeviceListActivity.isAPrinter(it)
             }
             if (bondedList.isNotEmpty()){
                 finish()
@@ -73,7 +71,7 @@ class DeviceListActivity : AppCompatActivity() {
         super.onStart()
         Log.d("lcd","start")
 
-        val  manager:LocationManager = getSystemService( Context.LOCATION_SERVICE ) as LocationManager
+        val  manager: LocationManager = getSystemService( Context.LOCATION_SERVICE ) as LocationManager
         if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             buildAlertMessageNoGps()
         }
@@ -104,22 +102,24 @@ class DeviceListActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("lcd","create")
-        binding = ActivityDeviceListBinding.inflate(layoutInflater)
+        binding= ActivityPrinterListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.ibBackPrinterList.setOnClickListener {
+            finish()
+        }
 
         bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothAdapter = bluetoothManager.adapter
 
 
         enableBT()
-         getPairedDevice()
+        getPairedDevice()
 
         binding.buttonScan.setOnClickListener {
             list.clear()
             discoverDevice()
         }
-
     }
 
     @SuppressLint("MissingPermission")
@@ -133,10 +133,13 @@ class DeviceListActivity : AppCompatActivity() {
             123->{
                 for (element in grantResults) {
                     if (element == PackageManager.PERMISSION_DENIED) {
-                        //Toast.makeText(applicationContext,"Please Allow All Required Permissions.",Toast.LENGTH_LONG).show()
-                        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                        //Toast.makeText(applicationContext,"Please Allow All Required Permissions.", Toast.LENGTH_LONG).show()
+                        startActivity(
+                            Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
                             "package:$packageName"
-                        )))
+                        ))
+                        )
                     }
                 }
             }
@@ -145,11 +148,11 @@ class DeviceListActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun enableBT(){
-            if (!bluetoothAdapter.isEnabled) {
-                bluetoothAdapter.enable()
-                val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                startActivity(intent)
-            }
+        if (!bluetoothAdapter.isEnabled) {
+            bluetoothAdapter.enable()
+            val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivity(intent)
+        }
     }
 
     private fun buildAlertMessageNoGps() {
@@ -203,9 +206,16 @@ class DeviceListActivity : AppCompatActivity() {
                         intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                     if (device != null) {
 
-                        if (device.name != null && !list.contains(device) && isAPrinter(device)) {
+                        if (device.name != null && !list.contains(device) && DeviceListActivity.isAPrinter(
+                                device
+                            )
+                        ) {
 
-                            Log.d("DiscoverDevice4", "${device.name} ${device.address} ${isAPrinter(device)}")
+                            Log.d("DiscoverDevice4", "${device.name} ${device.address} ${
+                                DeviceListActivity.isAPrinter(
+                                    device
+                                )
+                            }")
                             binding.animationBluetooth.cancelAnimation()
                             handler.removeCallbacks(runnable!!)
                             binding.animationBluetooth.isVisible = false
@@ -232,7 +242,6 @@ class DeviceListActivity : AppCompatActivity() {
             }
             deviceAdapter.also { binding.newDevices.adapter = it }
         }
-
     }
 
     @SuppressLint("MissingPermission")
@@ -241,7 +250,10 @@ class DeviceListActivity : AppCompatActivity() {
         Log.d("bondedDevice", arr.size.toString())
         Log.d("bondedDevice", arr.toString())
         for (device in arr) {
-            Log.d("bondedDevice", device.name + "  " + device.address + "  " + device.bondState + " " + isAPrinter(device))
+            Log.d("bondedDevice", device.name + "  " + device.address + "  " + device.bondState + " " + DeviceListActivity.isAPrinter(
+                device
+            )
+            )
             device.removeBond()
         }
 
@@ -250,7 +262,6 @@ class DeviceListActivity : AppCompatActivity() {
         }
 
     }
-
 
     private fun BluetoothDevice.removeBond() {
         try {
@@ -270,14 +281,13 @@ class DeviceListActivity : AppCompatActivity() {
         fun isAPrinter(device: BluetoothDevice): Boolean {
             val printerMask = 1664
             val fullCod = device.bluetoothClass.hashCode()
-            Log.d(TAG, "FULL COD: $fullCod")
-            Log.d(TAG, "MASK RESULT " + (fullCod and printerMask))
+            Log.d(ContentValues.TAG, "FULL COD: $fullCod")
+            Log.d(ContentValues.TAG, "MASK RESULT " + (fullCod and printerMask))
             return (fullCod and printerMask == printerMask)
         }
     }
 }
 
-/*
 
 class Discoverability : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -326,4 +336,4 @@ class BluetoothReceiver : BroadcastReceiver() {
             }
         }
     }
-}*/
+}

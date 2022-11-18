@@ -14,7 +14,7 @@
     <string name="other_available_device">Other Available Devices</string>
     <string name="btn_scan">Scan</string>
     <string name="email">Enter Your Email</string>
-    <string name="btn_send">SEND</string>
+    <string name="btn_send">Send</string>
     <string name="welcome">Welcome</string>
     <string name="spt">Spotiz SA</string>
     <string name="prepaid">Prepaid\nUsers</string>
@@ -60,12 +60,40 @@
     <string name="title_activity_settings">SettingsActivity</string>
 
     <string name="setting">SETTINGS</string>
-    <string name="language">Language</string>
     <string name="rate_us">Rate Us</string>
     <string name="privacy">Privacy</string>
     <string name="info">Information</string>
-    <string name="logout">Log Out</string>
     <string name="english">English</string>
+
+    <string name="printer_setting">Printer Setting</string>
+    <string name="printer_setting_desc">Setup your printer for the parking ticket</string>
+    <string name="language">Language</string>
+    <string name="language_desc">Select your preferred language</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_password_desc">Update your password</string>
+    <string name="support">Support</string>
+    <string name="support_desc">Request for support if having any issue</string>
+    <string name="legal">Legal</string>
+    <string name="legal_desc">privacy Policy and Terms &amp; Conditions</string>
+    <string name="visit_website">Visit a website</string>
+    <string name="visit_website_desc">Click below link to visit a website</string>
+    <string name="logout">Logout</string>
+    <string name="logout_desc">Logout from app</string>
+
+    <string name="available_printer">Available Printers</string>
+    <string name="printer_list">Printer setting / List will show here</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_conditions">Terms &amp; Conditions</string>
+
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+
+    <string name="select_language">Select language which is you want to change</string>
+    <string name="form_support">Fill below form and send us a message we will reply you soon as </string>
+    <string name="subject">Subject</string>
+    <string name="message">Message</string>
+
 
     <string name="error_no_google_play">Error! Could\'t find Google Play on this device.</string>
     <string name="rating_dialog_cancel">Cancel</string>
@@ -78,5 +106,14 @@
     <string name="submit_feedback">Feedback</string>
     <string name="change">Change</string>
     <string name="Nodevice">No Device Connected</string>
+
+    <string name="spotiz_parking"><b>!!Spotiz-Parking!!</b></string>
+
+
+
+    <string-array name="Languages">
+        <item>English</item>
+        <item>French</item>
+    </string-array>
 
 </resources>

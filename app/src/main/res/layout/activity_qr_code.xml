@@ -7,497 +7,345 @@
     android:background="#EAF1F4"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SurfaceView
-        android:id="@+id/surfaceview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1.7"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginHorizontal="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/capture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_photo_cameras"
-        app:layout_constraintBottom_toBottomOf="@+id/surfaceview"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageButton
-        android:id="@+id/ib_back"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="@null"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back"
-        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-<!--    <TextView-->
-<!--        android:id="@+id/textView3"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/back"-->
-<!--        android:textSize="16sp"-->
-<!--        android:layout_marginStart="5dp"-->
-<!--        android:paddingHorizontal="5dp"-->
-<!--        android:textColor="@color/white"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/ib_back"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/ib_back"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/ib_back" />-->
-
-    <TextView
-        android:id="@+id/camera_txt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:textAlignment="center"
-        android:layout_below="@+id/surfaceview"
-        android:layout_centerHorizontal="true"
-        android:text="@string/error_no_text"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="28dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surfaceview" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cons_1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/camera_txt">
-
-        <EditText
-            android:id="@+id/v_number"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
-            android:background="@null"
-            android:hint="@string/vehicle_no"
-            android:minHeight="48dp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <!--
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="2dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="100dp"
-                    android:background="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="0.06"
-                    app:layout_constraintEnd_toStartOf="@+id/txt_passnum"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/v_number"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txt_passnum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pass_no"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/view"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/pass_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1234567"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="@+id/txt_passnum"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_passnum" />-->
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_submit"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#3EFFFFFF"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:elevation="10dp"
-        android:visibility="gone"
-        app:lottie_rawRes="@raw/checkout" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_invalid"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#3EFFFFFF"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:elevation="10dp"
-        android:visibility="gone"
-        app:lottie_rawRes="@raw/invalid" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#EAF1F4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cons_1">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/txt_twowheeler"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/time"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_submit"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#3EFFFFFF"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:elevation="10dp"
+                android:visibility="gone"
+                app:lottie_rawRes="@raw/checkout" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayouttime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/roundbackwhite"
-        android:paddingVertical="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_twowheeler">
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_invalid"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#3EFFFFFF"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:elevation="10dp"
+                android:visibility="gone"
+                app:lottie_rawRes="@raw/invalid" />
 
-        <TextView
-            android:id="@+id/txt_arrTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/arriving_time"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintBottom_toTopOf="@+id/arrTime"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/const_surface_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/arrTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="@string/arriving_time_display"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/txt_arrTime"
-            app:layout_constraintTop_toBottomOf="@+id/txt_arrTime" />
+                <SurfaceView
+                    android:id="@+id/surfaceview"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="1"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txt_leavingTime"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/txt_arrTime"
-            app:layout_constraintTop_toTopOf="@+id/arrTime"
-            app:srcCompat="@drawable/ic_baseline_arrow_forward_24" />
+                <ImageView
+                    android:id="@+id/capture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="20dp"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_photo_cameras"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/txt_leavingTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/leaving_time"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintBottom_toTopOf="@+id/leavingTime"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/leavingTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="@string/leaving_time_display"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/txt_leavingTime"
-            app:layout_constraintTop_toBottomOf="@+id/txt_leavingTime" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:paddingVertical="24dp"
-        android:background="@drawable/roundbackwhite"
-        android:id="@+id/constraintLayoutamount"
-        android:layout_marginTop="12dp"
-        android:layout_marginHorizontal="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayouttime">
-
-        <TextView
-            android:id="@+id/txt_refund"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/refund"
-            android:textStyle="bold"
-            android:textAlignment="textStart"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView3"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/refund"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/txt_refund"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/arrowr" />
-
-        <TextView
-            android:id="@+id/refund"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/refund_amount"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:textColor="#069C0C"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        android:id="@+id/btn_checkout"
-        android:elevation="10dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="#1B8008"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutamount"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <ImageButton
+                    android:id="@+id/ib_back"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@null"
+                    android:minHeight="48dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/back"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_width="wrap_content"
-                android:letterSpacing="0.04"
-                android:drawableEnd="@drawable/rightarrow"
-                android:drawablePadding="10dp"
-                android:layout_height="match_parent"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:text="@string/checkout"
+                android:id="@+id/camera_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
                 android:textAlignment="center"
-                android:paddingVertical="12dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+                android:layout_centerHorizontal="true"
+                android:text="@string/error_no_text"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="28dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/const_surface_view" />
+
+        <!--    <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cons_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/camera_txt">-->
+
+
+                <!--
+                        <View
+                            android:id="@+id/view"
+                            android:layout_width="2dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="100dp"
+                            android:background="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintDimensionRatio="0.06"
+                            app:layout_constraintEnd_toStartOf="@+id/txt_passnum"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/v_number"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/txt_passnum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pass_no"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/view"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/pass_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1234567"
+                            android:textColor="@color/white"
+                            app:layout_constraintStart_toStartOf="@+id/txt_passnum"
+                            app:layout_constraintTop_toBottomOf="@+id/txt_passnum" />-->
+           <!-- </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/const_sheet1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/const_surface_view">
+
+            <EditText
+                android:id="@+id/v_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/vehicle_no"
+                android:minHeight="48dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_twowheeler"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/time"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_number" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayouttime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/roundbackwhite"
+                android:paddingVertical="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_twowheeler">
+
+                <TextView
+                    android:id="@+id/txt_arrTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/arriving_time"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:layout_constraintBottom_toTopOf="@+id/arrTime"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    android:id="@+id/arrTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/arriving_time_display"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/txt_arrTime"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_arrTime" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/txt_leavingTime"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/txt_arrTime"
+                    app:layout_constraintTop_toTopOf="@+id/arrTime"
+                    app:srcCompat="@drawable/ic_baseline_arrow_forward_24" />
+
+                <TextView
+                    android:id="@+id/txt_leavingTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/leaving_time"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:layout_constraintBottom_toTopOf="@+id/leavingTime"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    android:id="@+id/leavingTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/leaving_time_display"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/txt_leavingTime"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_leavingTime" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="24dp"
+                android:background="@drawable/roundbackwhite"
+                android:id="@+id/constraintLayoutamount"
+                android:layout_marginTop="12dp"
+                android:layout_marginHorizontal="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayouttime">
+
+                <TextView
+                    android:id="@+id/txt_refund"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/refund"
+                    android:textStyle="bold"
+                    android:textAlignment="textStart"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/refund"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/txt_refund"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/arrowr" />
+
+                <TextView
+                    android:id="@+id/refund"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/refund_amount"
+                    android:textStyle="bold"
+                    android:textSize="24sp"
+                    android:textColor="#069C0C"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView3"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_checkout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="24dp"
+                android:backgroundTint="#1B8008"
+                android:elevation="10dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutamount">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:drawableEnd="@drawable/rightarrow"
+                        android:drawablePadding="10dp"
+                        android:letterSpacing="0.04"
+                        android:paddingVertical="12dp"
+                        android:text="@string/checkout"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.core.widget.NestedScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--    xmlns:tools="http://schemas.android.com/tools"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"-->
-    <!--    tools:context=".QrCodeActivity">-->
-
-    <!--    <RelativeLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent">-->
-    <!--      &lt;!&ndash;  <com.budiyev.android.codescanner.CodeScannerView-->
-    <!--            android:id="@+id/scanner_view"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="200dp"-->
-    <!--            app:autoFocusButtonColor="@android:color/white"-->
-    <!--            app:autoFocusButtonVisible="true"-->
-    <!--            app:flashButtonColor="@android:color/white"-->
-    <!--            app:flashButtonVisible="true"-->
-    <!--            app:frameAspectRatioHeight="1"-->
-    <!--            app:frameAspectRatioWidth="1"-->
-    <!--            app:frameColor="@android:color/white"-->
-    <!--            app:frameCornersRadius="0dp"-->
-    <!--            app:frameCornersSize="50dp"-->
-    <!--            app:frameSize="0.75"-->
-    <!--            app:frameThickness="3dp"-->
-    <!--            app:maskColor="#77000000" />&ndash;&gt;-->
-
-    <!--        <SurfaceView-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="200dp"-->
-    <!--            android:id="@+id/surface_view"-->
-    <!--            />-->
-
-    <!--        <RelativeLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:id="@+id/r1"-->
-    <!--            android:layout_below="@+id/surface_view"-->
-    <!--            android:layout_height="match_parent">-->
-
-    <!--            <RelativeLayout-->
-    <!--                android:id="@+id/relVhcle"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginLeft="20dp"-->
-    <!--                android:layout_marginTop="30dp"-->
-    <!--                android:layout_marginRight="20dp"-->
-    <!--                android:background="@drawable/bordervehicle"-->
-    <!--                android:elevation="3dp"-->
-    <!--                android:paddingTop="10dp"-->
-    <!--                android:paddingBottom="10dp">-->
-
-    <!--                <RelativeLayout-->
-    <!--                    android:id="@+id/nos"-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_marginLeft="15dp">-->
-
-    <!--                    <TextView-->
-    <!--                        android:id="@+id/vnumber"-->
-    <!--                        android:layout_width="match_parent"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_alignParentTop="true"-->
-    <!--                        android:layout_marginTop="0dp"-->
-    <!--                        android:background="#EBEBEB"-->
-    <!--                        android:focusable="false"-->
-    <!--                        android:fontFamily="@font/sfpro"-->
-    <!--                        android:hint="Vehicle No"-->
-    <!--                        android:includeFontPadding="false"-->
-    <!--                        android:textSize="27sp"-->
-    <!--                        android:textStyle="bold" />-->
-
-
-    <!--                </RelativeLayout>-->
-
-    <!--                <TextView-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_alignParentRight="true"-->
-    <!--                    android:layout_centerVertical="true"-->
-    <!--                    android:layout_marginRight="15dp"-->
-    <!--                    android:clickable="true"-->
-    <!--                    android:drawableTop="@drawable/ic_photo_camera"-->
-    <!--                    android:fontFamily="@font/sfpro"-->
-    <!--                    android:foreground="@drawable/ripple_effect"-->
-    <!--                    android:includeFontPadding="false"-->
-    <!--                    android:text="Retake"-->
-    <!--                    android:textSize="10sp"-->
-    <!--                    android:textStyle="bold"-->
-    <!--                    android:visibility="gone" />-->
-
-    <!--            </RelativeLayout>-->
-
-
-    <!--            <androidx.cardview.widget.CardView-->
-    <!--                android:id="@+id/checkout"-->
-    <!--                android:layout_width="205sp"-->
-    <!--                android:layout_height="190sp"-->
-    <!--                android:layout_centerInParent="true"-->
-    <!--                android:layout_centerHorizontal="true"-->
-    <!--                android:layout_marginLeft="30sp"-->
-    <!--                android:layout_marginRight="30sp"-->
-    <!--                android:clickable="true"-->
-    <!--                android:foreground="?attr/selectableItemBackground"-->
-    <!--                app:cardCornerRadius="5sp"-->
-    <!--                app:cardElevation="4sp"-->
-    <!--                app:cardUseCompatPadding="true">-->
-
-    <!--                <LinearLayout-->
-    <!--                    android:layout_width="fill_parent"-->
-    <!--                    android:layout_height="fill_parent"-->
-    <!--                    android:gravity="center">-->
-
-    <!--                    <TextView-->
-    <!--                        android:layout_width="wrap_content"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:drawableTop="@drawable/ic_car"-->
-    <!--                        android:drawablePadding="10sp"-->
-    <!--                        android:fontFamily="@font/exo_2"-->
-    <!--                        android:gravity="center"-->
-    <!--                        android:text="Checkout"-->
-    <!--                        android:textColor="#000"-->
-    <!--                        android:textSize="22sp" />-->
-
-    <!--                </LinearLayout>-->
-
-    <!--            </androidx.cardview.widget.CardView>-->
-
-    <!--            <EditText-->
-    <!--                android:id="@+id/passnoo"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="40dp"-->
-    <!--                android:layout_marginLeft="20dp"-->
-    <!--                android:layout_marginTop="40dp"-->
-    <!--                android:layout_marginRight="20dp"-->
-    <!--                android:background="@drawable/border12"-->
-    <!--                android:hint="Enter Your Pass Number"-->
-    <!--                android:inputType="number"-->
-    <!--                android:paddingLeft="5dp"-->
-    <!--                android:visibility="gone" />-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/missingpass1"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="45dp"-->
-    <!--                android:layout_alignParentBottom="true"-->
-    <!--                android:layout_centerHorizontal="true"-->
-    <!--                android:layout_marginLeft="20dp"-->
-    <!--                android:layout_marginRight="20dp"-->
-    <!--                android:layout_marginBottom="20dp"-->
-    <!--                android:background="@drawable/borderprint"-->
-    <!--                android:clickable="true"-->
-    <!--                android:fontFamily="@font/sfpro"-->
-    <!--                android:foreground="@drawable/ripple_effect"-->
-    <!--                android:gravity="center"-->
-    <!--                android:includeFontPadding="false"-->
-    <!--                android:paddingTop="5dp"-->
-    <!--                android:paddingBottom="5dp"-->
-    <!--                android:text="Missing Pass"-->
-    <!--                android:textColor="#fff"-->
-    <!--                android:textSize="22sp"-->
-    <!--                android:textStyle="bold" />-->
-
-    <!--        </RelativeLayout>-->
-
-    <!--    </RelativeLayout>-->
-    <!--</FrameLayout>-->
-
