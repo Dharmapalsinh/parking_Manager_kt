@@ -102,7 +102,7 @@ class HomeActivity : AppCompatActivity() {
         val viewModelFactory= MainViewModelFactory(Repo(RetrofitClientCopy()))
         viewModel= ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
-        viewModel.testQr(Repo2(RetrofitClientCopy()))
+//        viewModel.testQr(Repo2(RetrofitClientCopy()))
 //         initializing our shared preferences.
         sharedPreferences = getSharedPreferences(sharedPref, Context.MODE_PRIVATE)
         callNetworkConnection(application!!,this,this,viewModel)

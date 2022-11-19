@@ -110,13 +110,13 @@ class  SettingActivity : AppCompatActivity() {
             editor.clear()
             editor.putString("count","0")
             editor.apply()
+            finishAffinity()
             val i = Intent(this, LogInActivity::class.java)
             startActivity(i)
             dialog.dismiss()
             animationLogout.cancelAnimation()
             handler.removeCallbacks(runnable!!)
             animationLogout.isVisible = false
-            finish()
         }
         dialog.show()
     }

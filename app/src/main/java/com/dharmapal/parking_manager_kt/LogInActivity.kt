@@ -131,8 +131,6 @@ class LogInActivity : AppCompatActivity() {
                     delay(3500)*/
 
                     val i = Intent(this@LogInActivity, HomeActivity::class.java)
-                    i.flags =
-                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
                     startActivity(i)
                     val editor = sharedPreferences.edit()
 
